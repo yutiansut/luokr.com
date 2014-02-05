@@ -1,0 +1,73 @@
+<div class="mrside span4">
+    {% if handler.get_runtime_conf('gskey') %}
+    <form class="form-search" target="_blank" method="get" action="http://www.google.com/cse">
+        <div class="input-append">
+            <input type="hidden" name="cx" value="{{ handler.get_runtime_conf('gskey') }}">
+            <input type="hidden" name="ie" value="UTF-8">
+            <input type="hidden" name="sa" value="&#x641c;&#x7d22;">
+            <input type="text" name="q" autocomplete="off" class="span3 search-query" placeholder="输入关键字" required>
+            <button type="submit" class="btn">搜索</button>
+        </div>
+    </form>
+    {% else %}
+    <form class="form-search" target="_blank" method="get" action="/s">
+        <div class="input-append">
+            <input type="text" name="k" autocomplete="off" class="span3 search-query" placeholder="输入关键字" required>
+            <button type="submit" class="btn">搜索</button>
+        </div>
+    </form>
+    {% end %}
+
+    <ul class="inline">
+        {% if keyws_tag %}
+        {% for val in keyws_tag %}
+        <li><a href="/t/{{ handler.get_escaper().url_escape(val['term_sign']) }}">{{ val['term_name'] }}</a></li>
+        {% end %}
+        {% end %}
+    </ul>
+
+    {% if posts_top %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">置顶文章</a></li>
+        {% for val in posts_top %}
+        <li><a class="texted" href="/p/{{ val['post_id']}}">{{ val['post_title'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+
+    {% if posts_hot %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">热门文章</a></li>
+        {% for val in posts_hot %}
+        <li><a class="texted" href="/p/{{ val['post_id']}}">{{ val['post_title'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+
+    {% if posts_new %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">最新文章</a></li>
+        {% for val in posts_new %}
+        <li><a class="texted" href="/p/{{ val['post_id']}}">{{ val['post_title'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+
+    {% if remas_new %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">最新评论</a></li>
+        {% for val in remas_new %}
+        <li><a class="texted" href="/p/{{ val['post_id']}}#r{{ val['rema_id']}}">{{ val['rema_cont'].decode('utf-8')[:39].encode('utf-8') }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+
+    {% if links_top %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">友情链接</a></li>
+        {% for val in links_top %}
+        <li><a class="texted" target="_blank" href="{{ val['link_href'] }}"{% if val['link_desp'] %} title="{{ val['link_desp'] }}"{% end %}>{{ val['link_name'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+</div>

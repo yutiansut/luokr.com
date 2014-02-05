@@ -1,0 +1,224 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ post['post_title'] }} - {{ handler.get_runtime_conf('title') }}{% end %}
+{% block descp %}{{ post['post_descp'] and post['post_descp'] or post['post_title'] }}{% end %}
+
+{% block keyws %}{% if post['post_id'] in ptids %}{% for term in ptids[post['post_id']] %}{{ ptags[term['term_id']]['term_name']}},{% end %}{% end %}{{ handler.get_runtime_conf('keyws') }}{% end %}
+
+{% block mnav %}
+{% module Template("_mnav.html", mnav='posts') %}
+{% end %}
+
+{% block css_head %}
+<style>
+    .form-horizontal .control-label {
+        float: left;
+        width: 120px;
+        text-align: left;
+    }
+    .form-horizontal .controls {
+        margin-left: 120px;
+    }
+
+    @media (max-width: 480px) {
+        .form-horizontal .control-label {
+            width: auto;
+        }
+        .form-horizontal .controls {
+            margin-left: 0;
+        }
+    }
+
+    #remarks { margin-top: 20px; }
+    .remark-author { width: 110px; }
+    .remark-datime { display: block; font-size:.8em; color:grey }
+    .remark-action { margin-top: 10px; text-align: right }
+    .remark-action a { display: inline-block; margin: 0 8px 0;}
+</style>
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span8">
+        <article class="article-wrap">
+        <div class="article-head">
+            <a href="/p/{{ post['post_id']}}"><h3>{{ post['post_title'] }}</h3></a>
+            <p><small>标签：</small>
+            {% if post['post_id'] in ptids %}
+            <small>
+                {% for term in ptids[post['post_id']] %}
+                <a href="/t/{% raw handler.get_escaper().url_escape(ptags[term['term_id']]['term_sign']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
+                {% end %}
+            </small>
+            {% else %}
+            <small>无</small>
+            {% end %}
+            </p>
+        </div>
+        <div class="article-body">
+            {% raw post['post_content'] %}
+        </div>
+        <div class="article-foot">
+            {% if post['post_source'].strip() != '' %}<p><small>来源：{% raw post['post_source'] %}</small></p>{% end %}
+            <p class="text-right"><small>{{ post['post_author'] }} 发布于 {{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small></p>
+
+            <ul class="pager">
+                {% if post_prev %}<li class="previous"><a href="/p/{{ post_prev }}">&larr; 上一篇</a></li>{% end %}
+                {% if post_next %}<li class="next"><a href="/p/{{ post_next }}">下一篇 &rarr;</a></li>{% end %}
+            </ul>
+        </div>
+        </article>
+
+        <div id="remarks">
+            <fieldset>
+                <legend>文章评论</legend>
+                {% if remas %}
+                <table class="table table-hover table-striped table-bordered">
+                    <tbody>
+                        {% for rema in remas %}
+                        <tr id="r{{ rema['rema_id'] }}">
+                            <td class="remark-author"><i class="icon-user"></i> {{ rema['user_name'] }}：<span class="remark-datime">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(rema['rema_ctms'])) }}</span></td>
+                            <td>
+                                {{ rema['rema_cont'] }}
+                                <div class="remark-action">
+                                    <a href="javascript:;" title="暂不支持该功能"><i class="icon-thumbs-up"></i> {{ rema['rema_plus'] }}</a> 
+                                    <a href="javascript:;" title="暂不支持该功能" style="color:red"><i class="icon-thumbs-down"></i> {{ rema['rema_mins'] }}</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% end %}
+                    </tbody>
+                </table>
+                {% end %}
+            </fieldset>
+        </div>
+
+        <div id="remark">
+            <form id="form-remark" class="form-horizontal" method="post" action="/rema?p={{ post['post_id'] }}">
+                {% raw xsrf_form_html() %}
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="form-remark-name">您的称呼：</label>
+                        <div class="controls">
+                            <input id="form-remark-name" type="text" name="name" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-remark-mail">您的邮箱：</label>
+                        <div class="controls">
+                            <input id="form-remark-mail" type="email" name="mail" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-remark-text">评论内容：</label>
+                        <div class="controls">
+                            <textarea id="form-remark-text" name="text" rows="5" class="span6" required></textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="recaptcha" id="recaptcha" style="margin-bottom: 10px; margin-top: 10px;">
+                                <div id="recaptcha_widget" class="recaptcha-widget recaptcha_isnot_showing_audio recaptcha_is_building_widget">
+                                    <div id="recaptcha_image"></div>
+                                    <div class="recaptcha-main">
+                                        <div class="recaptcha-buttons">
+                                            <a id="recaptcha_reload_btn" href="javascript:Recaptcha.reload()" title="获取新的验证"><span>&nbsp;</span></a>
+                                            <a id="recaptcha_whatsthis_btn" href="javascript:Recaptcha.showhelp()" title="帮助"><span>&nbsp;</span></a>
+                                        </div>
+                                        <label>
+                                            <strong>
+                                                <span id="recaptcha_instructions_image" class="recaptcha_only_if_image">
+                                                    输入这两个单词：
+                                                </span>
+                                            </strong>
+                                            <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" >
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success input-large">提交评论</button>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    {% include "_side.html" %}
+</div>
+{% end %}
+
+{% block js_foot %}
+<script src="{{ handler.get_runtime_conf('sites_asset') }}google-code-prettify/src/run_prettify.js?skin=sons-of-obsidian" type="text/javascript"></script>
+<script>
+    $(function(){
+        $('#form-remark').submit(function(){
+            var f = $(this);
+            f.find('button[type=submit]').attr('disabled', 'disabled');
+
+            if ({% if not handler.get_runtime_conf('rapub') %}1 || {% end %}f.data('recaptcha-loaded'))
+            {
+                var p = f.find('.control-group:has(button[type=submit])');
+                var t = p.find('.help-inline').hide();
+
+                $.post(f.attr('action'), f.serializeArray(), function(r){
+                    if (r.err)
+                    {
+                        p.removeClass('success').addClass('error')
+                        t.html('<strong>操作失败！</strong>' + r.msg).fadeIn();
+
+                        if (window.Recaptcha)
+                        {
+                            Recaptcha.reload();
+                        }
+                        f.find('button[type=submit]').removeAttr('disabled');
+                    }
+                    else
+                    {
+                        p.removeClass('error').addClass('success')
+                        t.html('<strong>发送成功！</strong>' + r.msg).fadeIn();
+                        setTimeout(function(){location.reload();}, 3000);
+                    }
+                }, 'json');
+            }
+            else
+            {
+                f.data('recaptcha-loaded', true);
+
+                var r = document.createElement('script'); r.type = 'text/javascript'; r.async = true;
+                r.src = "http://www.google.com/recaptcha/api/js/recaptcha_ajax.js";
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(r, s);
+
+                var w = 0;
+                var a = function(){
+                    console.log('Waiting for Google Recaptcha: ' + w + 'ms');
+                    if (window.Recaptcha)
+                    {
+                        Recaptcha.create('{{ handler.get_runtime_conf('rapub') }}', 'recaptcha', {
+                            theme: 'custom',
+                            custom_theme_widget: 'recaptcha_widget',
+                            callback: function(){
+                                $('#recaptcha_widget').removeClass('recaptcha_is_building_widget');
+                                $('iframe:hidden').hide();Recaptcha.focus_response_field();
+
+                                f.find('button[type=submit]').removeAttr('disabled');
+                            }
+                        });
+                    }
+                    else if (w >= 3000)
+                    {
+                        alert('Google Recaptcha加载超时！请尝试刷新页面重试');
+                    }
+                    else
+                    {
+                        setTimeout(a, w += 500);
+                    }
+                }; a();
+            }
+
+            return false;
+        });
+    });
+</script>
+{% end %}

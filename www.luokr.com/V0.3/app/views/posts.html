@@ -1,0 +1,85 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ track }}{% if track != '' %} - {% end %}{{ handler.get_runtime_conf('title') }} · 宅生活{% end %}
+
+{% block mnav %}
+{% module Template("_mnav.html", mnav='posts') %}
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span8">
+        {% set slide = handler.get_runtime_conf('slide') %}
+        {% if slide %}{% set slide = handler.get_escaper().json_decode(slide) %}{% end %}
+        {% if slide %}
+        <div id="carousel" class="carousel slide thumbnail">
+            <ol class="carousel-indicators">
+                {% for (i, v) in enumerate(slide) %}
+                <li data-target="#carousel" data-slide-to="{{ i }}"{% if (not i) and (len(slide) > 1) %} class="active"{% end %}></li>
+                {% end %}
+            </ol>
+            <div class="carousel-inner">
+                {% for (i, v) in enumerate(slide) %}
+                <div class="item{% if not i %} active{% end %}">
+                    <img src="{{ static_url(v['image']) }}">
+                    <div class="carousel-caption">
+                        <h4>{{ v['title'] }}</h4>
+                        <p>{{ v['descp'] }}</p>
+                    </div>
+                </div>
+                {% end %}
+            </div>
+            {% if len(slide) > 1 %}
+            <a class="left carousel-control" href="#carousel" data-slide="prev">‹</a>
+            <a class="right carousel-control" href="#carousel" data-slide="next">›</a>
+            {% end %}
+        </div>
+        {% end %}
+
+        <ul class="breadcrumb">
+            <li><a href="/"><i class="icon-home"></i></a> <span class="divider">/</span></li>
+            <li><a href="/">活动日志</a> <span class="divider">/</span></li>
+            <li class="active">{{ track }}</li>
+        </ul>
+
+        {% if posts %}
+        <div class="article-list">
+            {% for post in posts %}
+            <article class="article-wrap">
+            <div class="article-head">
+                <a href="/p/{{ post['post_id']}}"><h4>{{ post['post_title'] }}</h4></a>
+                <p><small>标签：</small>
+                {% if post['post_id'] in ptids %}
+                <small>
+                    {% for term in ptids[post['post_id']] %}
+                    <a href="/t/{% raw handler.get_escaper().url_escape(ptags[term['term_id']]['term_sign']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
+                    {% end %}
+                </small>
+                {% else %}
+                <small>无</small>
+                {% end %}
+                </p>
+            </div>
+            <div class="article-body">
+                {% raw post['post_summary'] %}
+            </div>
+            <div class="article-foot">
+                {% if post['post_source'].strip() != '' %}<p><small>来源：{% raw post['post_source'] %}</small></p>{% end %}
+                <p class="text-right"><small>{{ post['post_author'] }} 发布于 {{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small></p>
+                <p class="text-right"><a href="/p/{{ post['post_id']}}">全文 » </a></p>
+            </div>
+            </article>
+            {% end %}
+        </div>
+        {% module Template("_page.html", pager=pager) %}
+
+        {% else %}
+        <div class="alert alert-block text-center">
+            <strong>没有发现内容</strong>
+        </div>
+        {% end %}
+    </div>
+    
+    {% include "_side.html" %}
+</div>
+{% end %}

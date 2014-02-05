@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{% block title %}{{ handler.get_runtime_conf('title') }}{% end %}</title>
+<meta name="description" content="{% block descp %}{{ handler.get_runtime_conf('descp') }}{% end %}">
+<meta name="keywords" content="{% block keyws %}{{ handler.get_runtime_conf('keyws') }}{% end %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/bootstrap-responsive.min.css">
+
+{% block css_head_mid %}{% end %}
+
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css">
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework-responsive.min.css">
+
+<link rel="stylesheet" href="{{ static_url('css/customize.css') }}">
+<link rel="stylesheet" href="{{ static_url('css/customize-responsive.css') }}">
+
+{% block css_head %}{% end %}
+{% block js_head %}{% end %}
+
+<!--[if lt IE 9]><script src="{{ handler.get_runtime_conf('sites_asset') }}js/html5shiv.min.js"></script><![endif]-->
+</head>
+
+<body class="topfix" data-exts-scrollup="1" data-exts-autofixbar="1" data-spy="scroll">
+    <nav class="navbar topbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <div class="container">
+            <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
+
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    {% block mnav %}{% end %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    </nav>
+
+    <div class="center">
+        <div class="toptip">
+            {% block tips %}{% end %}
+        </div>
+        <div class="container">
+            {% block main %}{% end %}
+        </div>
+    </div>
+
+    <footer class="footer">
+    <div class="container">
+        {% if handler.get_runtime_conf('qrimg') %}<img class="qrcode pull-right" src="{{ handler.get_runtime_conf('qrimg') }}">{% end %}
+        {% block power %}{% raw handler.get_runtime_conf('power') %}{% end %}
+        {% block built %}{% raw handler.get_runtime_conf('built') %}{% end %}
+        <ul class="footer-links">
+            <li><a href="/links" target="_blank">友情链接</a></li>
+            <li class="muted">&middot;</li><li><a href="/about" target="_blank">关于我们</a></li>
+            <li class="muted">&middot;</li><li><a href="/about#voice" target="_blank">留言反馈</a></li>
+        </ul>
+    </div>
+    </footer>
+
+    <script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery-1.10.1.min.js"></script>
+    <script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.scrollUp.min.js"></script>
+    <script src="{{ handler.get_runtime_conf('sites_asset') }}js/bootstrap.min.js"></script>
+    <script src="{{ static_url('js/customize.js') }}"></script>
+    {% block js_foot %}{% end %}
+
+    {% block stats %}{% raw handler.get_runtime_conf('stats') %}{% end %}
+</body>
+</html>

@@ -1,0 +1,61 @@
+{% extends "_base.html" %}
+
+{% block title %}留言管理 - 控制面板 - {{ handler.get_runtime_conf('title') }}{% end %}
+
+{% block mnav %}
+{% module Template("admin/_mnav.html", mnav='admin') %}
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span12">
+        <ul class="nav nav-tabs">
+            {% module Template("admin/_tabs.html", menu = 'mails') %}
+        </ul>
+
+        <ul class="breadcrumb">
+            <li><a href="/admin"><i class="icon-th"></i> 控制面板</a> <span class="divider">/</span></li>
+            <li class="active">留言管理</li>
+        </ul>
+
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 50px">#</th>
+                    <th style="width: 60px">用户IP</th>
+                    <th style="width: 60px">用户称呼</th>
+                    <th style="width: 60px">用户邮箱</th>
+                    <th>留言内容</th>
+                    <th style="width: 140px">留言时间</th>
+                    <th style="width: 100px">留言状态</th>
+                    <th style="width: 80px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if mails %}
+                {% for mail in mails %}
+                <tr>
+                    <td>{{ mail['mail_id'] }}</td>
+                    <td>{{ mail['user_ip'] }}</td>
+                    <td>{{ mail['user_name'] }}</td>
+                    <td>{{ mail['user_mail'] }}</td>
+                    <td>{{ mail['mail_text'] }}</td>
+                    <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(mail['mail_ctms'])) }}</td>
+                    <td>{% if mail['mail_stat'] %}<span style="color:grey">已处理</span>{% else %}<span>未处理</span>{% end %}</td>
+                    <td>
+                        <a class="request-ajax-link-with-confirm" href="/admin/mail/access?mail_id={{ mail['mail_id'] }}">查收</a>
+                    </td>
+                </tr>
+                {% end %}
+                {% else %}
+                <tr>
+                    <td colspan="8" style="text-align:center">没有发现内容</td>
+                </tr>
+                {% end %}
+            </tbody>
+        </table>
+
+        {% module Template("admin/_page.html", pager=pager) %}
+    </div>
+</div>
+{% end %}

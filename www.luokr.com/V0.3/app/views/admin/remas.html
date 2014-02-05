@@ -1,0 +1,65 @@
+{% extends "_base.html" %}
+
+{% block title %}评论管理 - 控制面板 - {{ handler.get_runtime_conf('title') }}{% end %}
+
+{% block mnav %}
+{% module Template("admin/_mnav.html", mnav='admin') %}
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span12">
+        <ul class="nav nav-tabs">
+            {% module Template("admin/_tabs.html", menu = 'remas') %}
+        </ul>
+
+        <ul class="breadcrumb">
+            <li><a href="/admin"><i class="icon-th"></i> 控制面板</a> <span class="divider">/</span></li>
+            <li class="active">评论管理</li>
+        </ul>
+
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 50px">#</th>
+                    <th style="width: 60px">文章ID</th>
+                    <th style="width: 60px">用户ID</th>
+                    <th style="width: 60px">用户IP</th>
+                    <th style="width: 60px">用户名</th>
+                    <th style="width: 60px">评论分数</th>
+                    <th>评论内容</th>
+                    <th style="width: 140px">评论时间</th>
+                    <th style="width: 100px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if remas %}
+                {% for rema in remas %}
+                <tr>
+                    <td>{{ rema['rema_id'] }}</td>
+                    <td>{{ rema['post_id'] }}</td>
+                    <td>{{ rema['user_id'] }}</td>
+                    <td>{{ rema['user_ip'] }}</td>
+                    <td>{{ rema['user_name'] }}</td>
+                    <td>{{ rema['rema_rank'] }}</td>
+                    <td>{{ rema['rema_cont'] }}</td>
+                    <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(rema['rema_ctms'])) }}</td>
+                    <td>
+                        <a href="/p/{{ rema['post_id'] }}#r{{ rema['rema_id'] }}" target="_blank">查看</a>
+                        <a href="/admin/rema?rema_id={{ rema['rema_id'] }}">编辑</a>
+                        <a class="request-ajax-link-with-confirm" href="/admin/rema/hidden?rema_id={{ rema['rema_id'] }}">清理</a>
+                    </td>
+                </tr>
+                {% end %}
+                {% else %}
+                <tr>
+                    <td colspan="8" style="text-align:center">没有发现内容</td>
+                </tr>
+                {% end %}
+            </tbody>
+        </table>
+
+        {% module Template("admin/_page.html", pager=pager) %}
+    </div>
+</div>
+{% end %}

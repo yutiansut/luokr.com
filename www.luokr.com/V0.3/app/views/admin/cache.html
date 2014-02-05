@@ -1,0 +1,43 @@
+{% extends "_base.html" %}
+
+{% block title %}缓存管理 - 控制面板 - {{ handler.get_runtime_conf('title') }}{% end %}
+
+{% block mnav %}
+{% module Template("admin/_mnav.html", mnav='admin') %}
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span12">
+        <ul class="nav nav-tabs">
+            {% module Template("admin/_tabs.html", menu = 'cache') %}
+        </ul>
+
+        <ul class="breadcrumb">
+            <li><a href="/admin"><i class="icon-th"></i> 控制面板</a> <span class="divider">/</span></li>
+            <li class="active">缓存管理</li>
+        </ul>
+
+        <div class="opsbar btn-group" style="padding-bottom:20px">
+            <a class="btn" href="/admin/cache/delete?exp={{ handler.get_escaper().url_escape('^posts:') }}">清理前台文章右边栏缓存</a>
+        </div>
+        <div class="clearfix"></div>
+
+        <form class="form-horizontal request-ajax-form-with-confirm" method="post" action="/admin/cache/delete">
+            {% raw xsrf_form_html() %}
+            <div class="control-group">
+                <label class="control-label" for="inputExp">批量清理</label>
+                <div class="controls">
+                    <input class="input-xlarge" type="text" name="exp" id="inputExp" value="" placeholder="无需分隔符的正则表达式" required>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-danger">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% end %}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{% block title %}{{ handler.get_runtime_conf('title') }}{% end %}</title>
+<meta name="description" content="{% block descp %}{{ handler.get_runtime_conf('descp') }}{% end %}">
+<meta name="keywords" content="{% block keyws %}{{ handler.get_runtime_conf('keyws') }}{% end %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/googstyle.min.css">
+
+{% block css_head_mid %}{% end %}
+
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css">
+<link rel="stylesheet" href="{{ static_url('css/customize.css') }}">
+
+{% block css_head %}{% end %}
+{% block js_head %}{% end %}
+
+<!--[if lt IE 9]><script src="{{ handler.get_runtime_conf('sites_asset') }}js/html5shiv.min.js"></script><![endif]-->
+</head>
+
+<body data-exts-scrollup="1" data-spy="scroll">
+    <div class="navbar topbar navbar-static-top">
+        <div class="navbar-inner">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="container">
+                <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
+                {% set sess = handler.get_current_user() %}
+
+                <ul class="nav pull-right">
+                    {% if sess %}
+                    <li><a href="/admin/prof"><i class="icon-user"></i> {{ sess['user_name'] }}</a></li>
+                    {% end %}
+                </ul>
+
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        {% block mnav %}{% end %}
+                    </ul>
+
+                    <ul class="nav pull-right">
+                        {% if sess %}
+                        <li><a href="/logout?{{ handler.utils().str_md5(sess['user_sign'] + str(sess['user_utms'])) }}">注销会话</a></li>
+                        {% end %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="center">
+        <div class="toptip">
+            {% block tips %}{% end %}
+        </div>
+        <div class="container">
+            {% block main %}{% end %}
+        </div>
+    </div>
+
+    <footer class="footer">
+    <div class="container">
+        {% block power %}{% raw handler.get_runtime_conf('power') %}{% end %}
+        {% block built %}{% raw handler.get_runtime_conf('built') %}{% end %}
+    </div>
+    </footer>
+
+    <script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery-1.10.1.min.js"></script>
+    <script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.scrollUp.min.js"></script>
+    <script src="{{ handler.get_runtime_conf('sites_asset') }}js/bootstrap.min.js"></script>
+    <script src="{{ static_url('js/easydialog.js') }}"></script>
+    <script src="{{ static_url('js/customize.js') }}"></script>
+    {% block js_foot %}{% end %}
+</body>
+</html>
