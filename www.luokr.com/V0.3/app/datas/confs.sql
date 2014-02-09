@@ -19,6 +19,8 @@ INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('about', '',
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('qrimg', 'http://res.luokr.com/img/www.luokr.com-qr.png', 1391149550);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('sites_asset', 'http://res.luokr.com/', 1391152157);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('sites_index', 'http://www.luokr.com/', 1391152177);
+INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('notes_index', '[{"type": "info", "text": ""}]', 1391152178);
+INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('notes_admin', '[{"text": ""}]', 1391152179);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('rapub', '', 1391152712);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('rapri', '', 1391152730);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('gskey', '', 1391154294);
