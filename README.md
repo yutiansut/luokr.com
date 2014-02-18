@@ -28,4 +28,17 @@ luokr.com
 关于数据库，这个版本使用SQLite3，
 请使用 app/datas 目录下的.sql文件建立各数据库，
 
-users库的主表users默认用户名 admin，密码888888，登录后台可自行修改。
+后台登陆地址为/login，users库的主表users默认用户名 admin，密码888888，登录后台可自行修改。
+
+
+后台管理-控制面板页面截图：
+![后台管理-控制面板页面](http://res.luokr.com/img/20140216/www.luokr.com.admin.png)
+
+后台管理-文章编辑页面截图：
+![后台管理-文章编辑页面](http://res.luokr.com/img/20140216/www.luokr.com.admin.post.update.png)
+
+日志列表页面截图：
+![日志列表页面](http://res.luokr.com/img/20140216/www.luokr.com.posts.png)
+
+关于我们页面截图：
+![关于我们页面](http://res.luokr.com/img/20140216/www.luokr.com.about.png)
