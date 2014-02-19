@@ -10,6 +10,7 @@ CREATE TABLE confs (
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('descp', '一个简单的科技和生活主题的网站', 1391144164);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('keyws', '螺壳网 螺壳 科技 生活', 1391144187);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('title', '螺壳网', 1391144889);
+INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('topic', '宅生活', 1391144890);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('brand', '螺壳网<br>Luokr.com', 1391145703);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('built', '<p>Designed and built with all the love in the world by <a href="javascript:;" onclick="location.href=''mailto:a''+''@''+''luokr.com''">Alvan</a>.</p>', 1391146099);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('power', '<p>&copy;2013 <a href="http://www.luokr.com/">luokr.com</a>.</p>', 1391147893);
