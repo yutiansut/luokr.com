@@ -10,10 +10,6 @@ class Admin_CacheCtrl(AdminCtrl):
 
 class Admin_CacheDeleteCtrl(AdminCtrl):
     @alive
-    def get(self):
-        self.post()
-
-    @alive
     def post(self):
         try:
             self.cache().delete(self.input('exp'), exp = True)
