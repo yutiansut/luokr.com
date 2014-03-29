@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 
-{% block title %}提示 - {{ handler.get_runtime_conf('title') }}{% end %}
+{% block title %}操作{% if flash['err'] %}失败{% else %}成功{% end %} - {{ handler.get_runtime_conf('title') }}{% end %}
 
 {% block mnav %}
 {% module Template("_mnav.html", mnav='') %}
@@ -10,7 +10,8 @@
 <div class="container">
     <h3>操作{% if flash['err'] %}失败{% else %}成功{% end %}</h3>
     {{ flash['msg'] }}
-    <br />
-    继续操作，请 {% if flash['url'] %}<a href="{{ flash['url'] }}">点击跳转</a>{% else %}<a href="javascript:window.opener=null;window.open('','_self');window.close();">关闭当前页</a> 或 <a href="javascript:history.go(-1)">返回上一页</a>{% end %}
+    <br>
+    {% if flash['url'] %}继续，请<a href="{{ flash['url'] }}">点击这里跳转</a>。<br>{% end %}
+    如果无需其它操作，可以关闭当前窗口。
 </div>
 {% end %}
