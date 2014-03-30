@@ -13,7 +13,7 @@
 {% block css_head_mid %}{% end %}
 
 <link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css">
-<link rel="stylesheet" href="{{ static_url('css/customize.css') }}">
+<link rel="stylesheet" href="/assets/css/customize.css">
 
 {% block css_head %}{% end %}
 {% block js_head %}{% end %}
@@ -71,8 +71,8 @@
     <script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery-1.10.1.min.js"></script>
     <script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.scrollUp.min.js"></script>
     <script src="{{ handler.get_runtime_conf('sites_asset') }}js/bootstrap.min.js"></script>
-    <script src="{{ static_url('js/easydialog.js') }}"></script>
-    <script src="{{ static_url('js/customize.js') }}"></script>
+    <script src="/assets/js/easydialog.js"></script>
+    <script src="/assets/js/customize.js"></script>
     {% block js_foot %}{% end %}
 </body>
 </html>
