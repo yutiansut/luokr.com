@@ -29,7 +29,7 @@ class LoginCtrl(BasicCtrl):
             if user and self.model('admin').generate_password(password, user['user_salt']) == user['user_pswd']:
                 try:
                     sess = self.get_escaper().json_encode({'user_id': user['user_id'], 'user_utms': user['user_utms'], 'user_name': user['user_name'], 'user_sign': user['user_sign']})
-                    self.set_secure_cookie("_user", sess, expires_days=remember)
+                    self.set_secure_cookie("_user", sess, expires_days=remember, httponly = True)
 
                     self.flash(1, {'url': redirect})
                     self.model('alogs').add(self.dbase('alogs'), '登录', user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
