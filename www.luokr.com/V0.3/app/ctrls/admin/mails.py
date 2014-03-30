@@ -22,7 +22,7 @@ class Admin_MailsCtrl(AdminCtrl):
 
 class Admin_MailAccessCtrl(AdminCtrl):
     @alive
-    def get(self):
+    def post(self):
         try:
             mail_id = self.input('mail_id')
 

@@ -58,7 +58,7 @@ class Admin_RemaCtrl(AdminCtrl):
 
 class Admin_RemaHiddenCtrl(AdminCtrl):
     @alive
-    def get(self):
+    def post(self):
         try:
             rema_id = self.input('rema_id')
 

@@ -47,7 +47,7 @@
                     <td>
                         <a href="/p/{{ rema['post_id'] }}#r{{ rema['rema_id'] }}" target="_blank">查看</a>
                         <a href="/admin/rema?rema_id={{ rema['rema_id'] }}">编辑</a>
-                        <a class="request-ajax-link-with-confirm" href="/admin/rema/hidden?rema_id={{ rema['rema_id'] }}">清理</a>
+                        <a href="javascript:;" onclick="Luokr.Global.method.confirm() && Luokr.Global.method.ajaxSend('post', '/admin/rema/hidden?rema_id={{ rema['rema_id'] }}', '{{ handler.fetch_xsrfs() }}')">清理</a>
                     </td>
                 </tr>
                 {% end %}

@@ -39,7 +39,7 @@
                     <td>{{ post['post_title'] }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_utms'])) }}</td>
                     <td>
-                        <a class="request-ajax-link-with-confirm" href="/admin/post/hidden?post_id={{ post['post_id'] }}">隐藏</a>
+                        <a href="javascript:;" onclick="Luokr.Global.method.confirm() && Luokr.Global.method.ajaxSend('post', '/admin/post/hidden?post_id={{ post['post_id'] }}', '{{ handler.fetch_xsrfs() }}')">隐藏</a>
                         <a href="/p/{{ post['post_id'] }}" target="_blank">查看</a>
                         <a href="/admin/post?post_id={{ post['post_id'] }}">编辑</a>
                     </td>

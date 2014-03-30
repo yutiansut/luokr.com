@@ -77,7 +77,7 @@ class Admin_ConfCreateCtrl(AdminCtrl):
 
 class Admin_ConfDeleteCtrl(AdminCtrl):
     @alive
-    def get(self):
+    def post(self):
         try:
             conf_name = self.input('conf_name')
             conf_vals = self.get_runtime_conf(conf_name)
@@ -93,7 +93,7 @@ class Admin_ConfDeleteCtrl(AdminCtrl):
 
 class Admin_ConfReloadCtrl(AdminCtrl):
     @alive
-    def get(self):
+    def post(self):
         try:
             self.model('confs').rst(self.dbase('confs'))
             self.flash(1, {'msg': '重载配置成功'})

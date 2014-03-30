@@ -89,7 +89,7 @@ class Admin_LinkCreateCtrl(AdminCtrl):
 
 class Admin_LinkDeleteCtrl(AdminCtrl):
     @alive
-    def get(self):
+    def post(self):
         try:
             user = self.fetch_admin()
 

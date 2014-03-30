@@ -86,13 +86,24 @@ Luokr.Global.method.request = function(options)
         failure: null  // *Unsupported!
     };
 
-    if (options && !options.element) {
-        setting.element = options;
-    } else {
-        $.extend(setting, options || {});
-    }
+    $.extend(setting, options || {});
 
     if (!setting.element) {
+        if (setting._action) {
+            $.ajax({
+                url       : setting._action,
+                type      : setting._method || 'get',
+                data      : setting._params || '',
+                dataType  : setting._format || 'json',
+                beforeSend: function(){
+                    setting.prepare(setting);
+                },
+                success   : function(respond){
+                    setting.success(setting, respond);
+                }
+            });
+        }
+
         return false;
     }
 
@@ -115,7 +126,7 @@ Luokr.Global.method.request = function(options)
             success   : function(respond){
                 setting.success(setting, respond);
 
-                if (window.Recaptcha && $('#recaptcha').length) {
+                if (window.Recaptcha && $('.recaptcha').length) {
                     Recaptcha.reload()
                 }
             }
@@ -176,6 +187,12 @@ Luokr.Global.method.respond = function(opts, data)
         });
     }
 }
+
+Luokr.Global.method.ajaxSend = function(method, action, params, format)
+{
+    Luokr.Global.method.request({_method: method, _action: action, _params: params, _format: format});
+    return false;
+};
 
 Luokr.Global.method.ajaxForm = function(form, stay)
 {

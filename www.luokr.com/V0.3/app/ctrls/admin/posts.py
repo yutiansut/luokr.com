@@ -35,7 +35,7 @@ class Admin_PostsCtrl(AdminCtrl):
 
 class Admin_PostHiddenCtrl(AdminCtrl):
     @alive
-    def get(self):
+    def post(self):
         try:
             post_id = self.input('post_id')
 

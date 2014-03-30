@@ -4,7 +4,7 @@
 <ul class="dropdown-menu">
     <li><a href="/admin/confs">配置列表</a></li>
     <li><a href="/admin/conf/create">新增配置</a></li>
-    <li><a href="/admin/conf/reload">重载配置</a></li>
+    <li><a href="javascript:;" onclick="Luokr.Global.method.confirm() && Luokr.Global.method.ajaxSend('post', '/admin/conf/reload', '{{ handler.fetch_xsrfs() }}')">重载配置</a></li>
 </ul>
 </li>
 

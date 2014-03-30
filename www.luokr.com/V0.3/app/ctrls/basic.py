@@ -14,10 +14,10 @@ from app.model.posts import PostsModel
 
 class BasicCtrl(tornado.web.RequestHandler):
     def initialize(self):
-        self.store = {'model': {}, 'dbase': {}, }
+        self._storage = {'model': {}, 'dbase': {}, }
     def on_finish(self):
-        for dbase in self.store['dbase']:
-            self.store['dbase'][dbase].close()
+        for dbase in self._storage['dbase']:
+            self._storage['dbase'][dbase].close()
 
     def head(self, *args, **kwargs):
         apply(self.get, args, kwargs)
@@ -52,21 +52,21 @@ class BasicCtrl(tornado.web.RequestHandler):
         self.clear_cookie("_user")
 
     def fetch_admin(self, need = True):
-        if 'admin' not in self.store:
-            self.store['admin'] = None
+        if 'admin' not in self._storage:
+            self._storage['admin'] = None
             sess = self.get_current_user()
             if sess:
                 user = self.model('admin').get_user_by_usid(self.dbase('users'), sess['user_id'])
                 if user:
-                    self.store['admin'] = user
+                    self._storage['admin'] = user
                 else:
                     self.del_current_user()
 
         if need:
-            assert self.store['admin'] is not None
-        return self.store['admin']
+            assert self._storage['admin'] is not None
+        return self._storage['admin']
     def store_admin(self, user):
-        self.store['admin'] = user
+        self._storage['admin'] = user
 
     def merge_query(self, args, base = '?'):
         for k in self.request.arguments.keys():
@@ -76,6 +76,9 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def get_escaper(self):
         return tornado.escape
+
+    def fetch_xsrfs(self):
+        return '_xsrf=' + self.get_escaper().url_escape(self.xsrf_token)
 
     def human_valid(self):
         if self.get_runtime_conf('rapri'):
@@ -120,14 +123,14 @@ class BasicCtrl(tornado.web.RequestHandler):
         return self.model('confs')
 
     def dbase(self, name):
-        if name not in self.store['dbase']:
-            self.store['dbase'][name] = sqlite3.connect(self.settings['dbase'][name])
-            self.store['dbase'][name].row_factory = sqlite3.Row
-            self.store['dbase'][name].text_factory = str
-        return self.store['dbase'][name]
+        if name not in self._storage['dbase']:
+            self._storage['dbase'][name] = sqlite3.connect(self.settings['dbase'][name])
+            self._storage['dbase'][name].row_factory = sqlite3.Row
+            self._storage['dbase'][name].text_factory = str
+        return self._storage['dbase'][name]
 
     def model(self, name):
         name = name.title() + 'Model'
-        if name not in self.store['model']:
-            self.store['model'][name] = globals()[name]()
-        return self.store['model'][name]
+        if name not in self._storage['model']:
+            self._storage['model'][name] = globals()[name]()
+        return self._storage['model'][name]
