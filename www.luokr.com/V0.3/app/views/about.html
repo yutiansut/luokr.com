@@ -37,7 +37,7 @@
     <div class="span8">
         {% raw handler.get_runtime_conf('about') %}
         <div id="voice">
-            <form id="form-voice" class="form-horizontal" method="post" action="/mail">
+            <form id="form-voice" class="form-horizontal" method="post" action="/voice">
                 {% raw xsrf_form_html() %}
                 <fieldset>
                     <legend>留言反馈</legend>

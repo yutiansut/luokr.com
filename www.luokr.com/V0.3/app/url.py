@@ -2,10 +2,10 @@
 
 from ctrls.hello import HelloCtrl
 from ctrls.error import ErrorCtrl
-from ctrls.posts import PostsCtrl, PostCtrl
 from ctrls.about import AboutCtrl
+from ctrls.voice import VoiceCtrl
 from ctrls.links import LinksCtrl
-from ctrls.mails import MailCtrl
+from ctrls.posts import PostsCtrl, PostCtrl
 from ctrls.remas import RemaCtrl
 
 from ctrls.login import LoginCtrl
@@ -27,13 +27,13 @@ from ctrls.admin.prof import Admin_ProfCtrl
 url = [
     (r'/', PostsCtrl),
     (r'/about', AboutCtrl),
+    (r'/voice', VoiceCtrl),
     (r'/links', LinksCtrl),
-    (r'/p/([1-9][0-9]*)', PostCtrl),
 
     (r'/s', PostsCtrl),
     (r'/t/([^/]+)', PostsCtrl),
+    (r'/p/([1-9][0-9]*)', PostCtrl),
 
-    (r'/mail', MailCtrl),
     (r'/rema', RemaCtrl),
 
     (r'/hello', HelloCtrl),

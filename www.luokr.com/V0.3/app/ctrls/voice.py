@@ -2,7 +2,7 @@
 
 from basic import BasicCtrl
 
-class MailCtrl(BasicCtrl):
+class VoiceCtrl(BasicCtrl):
     def post(self):
         if not self.human_valid():
             self.flash(0)
