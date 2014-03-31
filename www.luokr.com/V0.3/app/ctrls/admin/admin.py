@@ -42,7 +42,7 @@ def alive(method):
                     url += "?" + urlencode(dict(next=next_url))
                 self.redirect(url)
                 return
-            raise HTTPError(403)
+            return self.send_error(403)
         return method(self, *args, **kwargs)
     return wrapper
 
