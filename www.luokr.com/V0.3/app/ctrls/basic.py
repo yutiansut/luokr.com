@@ -24,11 +24,8 @@ class BasicCtrl(tornado.web.RequestHandler):
     def hello_world(self):
         self.write('Hello world')
     def write_error(self, status_code, **kwargs):
-        if status_code == 404:
-            return self.render('404.html')
-
         if not self.settings['error']:
-            return self.render('5xx.html')
+            return self.render('error.html', code = status_code, msgs = self._reason)
         return apply(super(BasicCtrl, self).write_error, [status_code], kwargs)
 
     def get_runtime_conf(self, name):
