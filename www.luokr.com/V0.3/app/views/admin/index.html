@@ -22,15 +22,15 @@
                 <div class="well">
                     <h5 class="muted">最近评论</h5>
                     <hr>
-                    {% if remas %}
-                    {% for rema in remas %}
-                    <p class="texted"><span class="muted">{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(rema['rema_ctms'])) }}</span> {{ rema['rema_cont'] }}</p>
+                    {% if talks %}
+                    {% for talk in talks %}
+                    <p class="texted"><span class="muted">{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(talk['talk_ctms'])) }}</span> {{ talk['talk_text'] }}</p>
                     {% end %}
                     {% else %}
                     <p>没有发现内容</p>
                     {% end %}
                     <hr>
-                    <p><a class="btn btn-success" href="/admin/remas">查看评论 »</a></p>
+                    <p><a class="btn btn-success" href="/admin/talks">查看评论 »</a></p>
                 </div>
             </div>
             <div class="span6">

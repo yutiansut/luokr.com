@@ -83,13 +83,13 @@ class PostsCtrl(BasicCtrl):
 
         cur.close()
 
-        remas_new = self.cache().get('posts:remas_new')
-        if not remas_new:
-            cur = self.dbase('remas').cursor()
-            cur.execute('select * from remas where rema_rank>0 order by rema_id desc limit 9')
-            remas_new = cur.fetchall()
+        talks_new = self.cache().get('posts:talks_new')
+        if not talks_new:
+            cur = self.dbase('talks').cursor()
+            cur.execute('select * from talks where talk_rank>0 order by talk_id desc limit 9')
+            talks_new = cur.fetchall()
             cur.close()
-            self.cache().set('posts:remas_new', remas_new)
+            self.cache().set('posts:talks_new', talks_new)
 
         if _top:
             links_top = self.cache().get('posts:links_top')
@@ -103,7 +103,7 @@ class PostsCtrl(BasicCtrl):
             links_top = None
 
         self.render('posts.html', track = track, pager = pager, posts = posts, ptids = ptids, ptags = ptags\
-                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, keyws_tag = keyws_tag, remas_new = remas_new, links_top = links_top)
+                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)
 
 
 class PostCtrl(BasicCtrl):
@@ -170,20 +170,20 @@ class PostCtrl(BasicCtrl):
 
         cur.close()
 
-        cur = self.dbase('remas').cursor()
+        cur = self.dbase('talks').cursor()
 
-        remas_new = self.cache().get('posts:remas_new')
-        if not remas_new:
-            cur.execute('select * from remas where rema_rank>0 order by rema_id desc limit 9')
-            remas_new = cur.fetchall()
-            self.cache().set('posts:remas_new', remas_new)
+        talks_new = self.cache().get('posts:talks_new')
+        if not talks_new:
+            cur.execute('select * from talks where talk_rank>0 order by talk_id desc limit 9')
+            talks_new = cur.fetchall()
+            self.cache().set('posts:talks_new', talks_new)
 
-        cur.execute('select * from remas where post_id = ? and rema_rank > 0 order by rema_id desc', (post['post_id'],))
-        remas = cur.fetchall()
+        cur.execute('select * from talks where post_id = ? and talk_rank > 0 order by talk_id desc', (post['post_id'],))
+        talks = cur.fetchall()
         cur.close()
 
         links_top = None
 
-        self.render('post.html', post = post, ptids = ptids, ptags = ptags, remas = remas\
+        self.render('post.html', post = post, ptids = ptids, ptags = ptags, talks = talks\
                 , post_prev = post_prev, post_next = post_next\
-                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, keyws_tag = keyws_tag, remas_new = remas_new, links_top = links_top)
+                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)

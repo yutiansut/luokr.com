@@ -2,7 +2,7 @@
 
 from basic import BasicCtrl
 
-class RemaCtrl(BasicCtrl):
+class TalkCtrl(BasicCtrl):
     def post(self):
         try:
             if not self.human_valid():
@@ -21,9 +21,9 @@ class RemaCtrl(BasicCtrl):
             con.commit()
             cur.close()
 
-            con = self.dbase('remas')
+            con = self.dbase('talks')
             cur = con.cursor()
-            cur.execute('insert into remas (post_id, user_ip, user_name, user_mail, rema_cont, rema_rank, rema_ctms, rema_utms) values (?, ?, ?, ?, ?, ?, ?, ?)', \
+            cur.execute('insert into talks (post_id, user_ip, user_name, user_mail, talk_text, talk_rank, talk_ctms, talk_utms) values (?, ?, ?, ?, ?, ?, ?, ?)', \
                     (post['post_id'], self.request.remote_ip, name, mail, text, 0, time, time))
             con.commit()
             cur.close()

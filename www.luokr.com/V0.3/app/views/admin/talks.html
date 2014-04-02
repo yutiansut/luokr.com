@@ -1,0 +1,65 @@
+{% extends "_base.html" %}
+
+{% block title %}评论管理 - 控制面板 - {{ handler.get_runtime_conf('title') }}{% end %}
+
+{% block mnav %}
+{% module Template("admin/_mnav.html", mnav='admin') %}
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span12">
+        <ul class="nav nav-tabs">
+            {% module Template("admin/_tabs.html", menu = 'talks') %}
+        </ul>
+
+        <ul class="breadcrumb">
+            <li><a href="/admin"><i class="icon-th"></i> 控制面板</a> <span class="divider">/</span></li>
+            <li class="active">评论管理</li>
+        </ul>
+
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 50px">#</th>
+                    <th style="width: 60px">文章ID</th>
+                    <th style="width: 60px">用户ID</th>
+                    <th style="width: 60px">用户IP</th>
+                    <th style="width: 60px">用户名</th>
+                    <th style="width: 60px">评论分数</th>
+                    <th>评论内容</th>
+                    <th style="width: 140px">评论时间</th>
+                    <th style="width: 100px">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if talks %}
+                {% for talk in talks %}
+                <tr>
+                    <td>{{ talk['talk_id'] }}</td>
+                    <td>{{ talk['post_id'] }}</td>
+                    <td>{{ talk['user_id'] }}</td>
+                    <td>{{ talk['user_ip'] }}</td>
+                    <td>{{ talk['user_name'] }}</td>
+                    <td>{{ talk['talk_rank'] }}</td>
+                    <td>{{ talk['talk_text'] }}</td>
+                    <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</td>
+                    <td>
+                        <a href="/p/{{ talk['post_id'] }}#r{{ talk['talk_id'] }}" target="_blank">查看</a>
+                        <a href="/admin/talk?talk_id={{ talk['talk_id'] }}">编辑</a>
+                        <a href="javascript:;" onclick="Luokr.Global.method.confirm() && Luokr.Global.method.ajaxSend('post', '/admin/talk/hidden?talk_id={{ talk['talk_id'] }}', '{{ handler.fetch_xsrfs() }}')">清理</a>
+                    </td>
+                </tr>
+                {% end %}
+                {% else %}
+                <tr>
+                    <td colspan="8" style="text-align:center">没有发现内容</td>
+                </tr>
+                {% end %}
+            </tbody>
+        </table>
+
+        {% module Template("admin/_page.html", pager=pager) %}
+    </div>
+</div>
+{% end %}

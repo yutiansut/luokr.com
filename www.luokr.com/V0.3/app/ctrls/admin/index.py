@@ -5,9 +5,9 @@ from admin import alive, AdminCtrl
 class Admin_IndexCtrl(AdminCtrl):
     @alive
     def get(self, *args):
-        cur = self.dbase('remas').cursor()
-        cur.execute('select * from remas order by rema_id desc limit 3')
-        remas = cur.fetchall()
+        cur = self.dbase('talks').cursor()
+        cur.execute('select * from talks order by talk_id desc limit 3')
+        talks = cur.fetchall()
         cur.close()
 
         cur = self.dbase('mails').cursor()
@@ -15,4 +15,4 @@ class Admin_IndexCtrl(AdminCtrl):
         mails = cur.fetchall()
         cur.close()
 
-        self.render('admin/index.html', remas = remas, mails = mails)
+        self.render('admin/index.html', talks = talks, mails = mails)

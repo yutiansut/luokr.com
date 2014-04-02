@@ -53,11 +53,11 @@
     </ul>
     {% end %}
 
-    {% if remas_new %}
+    {% if talks_new %}
     <ul class="nav nav-tabs nav-stacked">
         <li class="active"><a href="javascript:;">最新评论</a></li>
-        {% for val in remas_new %}
-        <li><a class="texted" href="/p/{{ val['post_id']}}#r{{ val['rema_id']}}">{{ val['rema_cont'].decode('utf-8')[:39].encode('utf-8') }}</a></li>
+        {% for val in talks_new %}
+        <li><a class="texted" href="/p/{{ val['post_id']}}#r{{ val['talk_id']}}">{{ val['talk_text'].decode('utf-8')[:39].encode('utf-8') }}</a></li>
         {% end %}
     </ul>
     {% end %}

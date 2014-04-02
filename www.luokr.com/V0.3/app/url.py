@@ -6,7 +6,7 @@ from ctrls.about import AboutCtrl
 from ctrls.voice import VoiceCtrl
 from ctrls.links import LinksCtrl
 from ctrls.posts import PostsCtrl, PostCtrl
-from ctrls.remas import RemaCtrl
+from ctrls.talks import TalkCtrl
 
 from ctrls.login import LoginCtrl
 from ctrls.logout import LogoutCtrl
@@ -16,7 +16,7 @@ from ctrls.admin.cache import Admin_CacheCtrl, Admin_CacheDeleteCtrl
 from ctrls.admin.image import Admin_ImageUploadCtrl
 from ctrls.admin.confs import Admin_ConfsCtrl, Admin_ConfCtrl, Admin_ConfCreateCtrl, Admin_ConfDeleteCtrl, Admin_ConfReloadCtrl
 from ctrls.admin.posts import Admin_PostsCtrl, Admin_PostCtrl, Admin_PostCreateCtrl, Admin_PostHiddenCtrl
-from ctrls.admin.remas import Admin_RemasCtrl, Admin_RemaCtrl, Admin_RemaHiddenCtrl
+from ctrls.admin.talks import Admin_TalksCtrl, Admin_TalkCtrl, Admin_TalkHiddenCtrl
 from ctrls.admin.links import Admin_LinksCtrl, Admin_LinkCtrl, Admin_LinkCreateCtrl, Admin_LinkDeleteCtrl
 from ctrls.admin.mails import Admin_MailsCtrl, Admin_MailAccessCtrl
 from ctrls.admin.users import Admin_UsersCtrl
@@ -34,7 +34,7 @@ url = [
     (r'/t/([^/]+)', PostsCtrl),
     (r'/p/([1-9][0-9]*)', PostCtrl),
 
-    (r'/rema', RemaCtrl),
+    (r'/talk', TalkCtrl),
 
     (r'/hello', HelloCtrl),
     (r'/login', LoginCtrl),
@@ -58,9 +58,9 @@ url = [
     (r'/admin/post/create', Admin_PostCreateCtrl),
     (r'/admin/post/hidden', Admin_PostHiddenCtrl),
 
-    (r'/admin/remas', Admin_RemasCtrl),
-    (r'/admin/rema', Admin_RemaCtrl),
-    (r'/admin/rema/hidden', Admin_RemaHiddenCtrl),
+    (r'/admin/talks', Admin_TalksCtrl),
+    (r'/admin/talk', Admin_TalkCtrl),
+    (r'/admin/talk/hidden', Admin_TalkHiddenCtrl),
 
     (r'/admin/links', Admin_LinksCtrl),
     (r'/admin/link', Admin_LinkCtrl),
