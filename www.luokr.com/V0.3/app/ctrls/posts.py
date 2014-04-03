@@ -95,7 +95,7 @@ class PostsCtrl(BasicCtrl):
             links_top = self.cache().get('posts:links_top')
             if not links_top:
                 cur = self.dbase('links').cursor()
-                cur.execute('select * from links where link_rank>99 order by link_rank desc, link_id desc limit 99')
+                cur.execute('select * from links where link_rank>=? order by link_rank desc, link_id desc limit 99', (self.get_runtime_conf('index_links_min_rank'), ))
                 links_top = cur.fetchall()
                 cur.close()
                 self.cache().set('posts:links_top', links_top)

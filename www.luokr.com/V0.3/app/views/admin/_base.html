@@ -56,7 +56,7 @@
 
     <div class="center">
         <div class="container">
-            {% block tips %}{% module Template("admin/_tips.html", tips = handler.get_runtime_conf('notes_admin')) %}{% end %}
+            {% block tips %}{% module Template("admin/_tips.html", tips = handler.get_runtime_conf('admin_notes')) %}{% end %}
             {% block main %}{% end %}
         </div>
     </div>
