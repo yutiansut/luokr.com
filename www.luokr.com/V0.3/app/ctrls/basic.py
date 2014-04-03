@@ -19,6 +19,11 @@ class BasicCtrl(tornado.web.RequestHandler):
         for dbase in self._storage['dbase']:
             self._storage['dbase'][dbase].close()
 
+    def set_default_headers(self):
+        self.clear_header('server')
+        self.set_header('x-frame-options', 'SAMEORIGIN')
+        self.set_header('x-xss-protection', '1; mode=block')
+
     def head(self, *args, **kwargs):
         apply(self.get, args, kwargs)
     def hello_world(self):
