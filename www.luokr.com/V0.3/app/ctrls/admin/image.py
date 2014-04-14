@@ -1,13 +1,13 @@
 #coding=utf-8
 
 import os, sys, hashlib
-from admin import alive, AdminCtrl
+from admin import admin, AdminCtrl
 
 class Admin_ImageUploadCtrl(AdminCtrl):
     def check_xsrf_cookie(self):
         return True
 
-    @alive
+    @admin
     def post(self):
         if ('upload' in self.request.files) and (len(self.request.files['upload'])):
             ets = {'jpeg': 'jpg', 'jpg': 'jpg', 'png': 'png', 'gif': 'gif'}

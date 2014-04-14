@@ -1,9 +1,9 @@
 #coding=utf-8
 
-from admin import alive, AdminCtrl
+from admin import admin, AdminCtrl
 
 class Admin_LinksCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
@@ -21,7 +21,7 @@ class Admin_LinksCtrl(AdminCtrl):
         self.render('admin/links.html', pager = pager, links = links)
 
 class Admin_LinkCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         link_id = self.input('link_id')
         cur = self.dbase('links').cursor()
@@ -30,10 +30,10 @@ class Admin_LinkCtrl(AdminCtrl):
 
         self.render('admin/link.html', entry = link)
 
-    @alive
+    @admin
     def post(self):
         try:
-            user = self.fetch_admin()
+            user = self.current_user
 
             link_id   = self.input('link_id')
             link_name = self.input('link_name')
@@ -57,14 +57,14 @@ class Admin_LinkCtrl(AdminCtrl):
         self.flash(0)
 
 class Admin_LinkCreateCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         self.render('admin/link-create.html')
 
-    @alive
+    @admin
     def post(self):
         try:
-            user = self.fetch_admin()
+            user = self.current_user
 
             link_name = self.input('link_name')
             link_href = self.input('link_href')
@@ -88,10 +88,10 @@ class Admin_LinkCreateCtrl(AdminCtrl):
         self.flash(0)
 
 class Admin_LinkDeleteCtrl(AdminCtrl):
-    @alive
+    @admin
     def post(self):
         try:
-            user = self.fetch_admin()
+            user = self.current_user
 
             link_id   = self.input('link_id')
             link_utms = self.input('link_utms')

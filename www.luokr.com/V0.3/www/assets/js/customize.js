@@ -155,20 +155,23 @@ Luokr.Global.method.respond = function(opts, data)
     var args = {forward: true};
     $.extend(args, opts || {});
 
+    var msgs = [];
+    if (data.msg != null && data.msg != '') {
+        msgs.push(data.sta ? data.sta + ' ' + data.msg : data.msg);
+    }
+
     if (data.err) {
+        if (args.forward && data.url) {
+            msgs.push('放弃操作，请 <a href="' + data.url + '">点击这里</a>');
+        }
+
         easyDialog.open({
             container : {
                 header : Luokr.Global.string.FAILURE,
-                content : '<div style="color:red">' + (data.msg == null || data.msg == '' ? Luokr.Global.string.FAILURE : data.msg) + '</div>'
-            },
-            autoClose : data.url ? (data.tms || 5)*1000 : 0
+                content : '<div style="color:red">' + (msgs.length ? msgs.join('<br/>') : Luokr.Global.string.FAILURE) + '</div>'
+            }
         });
     } else {
-        var msgs = [];
-        if (data.msg != null && data.msg != '') {
-            msgs.push(data.msg);
-        }
-
         if (args.forward || data.url) {
             if (data.url == '') {
                 msgs.push('继续操作，请 <a href="javascript:location.reload()">刷新当前页</a> 或 <a href="javascript:history.go(-1)">返回上一页</a>');

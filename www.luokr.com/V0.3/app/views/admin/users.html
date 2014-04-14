@@ -23,10 +23,9 @@
                 <tr>
                     <th style="width: 50px">#</th>
                     <th>昵称</th>
-                    <th>帐号</th>
                     <th>邮箱</th>
                     <th style="width: 140px">创建时间</th>
-                    <th style="width: 140px">活跃时间</th>
+                    <th style="width: 140px">更新时间</th>
                     <th style="width: 80px">操作</th>
                 </tr>
             </thead>
@@ -36,7 +35,6 @@
                 <tr>
                     <td>{{ user['user_id'] }}</td>
                     <td>{{ user['user_name'] }}</td>
-                    <td>{{ user['user_sign'] }}</td>
                     <td>{{ user['user_mail'] }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(user['user_ctms'])) }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(user['user_utms'])) }}</td>
@@ -45,7 +43,7 @@
                 {% end %}
                 {% else %}
                 <tr>
-                    <td colspan="8" style="text-align:center">没有发现内容</td>
+                    <td colspan="7" style="text-align:center">没有发现内容</td>
                 </tr>
                 {% end %}
             </tbody>

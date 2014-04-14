@@ -93,7 +93,7 @@
             <div class="control-group">
                 <label class="control-label" for="input_post_author">文章作者</label>
                 <div class="controls controls-row">
-                    <input type="text" id="input_post_author" name="post_author" value="{{ handler.get_current_user()['user_name'] }}">
+                    <input type="text" id="input_post_author" name="post_author" value="{{ handler.current_user['user_name'] }}">
                 </div>
             </div>
 

@@ -1,8 +1,19 @@
 #coding=utf-8
 
 import time
+import functools
 import tornado.web, tornado.httputil, tornado.escape
 import sqlite3
+
+try:
+    import urlparse  # py2
+except ImportError:
+    import urllib.parse as urlparse  # py3
+
+try:
+    from urllib import urlencode  # py2
+except ImportError:
+    from urllib.parse import urlencode  # py3
 
 from lib.cache import Cache
 from lib.utils import Utils
@@ -23,6 +34,7 @@ class BasicCtrl(tornado.web.RequestHandler):
         self.clear_header('server')
         self.set_header('x-frame-options', 'SAMEORIGIN')
         self.set_header('x-xss-protection', '1; mode=block')
+        self.set_header('cache-control', 'no-siteapp')
 
     def head(self, *args, **kwargs):
         apply(self.get, args, kwargs)
@@ -48,27 +60,14 @@ class BasicCtrl(tornado.web.RequestHandler):
     def get_current_user(self):
         sess = self.get_secure_cookie("_user")
         if (sess):
-            return self.get_escaper().json_decode(sess)
-
+            sess = self.get_escaper().json_decode(sess)
+            if type(sess) == type({}) and 'user_id' in sess and 'auth_word' in sess:
+                user = self.model('admin').get_user_by_usid(self.dbase('users'), sess['user_id'])
+                if user and self.model('admin').generate_authword(user['user_atms'], user['user_salt']) == sess['auth_word']:
+                    return user
+            self.del_current_user()
     def del_current_user(self):
         self.clear_cookie("_user")
-
-    def fetch_admin(self, need = True):
-        if 'admin' not in self._storage:
-            self._storage['admin'] = None
-            sess = self.get_current_user()
-            if sess:
-                user = self.model('admin').get_user_by_usid(self.dbase('users'), sess['user_id'])
-                if user:
-                    self._storage['admin'] = user
-                else:
-                    self.del_current_user()
-
-        if need:
-            assert self._storage['admin'] is not None
-        return self._storage['admin']
-    def store_admin(self, user):
-        self._storage['admin'] = user
 
     def merge_query(self, args, base = '?'):
         for k in self.request.arguments.keys():
@@ -112,7 +111,16 @@ class BasicCtrl(tornado.web.RequestHandler):
             exts['err'] = 0
         else:
             exts['err'] = 1
-        if 'msg' not in exts: exts['msg'] = ''
+
+        if 'sta' not in exts:
+            exts['sta'] = self.get_status()
+
+        if 'msg' not in exts:
+            try:
+                exts['msg'] = tornado.httputil.responses[exts['sta']]
+            except KeyError:
+                exts['msg'] = ''
+
         if 'url' not in exts: exts['url'] = ''
         if 'ext' not in exts: exts['ext'] = {}
 
@@ -136,3 +144,34 @@ class BasicCtrl(tornado.web.RequestHandler):
         if name not in self._storage['model']:
             self._storage['model'][name] = globals()[name]()
         return self._storage['model'][name]
+
+def alive(method):
+    """Decorate methods with this to require that the user be logged in.
+
+    If the user is not logged in, they will be redirected to the configured
+    `login url <RequestHandler.get_login_url>`.
+    """
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        if not self.current_user:
+            if ('Accept' in self.request.headers) and (self.request.headers['Accept'].find('json') >= 0):
+                self.flash(0, {'url': self.get_login_url(), 'sta': 403})
+                return
+
+            if self.request.method in ("GET", "HEAD"):
+                url = self.get_login_url()
+                if "?" not in url:
+                    if urlparse.urlsplit(url).scheme:
+                        # if login url is absolute, make next absolute too
+                        next_url = self.request.full_url()
+                    else:
+                        next_url = self.request.uri
+                        if next_url.find('/index.py') == 0:
+                            next_url = next_url.replace('/index.py', '', 1)
+
+                    url += "?" + urlencode(dict(next=next_url))
+                self.redirect(url)
+                return
+            return self.send_error(403)
+        return method(self, *args, **kwargs)
+    return wrapper

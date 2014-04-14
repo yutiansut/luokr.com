@@ -1,9 +1,9 @@
 #coding=utf-8
 
-from admin import alive, AdminCtrl
+from admin import admin, AdminCtrl
 
 class Admin_MailsCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
@@ -21,7 +21,7 @@ class Admin_MailsCtrl(AdminCtrl):
         self.render('admin/mails.html', pager = pager, mails = mails)
 
 class Admin_MailAccessCtrl(AdminCtrl):
-    @alive
+    @admin
     def post(self):
         try:
             mail_id = self.input('mail_id')

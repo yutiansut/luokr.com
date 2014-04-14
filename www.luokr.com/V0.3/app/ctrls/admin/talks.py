@@ -1,9 +1,9 @@
 #coding=utf-8
 
-from admin import alive, AdminCtrl
+from admin import admin, AdminCtrl
 
 class Admin_TalksCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
@@ -21,7 +21,7 @@ class Admin_TalksCtrl(AdminCtrl):
         self.render('admin/talks.html', pager = pager, talks = talks)
 
 class Admin_TalkCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         talk_id = self.input('talk_id')
 
@@ -32,10 +32,10 @@ class Admin_TalkCtrl(AdminCtrl):
 
         self.render('admin/talk.html', talk = talk)
 
-    @alive
+    @admin
     def post(self):
         try:
-            user = self.fetch_admin()
+            user = self.current_user
 
             talk_id   = self.input('talk_id')
             talk_rank = self.input('talk_rank')
@@ -57,7 +57,7 @@ class Admin_TalkCtrl(AdminCtrl):
         self.flash(0)
 
 class Admin_TalkHiddenCtrl(AdminCtrl):
-    @alive
+    @admin
     def post(self):
         try:
             talk_id = self.input('talk_id')

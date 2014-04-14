@@ -4,10 +4,9 @@ from basic import BasicCtrl
 
 class LogoutCtrl(BasicCtrl):
     def get(self):
-        sess = self.get_current_user()
-        if sess:
+        if self.current_user:
             try:
-                self.input(self.utils().str_md5(sess['user_sign'] + str(sess['user_utms'])))
+                self.input(self.utils().str_md5(str(self.current_user['user_id']) + self.fetch_xsrfs()))
                 self.del_current_user()
                 self.redirect('/')
                 return

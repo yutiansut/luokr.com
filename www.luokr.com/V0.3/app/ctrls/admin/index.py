@@ -1,9 +1,9 @@
 #coding=utf-8
 
-from admin import alive, AdminCtrl
+from admin import admin, AdminCtrl
 
 class Admin_IndexCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self, *args):
         cur = self.dbase('talks').cursor()
         cur.execute('select * from talks order by talk_id desc limit 3')

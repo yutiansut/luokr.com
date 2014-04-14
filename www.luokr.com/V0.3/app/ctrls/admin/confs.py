@@ -1,9 +1,9 @@
 #coding=utf-8
 
-from admin import alive, AdminCtrl
+from admin import admin, AdminCtrl
 
 class Admin_ConfsCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
@@ -21,7 +21,7 @@ class Admin_ConfsCtrl(AdminCtrl):
         self.render('admin/confs.html', pager = pager, confs = confs)
 
 class Admin_ConfCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         conf_name = self.input('conf_name')
 
@@ -32,7 +32,7 @@ class Admin_ConfCtrl(AdminCtrl):
 
         self.render('admin/conf.html', entry = conf)
 
-    @alive
+    @admin
     def post(self):
         try:
             conf_name = self.input('conf_name')
@@ -40,7 +40,7 @@ class Admin_ConfCtrl(AdminCtrl):
 
             self.set_runtime_conf(conf_name, conf_vals)
 
-            user = self.fetch_admin()
+            user = self.current_user
             self.model('alogs').add(self.dbase('alogs'), "更新配置：%s\n%s" % (conf_name, conf_vals), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
 
             self.flash(1, {'msg': '更新配置成功'})
@@ -48,11 +48,11 @@ class Admin_ConfCtrl(AdminCtrl):
             self.flash(0)
 
 class Admin_ConfCreateCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         self.render('admin/conf-create.html')
 
-    @alive
+    @admin
     def post(self):
         try:
             conf_name = self.input('conf_name')
@@ -68,7 +68,7 @@ class Admin_ConfCreateCtrl(AdminCtrl):
 
             self.set_runtime_conf(conf_name, conf_vals)
 
-            user = self.fetch_admin()
+            user = self.current_user
             self.model('alogs').add(self.dbase('alogs'), "新增配置：%s\n%s" % (conf_name, conf_vals), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
 
             self.flash(1, {'msg': '新增配置成功'})
@@ -76,7 +76,7 @@ class Admin_ConfCreateCtrl(AdminCtrl):
             self.flash(0)
 
 class Admin_ConfDeleteCtrl(AdminCtrl):
-    @alive
+    @admin
     def post(self):
         try:
             conf_name = self.input('conf_name')
@@ -84,7 +84,7 @@ class Admin_ConfDeleteCtrl(AdminCtrl):
 
             self.del_runtime_conf(conf_name)
 
-            user = self.fetch_admin()
+            user = self.current_user
             self.model('alogs').add(self.dbase('alogs'), "删除配置：%s\n%s" % (conf_name, conf_vals), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
 
             self.flash(1, {'msg': '删除配置成功'})
@@ -92,7 +92,7 @@ class Admin_ConfDeleteCtrl(AdminCtrl):
             self.flash(0)
 
 class Admin_ConfReloadCtrl(AdminCtrl):
-    @alive
+    @admin
     def post(self):
         try:
             self.model('confs').rst(self.dbase('confs'))

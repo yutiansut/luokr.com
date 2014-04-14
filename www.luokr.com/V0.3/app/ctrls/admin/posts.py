@@ -1,9 +1,9 @@
 #coding=utf-8
 
-from admin import alive, AdminCtrl
+from admin import admin, AdminCtrl
 
 class Admin_PostsCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
@@ -34,7 +34,7 @@ class Admin_PostsCtrl(AdminCtrl):
         self.render('admin/posts.html', pager = pager, posts = posts, ptids = ptids, ptags = ptags)
 
 class Admin_PostHiddenCtrl(AdminCtrl):
-    @alive
+    @admin
     def post(self):
         try:
             post_id = self.input('post_id')
@@ -49,7 +49,7 @@ class Admin_PostHiddenCtrl(AdminCtrl):
             self.flash(0)
 
 class Admin_PostCreateCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         cur = self.dbase('posts').cursor()
 
@@ -61,10 +61,10 @@ class Admin_PostCreateCtrl(AdminCtrl):
 
         self.render('admin/post-create.html', mode = mode, terms = terms)
 
-    @alive
+    @admin
     def post(self):
         try:
-            user = self.fetch_admin()
+            user = self.current_user
 
             post_title   = self.input('post_title')
             post_descp   = self.input('post_descp')
@@ -130,7 +130,7 @@ class Admin_PostCreateCtrl(AdminCtrl):
 
 
 class Admin_PostCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         post_id = self.input('post_id')
 
@@ -163,10 +163,10 @@ class Admin_PostCtrl(AdminCtrl):
         cur.close()
         self.render('admin/post.html', mode = mode, post = post, terms = terms, ptids = ptids, ptags = ptags)
 
-    @alive
+    @admin
     def post(self):
         try:
-            user = self.fetch_admin()
+            user = self.current_user
 
             post_id      = self.input('post_id')
             post_title   = self.input('post_title')

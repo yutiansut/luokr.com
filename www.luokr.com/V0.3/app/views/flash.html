@@ -9,7 +9,7 @@
 {% block main %}
 <div class="container">
     <h3>操作{% if flash['err'] %}失败{% else %}成功{% end %}</h3>
-    {{ flash['msg'] }}
+    {{ flash['sta'] }} {{ flash['msg'] }}
     <br>
     {% if flash['url'] %}继续，请<a href="{{ flash['url'] }}">点击这里跳转</a>。<br>{% end %}
     如果无需其它操作，可以关闭当前窗口。

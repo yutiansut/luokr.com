@@ -1,9 +1,9 @@
 #coding=utf-8
 
-from admin import alive, AdminCtrl
+from admin import admin, AdminCtrl
 
 class Admin_AlogsCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self, *args):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)

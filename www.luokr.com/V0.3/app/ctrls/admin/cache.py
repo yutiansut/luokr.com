@@ -1,15 +1,15 @@
 #coding=utf-8
 
-from admin import alive, AdminCtrl
+from admin import admin, AdminCtrl
 import re
 
 class Admin_CacheCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         self.render('admin/cache.html')
 
 class Admin_CacheDeleteCtrl(AdminCtrl):
-    @alive
+    @admin
     def post(self):
         try:
             self.cache().delete(self.input('exp'), exp = True)

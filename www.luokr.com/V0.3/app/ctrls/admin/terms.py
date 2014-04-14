@@ -1,9 +1,9 @@
 #coding=utf-8
 
-from admin import alive, AdminCtrl
+from admin import admin, AdminCtrl
 
 class Admin_TermsCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self, *args):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
@@ -21,7 +21,7 @@ class Admin_TermsCtrl(AdminCtrl):
         self.render('admin/terms.html', terms = terms, pager = pager)
 
 class Admin_TermCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         term_id = self.input('term_id')
         cur = self.dbase('posts').cursor()
@@ -30,7 +30,7 @@ class Admin_TermCtrl(AdminCtrl):
 
         self.render('admin/term.html', entry = term)
 
-    @alive
+    @admin
     def post(self):
         try:
             term_id   = self.input('term_id')
@@ -51,11 +51,11 @@ class Admin_TermCtrl(AdminCtrl):
         self.flash(0)
 
 class Admin_TermCreateCtrl(AdminCtrl):
-    @alive
+    @admin
     def get(self):
         self.render('admin/term-create.html')
 
-    @alive
+    @admin
     def post(self):
         try:
             term_sign = self.input('term_sign')
