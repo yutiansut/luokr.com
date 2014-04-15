@@ -33,7 +33,7 @@
                 <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
                 <ul class="nav pull-right">
                     {% if handler.current_user %}
-                    <li><a href="/admin/prof"><i class="icon-user"></i> {{ handler.current_user['user_name'] }}</a></li>
+                    <li><a href="/admin/prof"><i class="icon-user" style="vertical-align: baseline"></i> {{ handler.current_user['user_name'] }}</a></li>
                     {% end %}
                 </ul>
 
