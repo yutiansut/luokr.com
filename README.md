@@ -14,7 +14,7 @@ luokr.com
     www.luokr.com/V0.3
     ---- app/           #应用目录
     -------- etc.py     #应用配置，该文件可以参考 doc/etc.py.sample 的配置
-    -------- svr.py     #服务入口
+    -------- svr.py     #服务入口，启动服务：python svr.py
     -------- url.py     #路由配置
     -------- ctrls/     #控制器文件(Tornado的RequestHandler)
     -------- datas/     #数据文件，SQLite3数据库文件目录，带建表语句
@@ -32,10 +32,10 @@ luokr.com
 
 
 后台管理-控制面板页面截图：
-![后台管理-控制面板页面](http://res.luokr.com/img/20140216/www.luokr.com.admin.png)
+![后台管理-控制面板页面](http://res.luokr.com/img/20140415/www.luokr.com.admin.png)
 
 后台管理-文章编辑页面截图：
-![后台管理-文章编辑页面](http://res.luokr.com/img/20140216/www.luokr.com.admin.post.update.png)
+![后台管理-文章编辑页面](http://res.luokr.com/img/20140415/www.luokr.com.admin.post.update.png)
 
 日志列表页面截图：
 ![日志列表页面](http://res.luokr.com/img/20140216/www.luokr.com.posts.png)
