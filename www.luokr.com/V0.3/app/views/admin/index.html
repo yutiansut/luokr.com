@@ -24,7 +24,7 @@
                     <hr>
                     {% if talks %}
                     {% for talk in talks %}
-                    <p class="texted"><span class="muted">{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(talk['talk_ctms'])) }}</span> {{ talk['talk_text'] }}</p>
+                    <p class="texted"><span class="muted">{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(talk['talk_ctms'])) }}</span> {% if talk['talk_rank'] %}<span class="text-success">已显示</span>{% else %}<span class="text-info">未显示</span>{% end %} {{ talk['talk_text'] }}</p>
                     {% end %}
                     {% else %}
                     <p>没有发现内容</p>

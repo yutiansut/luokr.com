@@ -57,9 +57,9 @@ Luokr.Global.method.date = function(a, s)
 };  
 
 
-Luokr.Global.method.confirm = function(options)
+Luokr.Global.method.confirm = function(message)
 {
-    return confirm(Luokr.Global.string.CONFIRM);
+    return confirm(typeof(message) == "undefined" ? Luokr.Global.string.CONFIRM : message);
 }
 
 Luokr.Global.method.prepare = function(options)
