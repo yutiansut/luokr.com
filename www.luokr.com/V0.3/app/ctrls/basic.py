@@ -69,10 +69,13 @@ class BasicCtrl(tornado.web.RequestHandler):
     def del_current_user(self):
         self.clear_cookie("_user")
 
-    def merge_query(self, args, base = '?'):
+    def merge_query(self, args, dels = []):
         for k in self.request.arguments.keys():
             if k not in args:
                 args[k] = self.get_argument(k)
+        for k in dels:
+            if k in args:
+                del args[k]
         return args
 
     def get_escaper(self):
@@ -100,7 +103,9 @@ class BasicCtrl(tornado.web.RequestHandler):
     def stime(self):
         return int(time.time())
 
-    def tourl(self, args, base = '?'):
+    def tourl(self, args, base = None):
+        if base == None:
+            base = self.request.path
         return tornado.httputil.url_concat(base, args)
 
     def input(self, *args, **kwargs):

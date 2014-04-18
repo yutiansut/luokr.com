@@ -71,13 +71,13 @@
             </article>
             {% end %}
         </div>
-        {% module Template("_page.html", pager=pager) %}
-
         {% else %}
         <div class="alert alert-block text-center">
             <strong>没有发现内容</strong>
         </div>
         {% end %}
+
+        {% module Template("_page.html", pager=pager) %}
     </div>
     
     {% include "_side.html" %}
