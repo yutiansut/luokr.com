@@ -1,9 +1,8 @@
 <div class="pagination pagination-centered">
     <ul>
-        <li{% if pager['page'] <= 1 %} class="active disabled"><a href="javascript:;">上一页</a>{% else %}><a href="{% raw handler.tourl(handler.merge_query({'page':max(pager['page']-1, 1)})) %}">上一页</a>{% end %}</li>
-        {% for i in range(max(pager['page']-2, 1), pager['page'] + ((pager['list'] < pager['qnty']) and 1 or 3)) %}
-        <li{% if i == pager['page'] %} class="active disabled"><a href="javascript:;">{{ i }}</a>{% else %}><a href="{% raw handler.tourl(handler.merge_query({'page':i})) %}">{{ i }}</a>{% end %}</li>
-        {% end %}
+        <li{% if pager['page'] <= 1 %} class="disabled"><a href="javascript:;">首页</a>{% else %}><a href="{% raw handler.tourl(handler.merge_query({}, ['page'])) %}">首页</a>{% end %}</li>
+        <li{% if pager['page'] <= 1 %} class="disabled"><a href="javascript:;">上一页</a>{% else %}><a href="{% if pager['page'] > 2 %}{% raw handler.tourl(handler.merge_query({'page':pager['page']-1})) %}{% else %}{% raw handler.tourl(handler.merge_query({}, ['page'])) %}{% end %}">上一页</a>{% end %}</li>
+        <li class="active disabled"><a href="javascript:;">{{ pager['page'] }}</a></li>
         <li><a href="{% raw handler.tourl(handler.merge_query({'page':pager['page']+1})) %}">下一页</a></li>
     </ul>
 </div>
