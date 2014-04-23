@@ -9,7 +9,7 @@ class LoginCtrl(BasicCtrl):
             self.redirect(next)
             return
 
-        self.render('admin/login.html', next = next)
+        self.render('login.html', next = next)
 
     def post(self):
         if not self.human_valid():

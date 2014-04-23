@@ -1,0 +1,188 @@
+{% extends "_base.html" %}
+
+{% block title %}登录 - {{ handler.get_runtime_conf('title') }}{% end %}
+
+{% block css_head %}
+<style>
+    .main-container {
+        position: relative;
+        width: 210px;
+        margin: 10px auto;
+        padding: 20px 40px 40px;
+        background: #fff;
+        border: 1px solid #ccc;
+    }
+
+    .main-container::before,.main-container::after {
+        content: "";
+        position: absolute;
+        width: 100%;height: 100%;
+        top: 3.5px;left: 0;
+        background: #fff;
+        z-index: -1;
+        -webkit-transform: rotateZ(4deg);
+        -moz-transform: rotateZ(4deg);
+        -ms-transform: rotateZ(4deg);
+        border: 1px solid #ccc;
+    }
+
+    .main-container::after {
+        top: 5px;
+        z-index: -2;
+        -webkit-transform: rotateZ(-2deg);
+        -moz-transform: rotateZ(-2deg);
+        -ms-transform: rotateZ(-2deg);
+    }
+
+    .auth-note {
+        text-align: center;
+    }
+
+    .auth-note img.avatar {
+        width: 100px; height: 100px;
+        margin: 10px auto 30px;
+        border-radius: 100%;
+        border: 2px solid #aaa;
+    }
+
+    .auth-form input {
+        text-align: center;
+    }
+
+    .auth-form .recaptcha-widget#recaptcha_widget {
+        width: 210px;
+    }
+
+    .auth-form .recaptcha-widget #recaptcha_image {
+        width: 200px !important;
+    }
+
+    .auth-form .recaptcha-widget .recaptcha-main input[type=text] {
+        width: 170px;
+    }
+</style>
+{% end %}
+
+{% block main %}
+<div class="container">
+    <div class="main-container">
+        <div class="auth-note">
+            <img class="avatar" src="/assets/img/l.jpg">
+        </div>
+        <div class="auth-form">
+            <form id="form-auth" action="/login" method="post">
+                {% raw xsrf_form_html() %}
+                {% if next %}
+                <input type="hidden" name="redirect" value="{{ next }}">
+                {% end %}
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="input-block-level" style="min-height: 34px;" type="text" name="username" autocomplete="off" placeholder="账号" required>
+                        <input class="input-block-level" style="min-height: 34px;" type="password" name="password" autocomplete="off" placeholder="密码" required>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div id="recaptcha">
+                        <div id="recaptcha_widget" class="recaptcha-widget recaptcha_isnot_showing_audio recaptcha_is_building_widget">
+                            <div id="recaptcha_image"></div>
+                            <div class="recaptcha-main">
+                                <div class="recaptcha-buttons">
+                                    <a id="recaptcha_reload_btn" href="javascript:Recaptcha.reload()" title="获取新的验证"><span>&nbsp;</span></a>
+                                    <a id="recaptcha_whatsthis_btn" href="javascript:Recaptcha.showhelp()" title="帮助"><span>&nbsp;</span></a>
+                                </div>
+                                <label>
+                                    <strong>
+                                        <span id="recaptcha_instructions_image" class="recaptcha_only_if_image">
+                                            输入这两个单词：
+                                        </span>
+                                    </strong>
+                                    <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" >
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-success input-block-level">登录</button>
+                    </div>
+                </div>
+
+                <label class="checkbox" style="display: inline-block"><input type="checkbox" name="remember" value="30">保持登录状态</label>
+                <a href="/about#voice" target="_blank" class="pull-right">没有帐号？</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% block js_foot %}
+<script>
+    $(function(){
+        $('#form-auth').submit(function()
+        {
+            var f = $(this);
+            f.find('button[type=submit]').attr('disabled', 'disabled');
+
+            if ({% if not handler.get_runtime_conf('rapub') %}1 || {% end %}f.data('recaptcha-loaded'))
+            {
+                $.post(f.attr('action'), f.serializeArray(), function(r)
+                {
+                    if (r.err) 
+                    {
+                        alert('登录失败！' + r.msg);
+                        if (window.Recaptcha)
+                        {
+                            Recaptcha.reload();
+                        }
+                        f.find('button[type=submit]').removeAttr('disabled');
+                    }
+                    else
+                    {
+                        location.href = r.url;
+                    }
+                }, 'json');
+            }
+            else
+            {
+                f.data('recaptcha-loaded', true);
+
+                var r = document.createElement('script'); r.type = 'text/javascript'; r.async = true;
+                r.src = "http://www.google.com/recaptcha/api/js/recaptcha_ajax.js";
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(r, s);
+
+                var w = 0;
+                var a = function()
+                {
+                    console.log('Waiting for Google Recaptcha: ' + w + 'ms');
+                    if (window.Recaptcha)
+                    {
+                        Recaptcha.create('{{ handler.get_runtime_conf('rapub') }}', 'recaptcha', {
+                            theme: 'custom',
+                            custom_theme_widget: 'recaptcha_widget',
+                            callback: function(){
+                                $('#recaptcha_widget').removeClass('recaptcha_is_building_widget');
+                                $('iframe:hidden').hide();Recaptcha.focus_response_field();
+
+                                f.find('button[type=submit]').removeAttr('disabled');
+                            }
+                        });
+                    }
+                    else if (w >= 1500)
+                    {
+                        alert('网络超时，加载Google Recaptcha失败！请尝试刷新页面重试');
+                    }
+                    else
+                    {
+                        setTimeout(a, w += 500);
+                    }
+                }; a();
+            }
+
+            return false;
+        });
+    });
+</script>
+{% end %}
