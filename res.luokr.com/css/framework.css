@@ -138,6 +138,16 @@ body {
     -moz-binding: url("ellipsis.xml#ellipsis");/*FireFox*/
 }
 
+.carousel-control, .carousel-control:link, .carousel-control:visited {
+  background: none;
+  border: none;
+  opacity: 0;
+  outline: none;
+}
+.carousel-control:hover {
+  opacity: 0.8;
+}
+
 #scrollUp {
     bottom: 20px;
     right: 20px;
