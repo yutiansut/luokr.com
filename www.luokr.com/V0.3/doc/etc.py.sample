@@ -21,5 +21,5 @@ etc['dbase'] = {\
         'confs': os.path.join(etc['apath'], 'app', 'datas', 'confs.db3'),\
         'links': os.path.join(etc['apath'], 'app', 'datas', 'links.db3'),\
         'mails': os.path.join(etc['apath'], 'app', 'datas', 'mails.db3'),\
-        'remas': os.path.join(etc['apath'], 'app', 'datas', 'remas.db3'),\
+        'talks': os.path.join(etc['apath'], 'app', 'datas', 'talks.db3'),\
         'users': os.path.join(etc['apath'], 'app', 'datas', 'users.db3'),}
