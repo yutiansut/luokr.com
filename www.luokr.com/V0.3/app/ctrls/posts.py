@@ -178,7 +178,7 @@ class PostCtrl(BasicCtrl):
             talks_new = cur.fetchall()
             self.cache().set('posts:talks_new', talks_new)
 
-        cur.execute('select * from talks where post_id = ? and talk_rank > 0 order by talk_id desc', (post['post_id'],))
+        cur.execute('select * from talks where post_id = ? and talk_rank > 0 order by talk_id asc', (post['post_id'],))
         talks = cur.fetchall()
         cur.close()
 

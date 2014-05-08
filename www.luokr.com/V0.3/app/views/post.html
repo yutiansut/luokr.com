@@ -79,7 +79,7 @@
                         <tr id="r{{ talk['talk_id'] }}">
                             <td class="remark-author"><i class="icon-user"></i> {{ talk['user_name'] }}：<span class="remark-datime">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
                             <td>
-                                {{ talk['talk_text'] }}
+                                {% raw handler.get_escaper().xhtml_escape(talk['talk_text']).replace('\n','<br>\n') %}
                                 <div class="remark-action">
                                     <a href="javascript:;" title="暂不支持该功能"><i class="icon-thumbs-up"></i> {{ talk['talk_plus'] }}</a> 
                                     <a href="javascript:;" title="暂不支持该功能" style="color:red"><i class="icon-thumbs-down"></i> {{ talk['talk_mins'] }}</a>
