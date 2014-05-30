@@ -28,14 +28,18 @@ You can change it after you logined.
 Screenshots
 -----------
 
-admin control panel:
-![www.luokr.com.admin.png](http://res.luokr.com/img/20140415/www.luokr.com.admin.png)
-
-admin post edit:
-![www.luokr.com.admin.post.update.png](http://res.luokr.com/img/20140415/www.luokr.com.admin.post.update.png)
-
-post list:
-![www.luokr.com.posts.png](http://res.luokr.com/img/20140216/www.luokr.com.posts.png)
+posts:
+![www.luokr.com.posts.png](http://res.luokr.com/img/20140530/www.luokr.com.posts.png)
 
 about:
 ![www.luokr.com.about.png](http://res.luokr.com/img/20140216/www.luokr.com.about.png)
+
+login:
+![www.luokr.com.login.png](http://res.luokr.com/img/20140530/www.luokr.com.posts.png)
+
+admin:
+![www.luokr.com.admin.png](http://res.luokr.com/img/20140415/www.luokr.com.admin.png)
+
+admin edit post:
+![www.luokr.com.admin.post.update.png](http://res.luokr.com/img/20140415/www.luokr.com.admin.post.update.png)
+
