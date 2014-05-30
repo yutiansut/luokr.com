@@ -35,7 +35,7 @@ about:
 ![www.luokr.com.about.png](http://res.luokr.com/img/20140216/www.luokr.com.about.png)
 
 login:
-![www.luokr.com.login.png](http://res.luokr.com/img/20140530/www.luokr.com.posts.png)
+![www.luokr.com.login.png](http://res.luokr.com/img/20140530/www.luokr.com.login.png)
 
 admin:
 ![www.luokr.com.admin.png](http://res.luokr.com/img/20140415/www.luokr.com.admin.png)
