@@ -9,26 +9,23 @@ class PostsCtrl(BasicCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['list'] = 0;
 
+        stime = self.stime()
         track = ''
 
         cur = self.dbase('posts').cursor()
 
-        stime = self.stime()
-
-        _tid = 0
-        if _tnm:
-            cur.execute('select term_id from terms where term_sign = ? limit 1', (str(_tnm).lower(), ))
-            _tid = cur.fetchone()
-            if _tid:
-                _tid = _tid['term_id']
-
-        _top = False
         _kws = self.input('k', None)
+        _top = False
+        _tag = None
 
-        if _tid:
-            cur.execute('select posts.* from posts,post_terms where posts.post_id=post_terms.post_id and term_id=? and post_stat>0 and post_ptms<? order by post_ptms desc limit ? offset ?', (_tid, stime, pager['qnty'], (pager['page']-1)*pager['qnty'], ))
+        if _tnm:
+            cur.execute('select * from terms where term_sign = ? limit 1', (str(_tnm).lower(),))
+            _tag = cur.fetchone()
+
+        if _tag:
+            cur.execute('select posts.* from posts,post_terms where posts.post_id=post_terms.post_id and term_id=? and post_stat>0 and post_ptms<? order by post_ptms desc limit ? offset ?', (_tag['term_id'], stime, pager['qnty'], (pager['page']-1)*pager['qnty'], ))
             posts = cur.fetchall()
-            track = '标签：' + _tnm
+            track = '标签：' + _tag['term_name']
         elif _tnm:
             self.send_error(404)
             return
