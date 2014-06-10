@@ -227,6 +227,7 @@ L.Global.widget.captcha.create = function()
         '    <div class="recaptcha-main">' +
         '        <div class="recaptcha-buttons">' +
         '            <a id="recaptcha_reload_btn" href="javascript:L.Global.widget.captcha.reload(' + "'" + element.selector + "'" + ');" title="获取新的验证"><span>&nbsp;</span></a>' +
+        '            <a id="recaptcha_whatsthis_btn" href="javascript:;" title="输入验证码有助于我们识别当前是否机器操作"><span>&nbsp;</span></a>' +
         '        </div>' +
         '        <label>' +
         '            <strong>' +
