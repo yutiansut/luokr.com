@@ -3,7 +3,6 @@
 import time
 import functools
 import tornado.web, tornado.httputil, tornado.escape
-import session
 import sqlite3
 
 try:
@@ -26,17 +25,9 @@ from app.model.posts import PostsModel
 class BasicCtrl(tornado.web.RequestHandler):
     def initialize(self):
         self._storage = {'model': {}, 'dbase': {}, }
-        self._session = None
     def on_finish(self):
         for dbase in self._storage['dbase']:
             self._storage['dbase'][dbase].close()
-
-        if self._session is not None:
-            self._session.store_session()
-
-    @property
-    def session(self):
-        return self.get_session()
 
     def set_default_headers(self):
         self.clear_header('server')
@@ -88,23 +79,20 @@ class BasicCtrl(tornado.web.RequestHandler):
     def get_escaper(self):
         return tornado.escape
 
-    def get_session(self):
-        if self._session is None:
-            self._session = session.Session(self.get_secure_cookie('_ssid'))
-            self.set_secure_cookie('_ssid', self._session.fetch_sess_id())
-
-        return self._session
-
     def fetch_xsrfs(self):
         return '_xsrf=' + self.get_escaper().url_escape(self.xsrf_token)
 
     def human_valid(self):
         field = '_code'
-        if field in self.session:
-            _code = self.input(field, None)
-            value = self.session[field]
-            del self.session[field]
-            return _code and str(_code).lower() == value.lower()
+        value = self.get_secure_cookie(field)
+        if value:
+            self.clear_cookie(field)
+            input = self.input(field, None)
+            if input:
+                value = self.get_escaper().json_decode(value)
+                return 'time' in value and 'code' in value and self.stime() - value['time'] < 60\
+                        and value['code'] == self.utils().str_md5(\
+                        self.utils().str_md5(self.settings['cookie_secret']) + input.lower() + str(value['time']))
         return False
 
     def utils(self):
