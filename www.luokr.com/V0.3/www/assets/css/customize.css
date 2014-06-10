@@ -1,3 +1,13 @@
+.carousel-control, .carousel-control:link, .carousel-control:visited {
+  background: none;
+  border: none;
+  opacity: 0;
+  outline: none;
+}
+.carousel-control:hover {
+  opacity: 0.8;
+}
+
 .article-list {
     padding-top: 10px;
 }
@@ -116,6 +126,7 @@ div.ajax-form-loading
 }
 .recaptcha-widget #recaptcha_image img {
     width: 100%;
+    max-width: 192px;
 }
 
 .recaptcha_is_building_widget {display: none;}

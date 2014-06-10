@@ -3,6 +3,7 @@
 import time
 import functools
 import tornado.web, tornado.httputil, tornado.escape
+import session
 import sqlite3
 
 try:
@@ -17,7 +18,6 @@ except ImportError:
 
 from lib.cache import Cache
 from lib.utils import Utils
-from lib.recaptcha.client.captcha import submit
 from app.model.admin import AdminModel
 from app.model.alogs import AlogsModel
 from app.model.confs import ConfsModel
@@ -26,9 +26,17 @@ from app.model.posts import PostsModel
 class BasicCtrl(tornado.web.RequestHandler):
     def initialize(self):
         self._storage = {'model': {}, 'dbase': {}, }
+        self._session = None
     def on_finish(self):
         for dbase in self._storage['dbase']:
             self._storage['dbase'][dbase].close()
+
+        if self._session is not None:
+            self._session.store_session()
+
+    @property
+    def session(self):
+        return self.get_session()
 
     def set_default_headers(self):
         self.clear_header('server')
@@ -38,8 +46,7 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def head(self, *args, **kwargs):
         apply(self.get, args, kwargs)
-    def hello_world(self):
-        self.write('Hello world')
+
     def write_error(self, status_code, **kwargs):
         if not self.settings['error']:
             return self.render('error.html', code = status_code, msgs = self._reason)
@@ -81,15 +88,24 @@ class BasicCtrl(tornado.web.RequestHandler):
     def get_escaper(self):
         return tornado.escape
 
+    def get_session(self):
+        if self._session is None:
+            self._session = session.Session(self.get_secure_cookie('_ssid'))
+            self.set_secure_cookie('_ssid', self._session.fetch_sess_id())
+
+        return self._session
+
     def fetch_xsrfs(self):
         return '_xsrf=' + self.get_escaper().url_escape(self.xsrf_token)
 
     def human_valid(self):
-        if self.get_runtime_conf('rapri'):
-            return submit(self.input('recaptcha_challenge_field', None), self.input('recaptcha_response_field', None), \
-                    self.get_runtime_conf('rapri'), self.request.remote_ip).is_valid
-        else:
-            return not bool(self.get_runtime_conf('rapub'))
+        field = '_code'
+        if field in self.session:
+            _code = self.input(field, None)
+            value = self.session[field]
+            del self.session[field]
+            return _code and str(_code).lower() == value.lower()
+        return False
 
     def utils(self):
         return Utils

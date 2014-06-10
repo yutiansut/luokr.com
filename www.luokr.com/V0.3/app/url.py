@@ -11,6 +11,8 @@ from ctrls.talks import TalkCtrl
 from ctrls.login import LoginCtrl
 from ctrls.logout import LogoutCtrl
 
+from ctrls.image import ImageRandomCtrl
+
 from ctrls.admin.index import Admin_IndexCtrl
 from ctrls.admin.cache import Admin_CacheCtrl, Admin_CacheDeleteCtrl
 from ctrls.admin.image import Admin_ImageUploadCtrl
@@ -26,8 +28,10 @@ from ctrls.admin.prof import Admin_ProfCtrl
 
 url = [
     (r'/', PostsCtrl),
+
     (r'/about', AboutCtrl),
     (r'/voice', VoiceCtrl),
+
     (r'/links', LinksCtrl),
 
     (r'/s', PostsCtrl),
@@ -39,6 +43,8 @@ url = [
     (r'/hello', HelloCtrl),
     (r'/login', LoginCtrl),
     (r'/logout', LogoutCtrl),
+
+    (r'/image/random', ImageRandomCtrl),
 
     (r'/admin', Admin_IndexCtrl),
 

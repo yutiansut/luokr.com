@@ -1,26 +1,27 @@
 // Global namespace
-window.Luokr = window.Luokr || {};
-Luokr.Global = Luokr.Global || {};
-Luokr.Module = Luokr.Module || {};
+window.L = window.L || {};
+L.Global = L.Global || {};
+L.Module = L.Module || {};
 
-Luokr.Global.config = Luokr.Global.config || {};
-Luokr.Global.method = Luokr.Global.method || {};
-Luokr.Global.source = Luokr.Global.source || {};
-Luokr.Global.string = Luokr.Global.string || {};
+L.Global.config = L.Global.config || {};
+L.Global.method = L.Global.method || {};
+L.Global.source = L.Global.source || {};
+L.Global.string = L.Global.string || {};
+L.Global.widget = L.Global.widget || {};
 
-Luokr.Global.string.SUCCESS = '操作成功！';
-Luokr.Global.string.FAILURE = '操作失败！';
-Luokr.Global.string.WAITING = '处理中，请稍侯...';
-Luokr.Global.string.LOADING = '加载中，请稍侯...';
-Luokr.Global.string.POSTING = '发送中，请稍侯...';
-Luokr.Global.string.CONFIRM = '确认执行该操作吗？';
+L.Global.string.SUCCESS = '操作成功！';
+L.Global.string.FAILURE = '操作失败！';
+L.Global.string.WAITING = '处理中，请稍侯...';
+L.Global.string.LOADING = '加载中，请稍侯...';
+L.Global.string.POSTING = '发送中，请稍侯...';
+L.Global.string.CONFIRM = '确认执行该操作吗？';
 
 /**
 * Format date time
 * @param string a Format
 * @param int    s Timestamp
 */
-Luokr.Global.method.date = function(a, s)
+L.Global.method.date = function(a, s)
 {
     var d = s ? new Date(s) : new Date(), f = d.getTime();
     return ('' + a).replace(/a|A|d|D|F|g|G|h|H|i|I|j|l|L|m|M|n|s|S|t|T|U|w|y|Y|z|Z/g, function(a) {
@@ -57,15 +58,15 @@ Luokr.Global.method.date = function(a, s)
 };  
 
 
-Luokr.Global.method.confirm = function(message)
+L.Global.method.confirm = function(message)
 {
-    return confirm(typeof(message) == "undefined" ? Luokr.Global.string.CONFIRM : message);
+    return confirm(typeof(message) == "undefined" ? L.Global.string.CONFIRM : message);
 }
 
-Luokr.Global.method.prepare = function(options)
+L.Global.method.prepare = function(options)
 {
     var setting = {
-        message: Luokr.Global.string.WAITING
+        message: L.Global.string.WAITING
     };
     $.extend(setting, options || {});
 
@@ -75,14 +76,14 @@ Luokr.Global.method.prepare = function(options)
     });
 }
 
-Luokr.Global.method.request = function(options)
+L.Global.method.request = function(options)
 {
     var setting = {
         element: null,
         forward: true,
 
-        prepare: Luokr.Global.method.prepare,
-        success: Luokr.Global.method.respond,
+        prepare: L.Global.method.prepare,
+        success: L.Global.method.respond,
         failure: null  // *Unsupported!
     };
 
@@ -125,10 +126,7 @@ Luokr.Global.method.request = function(options)
             },
             success   : function(respond){
                 setting.success(setting, respond);
-
-                if (window.Recaptcha && $('.recaptcha').length) {
-                    Recaptcha.reload()
-                }
+                L.Global.widget.captcha.reload();
             }
         });
     } else {
@@ -150,7 +148,7 @@ Luokr.Global.method.request = function(options)
     return false;
 }
 
-Luokr.Global.method.respond = function(opts, data)
+L.Global.method.respond = function(opts, data)
 {
     var args = {forward: true};
     $.extend(args, opts || {});
@@ -167,8 +165,8 @@ Luokr.Global.method.respond = function(opts, data)
 
         easyDialog.open({
             container : {
-                header : Luokr.Global.string.FAILURE,
-                content : '<div style="color:red">' + (msgs.length ? msgs.join('<br/>') : Luokr.Global.string.FAILURE) + '</div>'
+                header : L.Global.string.FAILURE,
+                content : '<div style="color:red">' + (msgs.length ? msgs.join('<br/>') : L.Global.string.FAILURE) + '</div>'
             }
         });
     } else {
@@ -184,20 +182,20 @@ Luokr.Global.method.respond = function(opts, data)
 
         easyDialog.open({
             container : {
-                header: Luokr.Global.string.SUCCESS,
-                content : ('<div>' + (msgs.length ? msgs.join('<br/>') : Luokr.Global.string.SUCCESS) + '</div>')
+                header: L.Global.string.SUCCESS,
+                content : ('<div>' + (msgs.length ? msgs.join('<br/>') : L.Global.string.SUCCESS) + '</div>')
             }
         });
     }
 }
 
-Luokr.Global.method.ajaxSend = function(method, action, params, format)
+L.Global.method.ajaxSend = function(method, action, params, format)
 {
-    Luokr.Global.method.request({_method: method, _action: action, _params: params, _format: format});
+    L.Global.method.request({_method: method, _action: action, _params: params, _format: format});
     return false;
 };
 
-Luokr.Global.method.ajaxForm = function(form, stay)
+L.Global.method.ajaxForm = function(form, stay)
 {
     if (window.CKEDITOR)
     {
@@ -207,14 +205,50 @@ Luokr.Global.method.ajaxForm = function(form, stay)
         }
     }
 
-    Luokr.Global.method.request({element: form, forward: !stay});
+    L.Global.method.request({element: form, forward: !stay});
     return false;
 };
 
-Luokr.Global.method.ajaxLink = function(link, stay)
+L.Global.method.ajaxLink = function(link, stay)
 {
-    Luokr.Global.method.request({element: link, forward: !stay});
+    L.Global.method.request({element: link, forward: !stay});
     return false;
+};
+
+
+L.Global.widget.captcha = {};
+L.Global.widget.captcha.create = function()
+{
+    element = $('#recaptcha');
+    if (element.html() == '') {
+        var tpl = '' +
+        '<div id="recaptcha_widget" class="recaptcha-widget recaptcha_isnot_showing_audio">' +
+        '    <div id="recaptcha_image"></div>' +
+        '    <div class="recaptcha-main">' +
+        '        <div class="recaptcha-buttons">' +
+        '            <a id="recaptcha_reload_btn" href="javascript:L.Global.widget.captcha.reload(' + "'" + element.selector + "'" + ');" title="获取新的验证"><span>&nbsp;</span></a>' +
+        '        </div>' +
+        '        <label>' +
+        '            <strong>' +
+        '                <span id="recaptcha_instructions_image" class="recaptcha_only_if_image">' +
+        '                    输入验证码：' +
+        '                </span>' +
+        '            </strong>' +
+        '            <input type="text" id="recaptcha_response_field" name="_code">' +
+        '        </label>' +
+        '    </div>' +
+        '</div>' +
+        '';
+        
+        element.addClass('.captcha').html(tpl);
+    }
+
+    $('#recaptcha_image').html('<img class="captcha-image" src="/image/random?' + (new Date).getTime() + '">');
+};
+L.Global.widget.captcha.reload = function()
+{
+    $('#recaptcha_image').html('<img class="captcha-image" src="/image/random?' + (new Date).getTime() + '">');
+    $('#recaptcha_response_field').select();
 };
 
 $(function(){
@@ -233,32 +267,32 @@ $(function(){
     }
 
     $('.require-confirm').on('click', function(){
-        return Luokr.Global.method.confirm();
+        return L.Global.method.confirm();
     });
 
     $('.request-ajax-link-with-confirm').on('click', function(){
-        if (Luokr.Global.method.confirm())
+        if (L.Global.method.confirm())
         {
-            Luokr.Global.method.ajaxLink($(this));
+            L.Global.method.ajaxLink($(this));
         }
         return false;
     });
 
     $('.request-ajax-link').on('click', function(){
-        Luokr.Global.method.ajaxLink($(this));
+        L.Global.method.ajaxLink($(this));
         return false;
     });
 
     $('.request-ajax-form-with-confirm').on('submit', function(){
-        if (Luokr.Global.method.confirm())
+        if (L.Global.method.confirm())
         {
-            Luokr.Global.method.ajaxForm($(this));
+            L.Global.method.ajaxForm($(this));
         }
         return false;
     });
 
     $('.request-ajax-form').on('submit', function(){
-        Luokr.Global.method.ajaxForm($(this));
+        L.Global.method.ajaxForm($(this));
         return false;
     });
 });
