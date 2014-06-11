@@ -28,13 +28,14 @@ class LoginCtrl(BasicCtrl):
             user = self.model('admin').get_user_by_sign(self.dbase('users'), username)
             if user and self.model('admin').generate_password(password, user['user_salt']) == user['user_pswd']:
                 try:
-                    sess = self.get_escaper().json_encode({'user_id': user['user_id'], 'auth_word': self.model('admin').generate_authword(user['user_atms'], user['user_salt'])})
-                    self.set_secure_cookie("_user", sess, expires_days=remember, httponly = True)
+                    auth = self.model('admin').generate_authword(user['user_atms'], user['user_salt'])
+                    self.set_secure_cookie("_auth", auth, expires_days=remember, httponly = True)
+                    self.set_cookie("_usid", str(user['user_id']), expires_days=remember)
 
                     self.flash(1, {'url': redirect})
                     self.model('alogs').add(self.dbase('alogs'), '登录', user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
                 except:
-                    self.flash(0, {'msg': '系统忙，请稍后再试'})
+                    self.flash(0, {'msg': '请稍后再试'})
                 return
         except:
             pass

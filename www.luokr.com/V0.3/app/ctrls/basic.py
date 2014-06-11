@@ -56,16 +56,16 @@ class BasicCtrl(tornado.web.RequestHandler):
         return self.model('confs').set(self.dbase('confs'), name, vals)
 
     def get_current_user(self):
-        sess = self.get_secure_cookie("_user")
-        if (sess):
-            sess = self.get_escaper().json_decode(sess)
-            if type(sess) == type({}) and 'user_id' in sess and 'auth_word' in sess:
-                user = self.model('admin').get_user_by_usid(self.dbase('users'), sess['user_id'])
-                if user and self.model('admin').generate_authword(user['user_atms'], user['user_salt']) == sess['auth_word']:
-                    return user
+        usid = self.get_cookie("_usid")
+        auth = self.get_secure_cookie('_auth')
+        if usid and auth:
+            user = self.model('admin').get_user_by_usid(self.dbase('users'), usid)
+            if user and self.model('admin').generate_authword(user['user_atms'], user['user_salt']) == auth:
+                return user
             self.del_current_user()
     def del_current_user(self):
-        self.clear_cookie("_user")
+        self.clear_cookie("_auth")
+        self.clear_cookie("_usid")
 
     def merge_query(self, args, dels = []):
         for k in self.request.arguments.keys():
