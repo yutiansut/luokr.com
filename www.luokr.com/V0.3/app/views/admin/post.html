@@ -55,7 +55,7 @@
             <div class="control-group">
                 <label class="control-label" for="input_term_list">文章标签</label>
                 <div class="controls">
-                    <input class="input-xlarge" type="text" id="input_term_list" name="term_list" value="{% if post['post_id'] in ptids %}{% for term in ptids[post['post_id']] %}{{ ptags[term['term_id']]['term_sign']}} {% end %}{% end %}" required>
+                    <input class="input-xlarge" type="text" id="input_term_list" name="term_list" value="{% if post['post_id'] in ptids %}{% for term in ptids[post['post_id']] %}{{ ptags[term['term_id']]['term_sign']}} {% end %}{% end %}">
                     {% for term in terms %}
                     <span class="inline-help label label-success" alt="{{ term['term_sign'] }}">{{ term['term_name'] }}</span>&nbsp;
                     {% end %}
@@ -65,7 +65,7 @@
             <div class="control-group">
                 <label class="control-label" for="input_post_descp">文章描述</label>
                 <div class="controls">
-                    <input class="input-block-level" type="text" id="input_post_descp" name="post_descp" value="{{ post['post_descp'] }}" required>
+                    <input class="input-block-level" type="text" id="input_post_descp" name="post_descp" value="{{ post['post_descp'] }}">
                 </div>
             </div>
 
