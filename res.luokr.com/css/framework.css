@@ -64,7 +64,7 @@ body {
     /* background-color: #FFFFFF; */
     border: 1px solid #DDDDDD;
     border-radius: 4px;
-    margin: 15px 0;
+    margin-bottom: 15px;
     padding: 39px 19px 14px;
     position: relative;   
 }
@@ -136,16 +136,6 @@ body {
     -ms-text-overflow: ellipsis;
     -o-text-overflow: ellipsis;/* Opera */
     -moz-binding: url("ellipsis.xml#ellipsis");/*FireFox*/
-}
-
-.carousel-control, .carousel-control:link, .carousel-control:visited {
-  background: none;
-  border: none;
-  opacity: 0;
-  outline: none;
-}
-.carousel-control:hover {
-  opacity: 0.8;
 }
 
 #scrollUp {
