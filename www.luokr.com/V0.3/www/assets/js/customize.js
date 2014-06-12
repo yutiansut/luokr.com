@@ -1,27 +1,26 @@
-// Global namespace
+// global namespace
 window.L = window.L || {};
-L.Global = L.Global || {};
-L.Module = L.Module || {};
 
-L.Global.config = L.Global.config || {};
-L.Global.method = L.Global.method || {};
-L.Global.source = L.Global.source || {};
-L.Global.string = L.Global.string || {};
-L.Global.widget = L.Global.widget || {};
+L.module = L.module || {};
+L.config = L.config || {};
+L.method = L.method || {};
+L.source = L.source || {};
+L.string = L.string || {};
+L.widget = L.widget || {};
 
-L.Global.string.SUCCESS = '操作成功！';
-L.Global.string.FAILURE = '操作失败！';
-L.Global.string.WAITING = '处理中，请稍侯...';
-L.Global.string.LOADING = '加载中，请稍侯...';
-L.Global.string.POSTING = '发送中，请稍侯...';
-L.Global.string.CONFIRM = '确认执行该操作吗？';
+L.string.SUCCESS = '操作成功！';
+L.string.FAILURE = '操作失败！';
+L.string.WAITING = '处理中，请稍侯...';
+L.string.LOADING = '加载中，请稍侯...';
+L.string.POSTING = '发送中，请稍侯...';
+L.string.CONFIRM = '确认执行该操作吗？';
 
 /**
 * Format date time
 * @param string a Format
 * @param int    s Timestamp
 */
-L.Global.method.date = function(a, s)
+L.method.date = function(a, s)
 {
     var d = s ? new Date(s) : new Date(), f = d.getTime();
     return ('' + a).replace(/a|A|d|D|F|g|G|h|H|i|I|j|l|L|m|M|n|s|S|t|T|U|w|y|Y|z|Z/g, function(a) {
@@ -58,15 +57,15 @@ L.Global.method.date = function(a, s)
 };  
 
 
-L.Global.method.confirm = function(message)
+L.method.confirm = function(message)
 {
-    return confirm(typeof(message) == "undefined" ? L.Global.string.CONFIRM : message);
+    return confirm(typeof(message) == "undefined" ? L.string.CONFIRM : message);
 }
 
-L.Global.method.prepare = function(options)
+L.method.prepare = function(options)
 {
     var setting = {
-        message: L.Global.string.WAITING
+        message: L.string.WAITING
     };
     $.extend(setting, options || {});
 
@@ -76,14 +75,14 @@ L.Global.method.prepare = function(options)
     });
 }
 
-L.Global.method.request = function(options)
+L.method.request = function(options)
 {
     var setting = {
         element: null,
         forward: true,
 
-        prepare: L.Global.method.prepare,
-        success: L.Global.method.respond,
+        prepare: L.method.prepare,
+        success: L.method.respond,
         failure: null  // *Unsupported!
     };
 
@@ -126,7 +125,7 @@ L.Global.method.request = function(options)
             },
             success   : function(respond){
                 setting.success(setting, respond);
-                L.Global.widget.captcha.reload();
+                L.widget.captcha.reload();
             }
         });
     } else {
@@ -148,7 +147,7 @@ L.Global.method.request = function(options)
     return false;
 }
 
-L.Global.method.respond = function(opts, data)
+L.method.respond = function(opts, data)
 {
     var args = {forward: true};
     $.extend(args, opts || {});
@@ -165,8 +164,8 @@ L.Global.method.respond = function(opts, data)
 
         easyDialog.open({
             container : {
-                header : L.Global.string.FAILURE,
-                content : '<div style="color:red">' + (msgs.length ? msgs.join('<br/>') : L.Global.string.FAILURE) + '</div>'
+                header : L.string.FAILURE,
+                content : '<div style="color:red">' + (msgs.length ? msgs.join('<br/>') : L.string.FAILURE) + '</div>'
             }
         });
     } else {
@@ -182,20 +181,20 @@ L.Global.method.respond = function(opts, data)
 
         easyDialog.open({
             container : {
-                header: L.Global.string.SUCCESS,
-                content : ('<div>' + (msgs.length ? msgs.join('<br/>') : L.Global.string.SUCCESS) + '</div>')
+                header: L.string.SUCCESS,
+                content : ('<div>' + (msgs.length ? msgs.join('<br/>') : L.string.SUCCESS) + '</div>')
             }
         });
     }
 }
 
-L.Global.method.ajaxSend = function(method, action, params, format)
+L.method.ajaxSend = function(method, action, params, format)
 {
-    L.Global.method.request({_method: method, _action: action, _params: params, _format: format});
+    L.method.request({_method: method, _action: action, _params: params, _format: format});
     return false;
 };
 
-L.Global.method.ajaxForm = function(form, stay)
+L.method.ajaxForm = function(form, stay)
 {
     if (window.CKEDITOR)
     {
@@ -205,19 +204,19 @@ L.Global.method.ajaxForm = function(form, stay)
         }
     }
 
-    L.Global.method.request({element: form, forward: !stay});
+    L.method.request({element: form, forward: !stay});
     return false;
 };
 
-L.Global.method.ajaxLink = function(link, stay)
+L.method.ajaxLink = function(link, stay)
 {
-    L.Global.method.request({element: link, forward: !stay});
+    L.method.request({element: link, forward: !stay});
     return false;
 };
 
 
-L.Global.widget.captcha = {};
-L.Global.widget.captcha.create = function()
+L.widget.captcha = {};
+L.widget.captcha.create = function()
 {
     element = $('#recaptcha');
     if (element.html() == '') {
@@ -226,7 +225,7 @@ L.Global.widget.captcha.create = function()
         '    <div id="recaptcha_image"></div>' +
         '    <div class="recaptcha-main">' +
         '        <div class="recaptcha-buttons">' +
-        '            <a id="recaptcha_reload_btn" href="javascript:L.Global.widget.captcha.reload(' + "'" + element.selector + "'" + ');" title="获取新的验证"><span>&nbsp;</span></a>' +
+        '            <a id="recaptcha_reload_btn" href="javascript:L.widget.captcha.reload(' + "'" + element.selector + "'" + ');" title="获取新的验证"><span>&nbsp;</span></a>' +
         '            <a id="recaptcha_whatsthis_btn" href="javascript:;" title="输入验证码有助于我们识别当前是否机器操作"><span>&nbsp;</span></a>' +
         '        </div>' +
         '        <label>' +
@@ -246,7 +245,7 @@ L.Global.widget.captcha.create = function()
 
     $('#recaptcha_image').html('<img class="captcha-image" src="/image/random?' + (new Date).getTime() + '">');
 };
-L.Global.widget.captcha.reload = function()
+L.widget.captcha.reload = function()
 {
     $('#recaptcha_image').html('<img class="captcha-image" src="/image/random?' + (new Date).getTime() + '">');
     $('#recaptcha_response_field').select();
@@ -268,32 +267,32 @@ $(function(){
     }
 
     $('.require-confirm').on('click', function(){
-        return L.Global.method.confirm();
+        return L.method.confirm();
     });
 
     $('.request-ajax-link-with-confirm').on('click', function(){
-        if (L.Global.method.confirm())
+        if (L.method.confirm())
         {
-            L.Global.method.ajaxLink($(this));
+            L.method.ajaxLink($(this));
         }
         return false;
     });
 
     $('.request-ajax-link').on('click', function(){
-        L.Global.method.ajaxLink($(this));
+        L.method.ajaxLink($(this));
         return false;
     });
 
     $('.request-ajax-form-with-confirm').on('submit', function(){
-        if (L.Global.method.confirm())
+        if (L.method.confirm())
         {
-            L.Global.method.ajaxForm($(this));
+            L.method.ajaxForm($(this));
         }
         return false;
     });
 
     $('.request-ajax-form').on('submit', function(){
-        L.Global.method.ajaxForm($(this));
+        L.method.ajaxForm($(this));
         return false;
     });
 });

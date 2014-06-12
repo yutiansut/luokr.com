@@ -47,7 +47,7 @@
                     <td>
                         <a href="/p/{{ talk['post_id'] }}#r{{ talk['talk_id'] }}" target="_blank">查看</a>
                         <a href="/admin/talk?talk_id={{ talk['talk_id'] }}">编辑</a>
-                        <a href="javascript:;" onclick="L.global.method.confirm('清理操作将会导致评论分值归 0，且隐藏评论。确认要执行该操作吗？') && L.global.method.ajaxSend('post', '/admin/talk/hidden?talk_id={{ talk['talk_id'] }}', '{{ handler.fetch_xsrfs() }}')">清理</a>
+                        <a href="javascript:;" onclick="L.method.confirm('清理操作将会导致评论分值归 0，且隐藏评论。确认要执行该操作吗？') && L.method.ajaxSend('post', '/admin/talk/hidden?talk_id={{ talk['talk_id'] }}', '{{ handler.fetch_xsrfs() }}')">清理</a>
                     </td>
                 </tr>
                 {% end %}

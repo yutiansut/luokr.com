@@ -155,7 +155,7 @@
                         p.removeClass('success').addClass('error')
                         t.html('<strong>操作失败！</strong>' + r.msg).fadeIn();
 
-                        L.Global.widget.captcha.reload();
+                        L.widget.captcha.reload();
                         f.find('button[type=submit]').removeAttr('disabled');
                     }
                     else
@@ -169,7 +169,7 @@
             else
             {
                 f.data('recaptcha-loaded', true);
-                L.Global.widget.captcha.create('#recaptcha');
+                L.widget.captcha.create('#recaptcha');
 
                 f.find('button[type=submit]').removeAttr('disabled');
             }

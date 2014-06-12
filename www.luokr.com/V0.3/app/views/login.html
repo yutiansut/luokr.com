@@ -115,7 +115,7 @@
                     if (r.err)
                     {
                         alert('登录失败！' + r.msg);
-                        L.Global.widget.captcha.reload();
+                        L.widget.captcha.reload();
                         f.find('button[type=submit]').removeAttr('disabled');
                     }
                     else
@@ -127,7 +127,7 @@
             else
             {
                 f.data('recaptcha-loaded', true);
-                L.Global.widget.captcha.create('#recaptcha');
+                L.widget.captcha.create('#recaptcha');
 
                 f.find('button[type=submit]').removeAttr('disabled');
             }
