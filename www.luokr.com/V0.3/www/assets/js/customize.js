@@ -234,7 +234,7 @@ L.widget.captcha.create = function()
         '                    输入验证码：' +
         '                </span>' +
         '            </strong>' +
-        '            <input type="text" id="recaptcha_response_field" name="_code">' +
+        '            <input type="text" id="recaptcha_response_field" name="_code" autocomplete="off">' +
         '        </label>' +
         '    </div>' +
         '</div>' +
