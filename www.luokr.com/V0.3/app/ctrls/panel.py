@@ -47,8 +47,8 @@ class PanelCtrl(BasicCtrl):
 
             cur.close()
             if (cur.rowcount):
-                self.model('alogs').add(self.dbase('alogs'), '更新个人资料', user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
-                self.flash(1, {'msg': '更新资料成功', 'url': '/panel'})
+                self.model('alogs').add(self.dbase('alogs'), '更新账号信息', user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.flash(1, {'msg': '更新成功', 'url': '/panel'})
                 return
         except:
             pass
