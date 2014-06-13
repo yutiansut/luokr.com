@@ -4,7 +4,7 @@ from basic import BasicCtrl
 
 class LoginCtrl(BasicCtrl):
     def get(self):
-        next = self.input('next', '/admin')
+        next = self.input('next', '/panel')
         if self.get_current_user():
             self.redirect(next)
             return
@@ -20,7 +20,7 @@ class LoginCtrl(BasicCtrl):
             username = self.input('username')
             password = self.input('password')
             remember = self.input('remember', None)
-            redirect = self.input('redirect', '/admin')
+            redirect = self.input('redirect', '/panel')
 
             if remember:
                 remember = int(remember)

@@ -33,7 +33,8 @@ class AdminModel:
 
     @staticmethod
     def chk_user_is_root(user):
-        if type(user) == type({}) and 'role' in user and user['role'] == 0x7FFFFFFF:
-            return True
-        else:
+        try:
+            user = dict(user)
+            return user and 'user_perm' in user and user['user_perm'] & 0x7FFFFFFF == 0x7FFFFFFF
+        except:
             return False

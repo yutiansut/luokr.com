@@ -1,0 +1,81 @@
+{% extends "_base.html" %}
+
+{% block title %}个人中心 - {{ handler.get_runtime_conf('title') }}{% end %}
+
+{% block mnav %}
+{% module Template("_mnav.html", mnav='') %}
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span9">
+        <div class="board" data-title="账号更新">
+            <form class="form-horizontal request-ajax-form" method="post" autocomplete="off">
+                {% raw xsrf_form_html() %}
+                <div class="control-group">
+                    <label class="control-label" for="inputName">登录账号</label>
+                    <div class="controls">
+                        <input type="text" id="inputName" value="{{ user['user_sign'] }}" required disabled="disabled">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputNick">我的昵称</label>
+                    <div class="controls">
+                        <input type="text" id="inputNick" name="name" value="{{ user['user_name'] }}" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputMail">我的邮箱</label>
+                    <div class="controls">
+                        <input type="email" id="inputMail" name="mail" value="{{ user['user_mail'] }}" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputPswd">当前密码</label>
+                    <div class="controls">
+                        <input type="password" id="inputPswd" name="pswd">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputNpwd">新的密码</label>
+                    <div class="controls">
+                        <input type="password" id="inputNpwd" name="npwd">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputRpwd">确认密码</label>
+                    <div class="controls">
+                        <input type="password" id="inputRpwd" name="rpwd">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-success input-medium">提交更新</button>
+                        <button type="reset" class="btn">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="span3">
+        <fieldset>
+            <legend>最近操作</legend>
+            <div id="alogs" style="padding-top:10px">
+                <ul>
+                    {% if logs %}
+                    {% for alog in logs %}
+                    <li>{{ handler.timer().strftime('%m-%d %H:%M:%S', handler.timer().localtime(alog['alog_ctms'])) }} {% raw handler.get_escaper().xhtml_escape(alog['alog_text']).replace('\n','<br>\n') %}</li>
+                    {% end %}
+                    {% end %}
+                </ul>
+            </div>
+        </fieldset>
+    </div>
+</div>
+{% end %}
+
+{% block js_foot %}
+<script src="/assets/js/easydialog.js"></script>
+{% end %}

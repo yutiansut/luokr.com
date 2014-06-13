@@ -8,6 +8,7 @@ from ctrls.links import LinksCtrl
 from ctrls.posts import PostsCtrl, PostCtrl
 from ctrls.talks import TalkCtrl
 
+from ctrls.panel import PanelCtrl
 from ctrls.login import LoginCtrl
 from ctrls.logout import LogoutCtrl
 
@@ -24,15 +25,14 @@ from ctrls.admin.mails import Admin_MailsCtrl, Admin_MailAccessCtrl
 from ctrls.admin.users import Admin_UsersCtrl
 from ctrls.admin.terms import Admin_TermsCtrl, Admin_TermCtrl, Admin_TermCreateCtrl
 from ctrls.admin.alogs import Admin_AlogsCtrl
-from ctrls.admin.prof import Admin_ProfCtrl
 
 url = [
     (r'/', PostsCtrl),
 
+    (r'/hello', HelloCtrl),
     (r'/about', AboutCtrl),
-    (r'/voice', VoiceCtrl),
-
     (r'/links', LinksCtrl),
+    (r'/voice', VoiceCtrl),
 
     (r'/s', PostsCtrl),
     (r'/t/([^/]+)', PostsCtrl),
@@ -40,7 +40,7 @@ url = [
 
     (r'/talk', TalkCtrl),
 
-    (r'/hello', HelloCtrl),
+    (r'/panel', PanelCtrl),
     (r'/login', LoginCtrl),
     (r'/logout', LogoutCtrl),
 
@@ -82,8 +82,6 @@ url = [
     (r'/admin/term/create', Admin_TermCreateCtrl),
 
     (r'/admin/alogs', Admin_AlogsCtrl),
-
-    (r'/admin/prof', Admin_ProfCtrl),
 
     (r'.*', ErrorCtrl)
 ]

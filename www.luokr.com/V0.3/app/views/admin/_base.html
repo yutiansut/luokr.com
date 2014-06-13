@@ -24,29 +24,24 @@
 <body data-exts-scrollup="1" data-spy="scroll">
     <div class="navbar topbar navbar-static-top">
         <div class="navbar-inner">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
             <div class="container">
                 <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
+                {% if handler.current_user %}
                 <ul class="nav pull-right">
-                    {% if handler.current_user %}
-                    <li><a href="/admin/prof"><i class="icon-user" style="vertical-align: baseline"></i> {{ handler.current_user['user_name'] }}</a></li>
-                    {% end %}
+                    <li><a href="/panel"><i class="icon-user" style="vertical-align: baseline"></i> {{ handler.current_user['user_name'] }}</a></li>
                 </ul>
+                {% end %}
 
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                         {% block mnav %}{% end %}
                     </ul>
 
+                    {% if handler.current_user %}
                     <ul class="nav pull-right">
-                        {% if handler.current_user %}
                         <li><a href="/logout?{{ handler.utils().str_md5(str(handler.current_user['user_id']) + handler.fetch_xsrfs()) }}">注销会话</a></li>
-                        {% end %}
                     </ul>
+                    {% end %}
                 </div>
             </div>
         </div>

@@ -22,7 +22,7 @@ Below is the main directory structure:
     ---- www/           # static files
 
 
-The background landing address is `/login`, default username is `admin` and the password is `888888`.
+The background landing address is `/admin`, default username is `admin` and the password is `888888`.
 You can change it after you logined.
 
 Screenshots
