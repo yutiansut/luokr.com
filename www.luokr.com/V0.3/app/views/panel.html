@@ -8,42 +8,42 @@
 
 {% block main %}
 <div class="row">
-    <div class="span9">
+    <div class="span9" style="margin-bottom: 16px;">
         <div class="board" data-title="账号信息">
             <form class="form-horizontal request-ajax-form" method="post" autocomplete="off">
                 {% raw xsrf_form_html() %}
                 <div class="control-group">
-                    <label class="control-label" for="inputName">登录账号</label>
+                    <label class="control-label" for="inputName">登录账号：</label>
                     <div class="controls">
                         <input type="text" id="inputName" value="{{ user['user_sign'] }}" required disabled="disabled">
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="inputNick">我的昵称</label>
+                    <label class="control-label" for="inputNick">我的昵称：</label>
                     <div class="controls">
                         <input type="text" id="inputNick" name="name" value="{{ user['user_name'] }}" required>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="inputMail">我的邮箱</label>
+                    <label class="control-label" for="inputMail">我的邮箱：</label>
                     <div class="controls">
                         <input type="email" id="inputMail" name="mail" value="{{ user['user_mail'] }}" required>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="inputPswd">当前密码</label>
+                    <label class="control-label" for="inputPswd">当前密码：</label>
                     <div class="controls">
                         <input type="password" id="inputPswd" name="pswd">
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="inputNpwd">新的密码</label>
+                    <label class="control-label" for="inputNpwd">新的密码：</label>
                     <div class="controls">
                         <input type="password" id="inputNpwd" name="npwd">
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" for="inputRpwd">确认密码</label>
+                    <label class="control-label" for="inputRpwd">确认密码：</label>
                     <div class="controls">
                         <input type="password" id="inputRpwd" name="rpwd">
                     </div>
@@ -58,7 +58,6 @@
             </form>
         </div>
     </div>
-
     <div class="span3">
         <fieldset>
             <legend>最近操作</legend>

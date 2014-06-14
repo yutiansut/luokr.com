@@ -1,0 +1,74 @@
+{% extends "_base.html" %}
+
+{% block title %}退出 - {{ handler.get_runtime_conf('title') }}{% end %}
+
+{% block css_head %}
+<style>
+    .main-container {
+        position: relative;
+        width: 210px;
+        margin: 10px auto;
+        padding: 20px 40px 40px;
+        background: #fff;
+        border: 1px solid #ccc;
+    }
+
+    .main-container::before,.main-container::after {
+        content: "";
+        position: absolute;
+        width: 100%;height: 100%;
+        top: 3.5px;left: 0;
+        background: #fff;
+        z-index: -1;
+        -webkit-transform: rotateZ(4deg);
+        -moz-transform: rotateZ(4deg);
+        -ms-transform: rotateZ(4deg);
+        border: 1px solid #ccc;
+    }
+
+    .main-container::after {
+        top: 5px;
+        z-index: -2;
+        -webkit-transform: rotateZ(-2deg);
+        -moz-transform: rotateZ(-2deg);
+        -ms-transform: rotateZ(-2deg);
+    }
+
+    .logo-container {
+        text-align: center;
+    }
+
+    .logo-container img.avatar {
+        width: 100px; height: 100px;
+        margin: 10px auto 30px;
+        border-radius: 100%;
+        border: 2px solid #aaa;
+    }
+</style>
+{% end %}
+
+{% block main %}
+<div class="container">
+    <div class="main-container">
+        <div class="logo-container">
+            <img class="avatar" src="{{ handler.get_runtime_conf('sites_asset') }}img/l.jpg">
+        </div>
+
+        <form action="/leave" method="post">
+            {% raw xsrf_form_html() %}
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-danger input-block-level">注销会话</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="button" class="btn input-block-level" onclick="history.go(-1)">返回</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% end %}

@@ -10,7 +10,7 @@ from ctrls.talks import TalkCtrl
 
 from ctrls.panel import PanelCtrl
 from ctrls.login import LoginCtrl
-from ctrls.logout import LogoutCtrl
+from ctrls.leave import LeaveCtrl
 
 from ctrls.image import ImageRandomCtrl
 
@@ -33,16 +33,15 @@ url = [
     (r'/about', AboutCtrl),
     (r'/links', LinksCtrl),
     (r'/voice', VoiceCtrl),
+    (r'/talk', TalkCtrl),
 
     (r'/s', PostsCtrl),
     (r'/t/([^/]+)', PostsCtrl),
     (r'/p/([1-9][0-9]*)', PostCtrl),
 
-    (r'/talk', TalkCtrl),
-
     (r'/panel', PanelCtrl),
     (r'/login', LoginCtrl),
-    (r'/logout', LogoutCtrl),
+    (r'/leave', LeaveCtrl),
 
     (r'/image/random', ImageRandomCtrl),
 
