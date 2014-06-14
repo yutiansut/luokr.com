@@ -8,8 +8,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/bootstrap.min.css">
-<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}font-awesome/css/font-awesome.min.css">
-<!--[if IE 7]><link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}font-awesome/css/font-awesome-ie7.min.css"><![endif]-->
 <link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/bootstrap-responsive.min.css">
 
 {% block css_head_mid %}{% end %}
@@ -38,8 +36,8 @@
                 <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
                 {% if handler.current_user %}
                 <ul class="nav pull-right">
-                    <li><a href="/panel"><i class="icon-user"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>
-                    <li><a href="/logout?{{ handler.utils().str_md5(str(handler.current_user['user_id']) + handler.fetch_xsrfs()) }}"><i class="icon-signout"></i></a></li>
+                    <li><a href="/panel"><i class="icon-user" style="vertical-align: baseline"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>
+                    <li><a href="/logout?{{ handler.utils().str_md5(str(handler.current_user['user_id']) + handler.fetch_xsrfs()) }}"><i class="icon-off" style="vertical-align: baseline"></i></a></li>
                 </ul>
                 {% end %}
 
