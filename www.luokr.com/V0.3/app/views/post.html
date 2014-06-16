@@ -29,11 +29,11 @@
         }
     }
 
-    #remarks { margin-top: 20px; }
-    .remark-author { width: 110px; }
-    .remark-datime { display: block; font-size:.8em; color:grey }
-    .remark-action { margin-top: 10px; text-align: right }
-    .remark-action a { display: inline-block; margin: 0 8px 0;}
+    #talks { margin-top: 20px; }
+    .talk-author { width: 110px; }
+    .talk-datime { display: block; font-size:.8em; color:grey }
+    .talk-action { margin-top: 10px; text-align: right }
+    .talk-action a { display: inline-block; margin: 0 8px 0;}
 </style>
 {% end %}
 
@@ -69,7 +69,7 @@
         </div>
         </article>
 
-        <div id="remarks">
+        <div id="talks">
             <fieldset>
                 <legend>文章评论</legend>
                 {% if talks %}
@@ -77,10 +77,10 @@
                     <tbody>
                         {% for talk in talks %}
                         <tr id="r{{ talk['talk_id'] }}">
-                            <td class="remark-author"><i class="icon-user"></i> {{ talk['user_name'] }}<span class="remark-datime">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
+                            <td class="talk-author"><i class="icon-user"></i> {{ talk['user_name'] }}<span class="talk-datime">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
                             <td>
                                 {% raw handler.get_escaper().xhtml_escape(talk['talk_text']).replace('\n','<br>\n') %}
-                                <div class="remark-action">
+                                <div class="talk-action">
                                     <a href="javascript:;" title="暂不支持该功能"><i class="icon-thumbs-up"></i> {{ talk['talk_plus'] }}</a> 
                                     <a href="javascript:;" title="暂不支持该功能" style="color:red"><i class="icon-thumbs-down"></i> {{ talk['talk_mins'] }}</a>
                                 </div>
@@ -93,43 +93,41 @@
             </fieldset>
         </div>
 
-        <div id="remark">
-            <form id="form-remark" class="form-horizontal" method="post" action="/talk?p={{ post['post_id'] }}">
-                {% raw xsrf_form_html() %}
-                <fieldset>
-                    <div class="control-group">
-                        <label class="control-label" for="form-remark-name">您的称呼：</label>
-                        <div class="controls">
-                            <input id="form-remark-name" type="text" name="name" required>
-                        </div>
+        <form id="form-talk" class="form-horizontal" method="post" action="/voice?p={{ post['post_id'] }}">
+            {% raw xsrf_form_html() %}
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="form-talk-name">您的称呼：</label>
+                    <div class="controls">
+                        <input id="form-talk-name" type="text" name="name" required>
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="form-remark-mail">您的邮箱：</label>
-                        <div class="controls">
-                            <input id="form-remark-mail" type="email" name="mail" required>
-                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="form-talk-mail">您的邮箱：</label>
+                    <div class="controls">
+                        <input id="form-talk-mail" type="email" name="mail" required>
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="form-remark-text">评论内容：</label>
-                        <div class="controls">
-                            <textarea id="form-remark-text" name="text" rows="5" class="span6" required></textarea>
-                        </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="form-talk-text">评论内容：</label>
+                    <div class="controls">
+                        <textarea id="form-talk-text" name="text" rows="5" class="span6" required></textarea>
                     </div>
-                    <div class="control-group">
-                        <div class="controls">
-                            <div class="recaptcha" id="recaptcha"></div>
-                        </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <div class="recaptcha" id="recaptcha"></div>
                     </div>
+                </div>
 
-                    <div class="control-group">
-                        <div class="controls">
-                            <button type="submit" class="btn btn-success input-large">提交评论</button>
-                            <span class="help-inline"></span>
-                        </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-success input-large">提交评论</button>
+                        <span class="help-inline"></span>
                     </div>
-                </fieldset>
-            </form>
-        </div>
+                </div>
+            </fieldset>
+        </form>
     </div>
 
     {% include "_side.html" %}
@@ -140,7 +138,7 @@
 <script src="{{ handler.get_runtime_conf('sites_asset') }}google-code-prettify/src/run_prettify.js?skin=sons-of-obsidian" type="text/javascript"></script>
 <script>
     $(function(){
-        $('#form-remark').submit(function(){
+        $('#form-talk').submit(function(){
             var f = $(this);
             f.find('button[type=submit]').attr('disabled', 'disabled');
 

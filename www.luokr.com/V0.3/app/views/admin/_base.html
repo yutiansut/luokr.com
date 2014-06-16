@@ -28,7 +28,8 @@
                 <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
                 {% if handler.current_user %}
                 <ul class="nav pull-right">
-                    <li><a href="/panel"><i class="icon-user" style="vertical-align: baseline"></i> {{ handler.current_user['user_name'] }}</a></li>
+                    <li><a href="/panel"><i class="icon-user" style="vertical-align: baseline"></i><span> {{ handler.current_user['user_name'] }}</span></a></li>
+                    <li><a href="/leave"><i class="icon-off" style="vertical-align: baseline"></i></a></li>
                 </ul>
                 {% end %}
 
@@ -36,12 +37,6 @@
                     <ul class="nav">
                         {% block mnav %}{% end %}
                     </ul>
-
-                    {% if handler.current_user %}
-                    <ul class="nav pull-right">
-                        <li><a href="/logout?{{ handler.utils().str_md5(str(handler.current_user['user_id']) + handler.fetch_xsrfs()) }}">注销会话</a></li>
-                    </ul>
-                    {% end %}
                 </div>
             </div>
         </div>

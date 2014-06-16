@@ -3,14 +3,15 @@
 from ctrls.hello import HelloCtrl
 from ctrls.error import ErrorCtrl
 from ctrls.about import AboutCtrl
+from ctrls.email import EmailCtrl
 from ctrls.voice import VoiceCtrl
 from ctrls.links import LinksCtrl
 from ctrls.posts import PostsCtrl, PostCtrl
-from ctrls.talks import TalkCtrl
 
-from ctrls.panel import PanelCtrl
 from ctrls.login import LoginCtrl
 from ctrls.leave import LeaveCtrl
+
+from ctrls.panel import PanelCtrl
 
 from ctrls.image import ImageRandomCtrl
 
@@ -31,17 +32,18 @@ url = [
 
     (r'/hello', HelloCtrl),
     (r'/about', AboutCtrl),
+    (r'/email', EmailCtrl),
     (r'/links', LinksCtrl),
     (r'/voice', VoiceCtrl),
-    (r'/talk', TalkCtrl),
 
     (r'/s', PostsCtrl),
     (r'/t/([^/]+)', PostsCtrl),
     (r'/p/([1-9][0-9]*)', PostCtrl),
 
-    (r'/panel', PanelCtrl),
     (r'/login', LoginCtrl),
     (r'/leave', LeaveCtrl),
+
+    (r'/panel', PanelCtrl),
 
     (r'/image/random', ImageRandomCtrl),
 
