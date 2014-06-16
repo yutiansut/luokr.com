@@ -26,6 +26,15 @@ class LoginCtrl(BasicCtrl):
                 remember = int(remember)
 
             user = self.model('admin').get_user_by_sign(self.dbase('users'), username)
+
+            if user:
+                ckey = 'login:user#' + str(user['user_id'])
+                cval = self.cache().get(ckey)
+                self.cache().set(ckey, 1, 3)
+                if cval:
+                    self.flash(0, {'msg': '操作太频繁，请稍后再试'})
+                    return
+
             if user and self.model('admin').generate_password(password, user['user_salt']) == user['user_pswd']:
                 try:
                     auth = self.model('admin').generate_authword(user['user_atms'], user['user_salt'])

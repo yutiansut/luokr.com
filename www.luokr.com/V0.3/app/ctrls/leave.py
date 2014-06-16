@@ -1,17 +1,13 @@
 #coding=utf-8
 
-from basic import BasicCtrl
+from basic import alive, BasicCtrl
 
 class LeaveCtrl(BasicCtrl):
+    @alive
     def get(self):
-        if self.current_user:
-            self.render('leave.html')
-            return
-        self.redirect('/')
+        self.render('leave.html')
 
+    @alive
     def post(self):
-        if self.current_user:
-            self.del_current_user()
-            self.redirect('/')
-            return
-        self.flash(0)
+        self.del_current_user()
+        self.redirect('/')

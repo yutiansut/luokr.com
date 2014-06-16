@@ -181,6 +181,8 @@ def alive(method):
                     url += "?" + urlencode(dict(next=next_url))
                 self.redirect(url)
                 return
-            return self.send_error(403)
+            self.set_status(403)
+            self.flash(0, {'sta': 403})
+            return
         return method(self, *args, **kwargs)
     return wrapper
