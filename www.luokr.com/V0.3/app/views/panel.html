@@ -65,7 +65,7 @@
                 <ul>
                     {% if logs %}
                     {% for alog in logs %}
-                    <li>{{ handler.timer().strftime('%m-%d %H:%M:%S', handler.timer().localtime(alog['alog_ctms'])) }} {% raw handler.get_escaper().xhtml_escape(alog['alog_text']).replace('\n','<br>\n') %}</li>
+                    <li>{{ handler.timer().strftime('%m-%d %H:%M:%S', handler.timer().localtime(alog['alog_ctms'])) }} {{ alog['alog_text'] if alog['alog_text'].find('\n') < 0 else alog['alog_text'][0:alog['alog_text'].find('\n')] }}</li>
                     {% end %}
                     {% end %}
                 </ul>
