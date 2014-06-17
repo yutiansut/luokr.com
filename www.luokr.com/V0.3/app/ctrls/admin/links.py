@@ -80,7 +80,7 @@ class Admin_LinkCreateCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.lastrowid:
-                self.model('alogs').add(self.dbase('alogs'), "新增链接：%s\n%s" % (str(cur.lastrowid), link_href), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.model('alogs').add(self.dbase('alogs'), "新增链接：" + str(cur.lastrowid), alog_data = link_href, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
                 self.flash(1)
                 return
         except:

@@ -41,7 +41,7 @@ class Admin_ConfCtrl(AdminCtrl):
             self.set_runtime_conf(conf_name, conf_vals)
 
             user = self.current_user
-            self.model('alogs').add(self.dbase('alogs'), "更新配置：%s\n%s" % (conf_name, conf_vals), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+            self.model('alogs').add(self.dbase('alogs'), "更新配置：" + conf_name, alog_data = conf_vals, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
 
             self.flash(1, {'msg': '更新配置成功'})
         except:
@@ -69,7 +69,7 @@ class Admin_ConfCreateCtrl(AdminCtrl):
             self.set_runtime_conf(conf_name, conf_vals)
 
             user = self.current_user
-            self.model('alogs').add(self.dbase('alogs'), "新增配置：%s\n%s" % (conf_name, conf_vals), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+            self.model('alogs').add(self.dbase('alogs'), "新增配置：%s" + conf_name, alog_data = conf_vals, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
 
             self.flash(1, {'msg': '新增配置成功'})
         except:
@@ -85,7 +85,7 @@ class Admin_ConfDeleteCtrl(AdminCtrl):
             self.del_runtime_conf(conf_name)
 
             user = self.current_user
-            self.model('alogs').add(self.dbase('alogs'), "删除配置：%s\n%s" % (conf_name, conf_vals), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+            self.model('alogs').add(self.dbase('alogs'), "删除配置：%s" + conf_name, alog_data = conf_vals, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
 
             self.flash(1, {'msg': '删除配置成功'})
         except:

@@ -6,6 +6,7 @@ CREATE TABLE alogs (
     user_ip   VARCHAR( 39 )  DEFAULT ( '' ),
     user_name VARCHAR( 80 ),
     alog_text TEXT,
+    alog_data TEXT,
     alog_ctms INT( 10 )      NOT NULL
 );
 
