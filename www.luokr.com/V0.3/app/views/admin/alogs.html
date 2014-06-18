@@ -35,7 +35,7 @@
                 <tr>
                     <td>{{ alog['alog_id'] }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(alog['alog_ctms'])) }}</td>
-                    <td>{{ alog['alog_text']}}{% if alog['alog_data'] is not None %}<br><textarea class="input-block-level" readonly>{{ alog['alog_data'] }}</textarea>{% end %}</td>
+                    <td>{{ alog['alog_text']}}{% if alog['alog_data'] != '' %}<br><textarea class="input-block-level" readonly>{{ alog['alog_data'] }}</textarea>{% end %}</td>
                     <td>{{ alog['user_name'] }}</td>
                     <td>{{ alog['user_id'] }}</td>
                     <td>{{ alog['user_ip'] }}</td>
