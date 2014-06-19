@@ -3,6 +3,7 @@
 from ctrls.hello import HelloCtrl
 from ctrls.error import ErrorCtrl
 from ctrls.about import AboutCtrl
+from ctrls.apply import ApplyCtrl
 from ctrls.email import EmailCtrl
 from ctrls.voice import VoiceCtrl
 from ctrls.links import LinksCtrl
@@ -32,6 +33,7 @@ url = [
 
     (r'/hello', HelloCtrl),
     (r'/about', AboutCtrl),
+    (r'/apply', ApplyCtrl),
     (r'/email', EmailCtrl),
     (r'/links', LinksCtrl),
     (r'/voice', VoiceCtrl),
