@@ -54,48 +54,30 @@ class PostsCtrl(BasicCtrl):
                     ptids = self.utils().array_group(ptids, 'post_id')
                     ptags = self.utils().array_keyto(ptags, 'term_id')
 
-        keyws_tag = self.cache().get('posts:keyws_tag')
-        if not keyws_tag:
-            cur.execute('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
-            keyws_tag = cur.fetchall()
-            self.cache().set('posts:keyws_tag', keyws_tag)
+        cur.execute('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
+        keyws_tag = cur.fetchall()
 
-        posts_top = self.cache().get('posts:posts_top')
-        if not posts_top:
-            cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_rank desc, post_id desc limit 9', (stime,))
-            posts_top = cur.fetchall()
-            self.cache().set('posts:posts_top', posts_top)
+        cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_rank desc, post_id desc limit 9', (stime,))
+        posts_top = cur.fetchall()
 
-        posts_hot = self.cache().get('posts:posts_hot')
-        if not posts_hot:
-            cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_remc desc, post_id desc limit 9', (stime,))
-            posts_hot = cur.fetchall()
-            self.cache().set('posts:posts_hot', posts_hot)
+        cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_remc desc, post_id desc limit 9', (stime,))
+        posts_hot = cur.fetchall()
 
-        posts_new = self.cache().get('posts:posts_new')
-        if not posts_new:
-            cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_ptms desc, post_id desc limit 9', (stime,))
-            posts_new = cur.fetchall()
-            self.cache().set('posts:posts_new', posts_new)
+        cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_ptms desc, post_id desc limit 9', (stime,))
+        posts_new = cur.fetchall()
 
         cur.close()
 
-        talks_new = self.cache().get('posts:talks_new')
-        if not talks_new:
-            cur = self.dbase('talks').cursor()
-            cur.execute('select * from talks where talk_rank>0 order by talk_id desc limit 9')
-            talks_new = cur.fetchall()
-            cur.close()
-            self.cache().set('posts:talks_new', talks_new)
+        cur = self.dbase('talks').cursor()
+        cur.execute('select * from talks where talk_rank>0 order by talk_id desc limit 9')
+        talks_new = cur.fetchall()
+        cur.close()
 
         if _top:
-            links_top = self.cache().get('posts:links_top')
-            if not links_top:
-                cur = self.dbase('links').cursor()
-                cur.execute('select * from links where link_rank>=? order by link_rank desc, link_id desc limit 99', (self.get_runtime_conf('index_links_min_rank'), ))
-                links_top = cur.fetchall()
-                cur.close()
-                self.cache().set('posts:links_top', links_top)
+            cur = self.dbase('links').cursor()
+            cur.execute('select * from links where link_rank>=? order by link_rank desc, link_id desc limit 99', (self.get_runtime_conf('index_links_min_rank'), ))
+            links_top = cur.fetchall()
+            cur.close()
         else:
             links_top = None
 
@@ -141,39 +123,23 @@ class PostCtrl(BasicCtrl):
         else:
             post_next = 0
 
-        keyws_tag = self.cache().get('posts:keyws_tag')
-        if not keyws_tag:
-            cur.execute('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
-            keyws_tag = cur.fetchall()
-            self.cache().set('posts:keyws_tag', keyws_tag)
+        cur.execute('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
+        keyws_tag = cur.fetchall()
 
-        posts_top = self.cache().get('posts:posts_top')
-        if not posts_top:
-            cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_rank desc, post_id desc limit 9', (stime,))
-            posts_top = cur.fetchall()
-            self.cache().set('posts:posts_top', posts_top)
+        cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_rank desc, post_id desc limit 9', (stime,))
+        posts_top = cur.fetchall()
 
-        posts_hot = self.cache().get('posts:posts_hot')
-        if not posts_hot:
-            cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_remc desc, post_id desc limit 9', (stime,))
-            posts_hot = cur.fetchall()
-            self.cache().set('posts:posts_hot', posts_hot)
+        cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_remc desc, post_id desc limit 9', (stime,))
+        posts_hot = cur.fetchall()
 
-        posts_new = self.cache().get('posts:posts_new')
-        if not posts_new:
-            cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_ptms desc, post_id desc limit 9', (stime,))
-            posts_new = cur.fetchall()
-            self.cache().set('posts:posts_new', posts_new)
+        cur.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_ptms desc, post_id desc limit 9', (stime,))
+        posts_new = cur.fetchall()
 
         cur.close()
-
         cur = self.dbase('talks').cursor()
 
-        talks_new = self.cache().get('posts:talks_new')
-        if not talks_new:
-            cur.execute('select * from talks where talk_rank>0 order by talk_id desc limit 9')
-            talks_new = cur.fetchall()
-            self.cache().set('posts:talks_new', talks_new)
+        cur.execute('select * from talks where talk_rank>0 order by talk_id desc limit 9')
+        talks_new = cur.fetchall()
 
         cur.execute('select * from talks where post_id = ? and talk_rank > 0 order by talk_id asc', (post['post_id'],))
         talks = cur.fetchall()

@@ -19,7 +19,7 @@ from ctrls.image import ImageRandomCtrl
 from ctrls.admin.index import Admin_IndexCtrl
 from ctrls.admin.cache import Admin_CacheCtrl, Admin_CacheDeleteCtrl
 from ctrls.admin.image import Admin_ImageUploadCtrl
-from ctrls.admin.confs import Admin_ConfsCtrl, Admin_ConfCtrl, Admin_ConfCreateCtrl, Admin_ConfDeleteCtrl, Admin_ConfReloadCtrl
+from ctrls.admin.confs import Admin_ConfsCtrl, Admin_ConfCtrl, Admin_ConfCreateCtrl, Admin_ConfDeleteCtrl
 from ctrls.admin.posts import Admin_PostsCtrl, Admin_PostCtrl, Admin_PostCreateCtrl, Admin_PostHiddenCtrl
 from ctrls.admin.talks import Admin_TalksCtrl, Admin_TalkCtrl, Admin_TalkHiddenCtrl
 from ctrls.admin.links import Admin_LinksCtrl, Admin_LinkCtrl, Admin_LinkCreateCtrl, Admin_LinkDeleteCtrl
@@ -56,7 +56,6 @@ url = [
     (r'/admin/confs', Admin_ConfsCtrl),
     (r'/admin/conf/create', Admin_ConfCreateCtrl),
     (r'/admin/conf/delete', Admin_ConfDeleteCtrl),
-    (r'/admin/conf/reload', Admin_ConfReloadCtrl),
     (r'/admin/conf', Admin_ConfCtrl),
 
     (r'/admin/cache', Admin_CacheCtrl),

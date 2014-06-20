@@ -90,12 +90,3 @@ class Admin_ConfDeleteCtrl(AdminCtrl):
             self.flash(1, {'msg': '删除配置成功'})
         except:
             self.flash(0)
-
-class Admin_ConfReloadCtrl(AdminCtrl):
-    @admin
-    def post(self):
-        try:
-            self.model('confs').rst(self.dbase('confs'))
-            self.flash(1, {'msg': '重载配置成功'})
-        except:
-            self.flash(0)

@@ -2,16 +2,15 @@
 import time
 
 class ConfsModel:
-    _map = {}
+    def __init__(self):
+        self.rst()
 
-    @staticmethod
-    def rst(dbase):
-        ConfsModel._map = {}
+    def rst(self):
+        self._s = {}
 
-    @staticmethod
-    def get(dbase, name):
-        if name in ConfsModel._map:
-            return ConfsModel._map[name]
+    def get(self, dbase, name):
+        if name in self._s:
+            return self._s[name]
 
         cur = dbase.cursor()
         cur.execute('select conf_vals from confs where conf_name = ?', (name, ))
@@ -19,14 +18,13 @@ class ConfsModel:
         cur.close()
 
         if ret:
-            ConfsModel._map[name] = ret['conf_vals']
+            self._s[name] = ret['conf_vals']
         else:
-            ConfsModel._map[name] = None
+            self._s[name] = None
 
-        return ConfsModel._map[name]
+        return self._s[name]
 
-    @staticmethod
-    def has(dbase, name):
+    def has(self, dbase, name):
         cur = dbase.cursor()
         cur.execute('select 1 from confs where conf_name = ?', (name, ))
         ret = cur.fetchone()
@@ -34,20 +32,18 @@ class ConfsModel:
 
         return bool(ret)
 
-    @staticmethod
-    def set(dbase, name, vals):
+    def set(self, dbase, name, vals):
         cur = dbase.cursor()
         cur.execute('replace into confs (conf_name, conf_vals, conf_ctms) values (?, ?, ?)', (name, vals, int(time.time()),))
         dbase.commit()
         cur.close()
 
-        ConfsModel._map[name] = vals
+        self._s[name] = vals
 
-    @staticmethod
-    def delete(dbase, name):
+    def delete(self, dbase, name):
         cur = dbase.cursor()
         cur.execute('delete from confs where conf_name = ?', (name, ))
         dbase.commit()
         cur.close()
 
-        ConfsModel._map[name] = None
+        self._s[name] = None

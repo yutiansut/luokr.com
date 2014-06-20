@@ -18,21 +18,12 @@
             <li class="active">缓存管理</li>
         </ul>
 
-        <div class="opsbar btn-group" style="padding-bottom:20px">
-            <form class="request-ajax-form-with-confirm" method="post" action="/admin/cache/delete">
-                {% raw xsrf_form_html() %}
-                <input type="hidden" name="exp" value="^posts:">
-                <button type="submit" class="btn">清理前台文章右边栏缓存</button>
-            </form>
-        </div>
-        <div class="clearfix"></div>
-
         <form class="form-horizontal request-ajax-form-with-confirm" method="post" action="/admin/cache/delete">
             {% raw xsrf_form_html() %}
             <div class="control-group">
                 <label class="control-label" for="inputExp">批量清理</label>
                 <div class="controls">
-                    <input class="input-xlarge" type="text" name="exp" id="inputExp" value="" placeholder="无需分隔符的正则表达式" required>
+                    <input class="input-xlarge" type="text" name="exp" id="inputExp" value="" placeholder="缓存键表达式" required>
                 </div>
             </div>
 

@@ -4,22 +4,21 @@ import os.path, sys
 
 etc = {}
 
-etc['apath'] = sys.path[0]
-
 etc['debug'] = True
 etc['error'] = False
 
-etc['login_url']= '/login'
-etc['template_path'] = os.path.join(etc['apath'], 'app', 'views')
+etc['root_path'] = sys.path[0]
+etc['login_url'] = '/login'
+etc['template_path'] = os.path.join(etc['root_path'], 'app', 'views')
 etc['cookie_secret'] = 'Yoursecretcookie'
 etc['xsrf_cookies'] = True
 
 etc['dbase'] = {\
-        'alogs': os.path.join(etc['apath'], 'app', 'datas', 'alogs.db3'),\
-        'posts': os.path.join(etc['apath'], 'app', 'datas', 'posts.db3'),\
-        'terms': os.path.join(etc['apath'], 'app', 'datas', 'terms.db3'),\
-        'confs': os.path.join(etc['apath'], 'app', 'datas', 'confs.db3'),\
-        'links': os.path.join(etc['apath'], 'app', 'datas', 'links.db3'),\
-        'mails': os.path.join(etc['apath'], 'app', 'datas', 'mails.db3'),\
-        'talks': os.path.join(etc['apath'], 'app', 'datas', 'talks.db3'),\
-        'users': os.path.join(etc['apath'], 'app', 'datas', 'users.db3'),}
+        'alogs': os.path.join(etc['root_path'], 'app', 'datas', 'alogs.db3'),\
+        'posts': os.path.join(etc['root_path'], 'app', 'datas', 'posts.db3'),\
+        'terms': os.path.join(etc['root_path'], 'app', 'datas', 'terms.db3'),\
+        'confs': os.path.join(etc['root_path'], 'app', 'datas', 'confs.db3'),\
+        'links': os.path.join(etc['root_path'], 'app', 'datas', 'links.db3'),\
+        'mails': os.path.join(etc['root_path'], 'app', 'datas', 'mails.db3'),\
+        'talks': os.path.join(etc['root_path'], 'app', 'datas', 'talks.db3'),\
+        'users': os.path.join(etc['root_path'], 'app', 'datas', 'users.db3'),}

@@ -22,7 +22,7 @@ class Admin_ImageUploadCtrl(AdminCtrl):
                     key = md5.hexdigest()
                     
                     url = '/upload/' + self.timer().strftime('%Y/%m/%d') + '/' + key[15] + key[16] + '/' + key[0] + key[1] + key[30] + key[31] + '/' + key + '.' + ext
-                    uri = self.settings['apath'] + '/www' + url
+                    uri = self.settings['root_path'] + '/www' + url
 
                     if not os.path.exists(os.path.dirname(uri)):
                         os.makedirs(os.path.dirname(uri), mode=0777)

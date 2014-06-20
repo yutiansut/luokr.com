@@ -138,9 +138,6 @@ class BasicCtrl(tornado.web.RequestHandler):
         else:
             self.render('flash.html', flash = exts)
 
-    def confs(self):
-        return self.model('confs')
-
     def dbase(self, name):
         if name not in self._storage['dbase']:
             self._storage['dbase'][name] = sqlite3.connect(self.settings['dbase'][name])
