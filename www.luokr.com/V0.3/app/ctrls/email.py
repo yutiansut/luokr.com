@@ -1,6 +1,7 @@
 #coding=utf-8
 
 from basic import BasicCtrl
+from lib.mailx import Mailx
 
 class EmailCtrl(BasicCtrl):
     def post(self):
@@ -23,5 +24,12 @@ class EmailCtrl(BasicCtrl):
 
         if (cur.lastrowid):
             self.flash(1)
+            self.finish()
+
+            conf = self.get_runtime_conf('mailx')
+            if conf:
+                Mailx(self.get_escaper().json_decode(conf)).send(self.get_escaper().json_decode(self.get_runtime_conf('admin_email')),
+                        'Received Feedback (%s)' % self.timer().strftime('%F %T %Z', self.timer().localtime(time)),
+                        'Mail From %s<%s>:\r\n\r\n%s' %(name, mail, text))
         else:
             self.flash(0)

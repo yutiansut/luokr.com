@@ -22,7 +22,7 @@ INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('sites_asset
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('sites_index', 'http://www.luokr.com/', 1391152177);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('index_notes', '[{"type": "info", "text": ""}]', 1391152178);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('admin_notes', '[{"text": ""}]', 1391152179);
-INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('index_links_min_rank', '100', 1391152180);
-INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('rapub', '', 1391152712);
-INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('rapri', '', 1391152730);
+INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('admin_email', '["a@luokr.com"]', 1391152188);
+INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('index_links_min_rank', '100', 1391152190);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('gskey', '', 1391154294);
+INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('mailx', '{"smtp_able": 1, "smtp_host": "smtp.gmail.com", "smtp_port": 587, "smtp_from": "name<name@gmail.com>", "smtp_user": "", "smtp_pswd": ""}', 1391154296);
