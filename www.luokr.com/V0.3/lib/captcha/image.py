@@ -15,7 +15,7 @@ def gen_captcha(text, form = 'jpeg'):
     font = ImageFont.truetype(os.path.dirname(__file__) + "/captcha.ttf", 32)
     size = font.getsize(text)
 
-    im = Image.new("RGB", (32*len(text), size[1]), 0xffffff)
+    im = Image.new("RGB", (32*len(text), max(size[1], 48)), 0xffffff)
 
     draw = ImageDraw.Draw(im)
     posx = 0
