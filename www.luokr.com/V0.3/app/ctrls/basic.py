@@ -2,6 +2,7 @@
 
 import time
 import functools
+import threading
 import tornado.web, tornado.httputil, tornado.escape
 import sqlite3
 
@@ -16,6 +17,7 @@ except ImportError:
     from urllib.parse import urlencode  # py3
 
 from lib.cache import Cache
+from lib.mailx import Mailx
 from lib.utils import Utils
 from app.model.admin import AdminModel
 from app.model.alogs import AlogsModel
@@ -43,7 +45,12 @@ class BasicCtrl(tornado.web.RequestHandler):
             return self.render('error.html', code = status_code, msgs = self._reason)
         return apply(super(BasicCtrl, self).write_error, [status_code], kwargs)
 
-    def get_runtime_conf(self, name):
+    def get_runtime_conf(self, name, json = False):
+        if json:
+            conf = self.model('confs').get(self.dbase('confs'), name)
+            if conf is None or conf == '':
+                return None
+            return self.get_escaper().json_decode(conf)
         return self.model('confs').get(self.dbase('confs'), name)
 
     def has_runtime_conf(self, name):
@@ -114,6 +121,11 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def input(self, *args, **kwargs):
         return apply(self.get_argument, args, kwargs)
+
+    def email(self, *args, **kwargs):
+        conf = self.get_runtime_conf('mailx', json = True)
+        if conf and 'smtp_able' in conf and conf['smtp_able']:
+            threading.Thread(target=Mailx(conf).send, args = args, kwargs = kwargs).start()
 
     def flash(self, stat, exts = {}):
         if stat:

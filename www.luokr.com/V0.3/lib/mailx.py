@@ -13,6 +13,9 @@ class Mailx:
         if 'smtp_able' not in self.conf or not self.conf['smtp_able']:
             return False
 
+        if not to_list:
+            return False
+
         msgs = MIMEMultipart('alternative')
         msgs['Subject'] = Header(subject, charset)
         msgs['From'] = self.conf['smtp_from']
