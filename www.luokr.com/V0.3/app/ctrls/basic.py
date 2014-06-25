@@ -97,7 +97,8 @@ class BasicCtrl(tornado.web.RequestHandler):
             input = self.input(field, None)
             if input:
                 value = self.get_escaper().json_decode(value)
-                return 'time' in value and 'code' in value and self.stime() - value['time'] < 60\
+                return 'time' in value and 'code' in value\
+                        and 0 < self.stime() - value['time'] < 60\
                         and value['code'] == self.utils().str_md5(\
                         self.utils().str_md5(self.settings['cookie_secret']) + input.lower() + str(value['time']))
         return False
