@@ -30,10 +30,8 @@
     }
 
     #talks { margin-top: 20px; }
-    .talk-author { width: 110px; }
-    .talk-datime { display: block; font-size:.8em; color:grey }
-    .talk-action { margin-top: 10px; text-align: right }
-    .talk-action a { display: inline-block; margin: 0 8px 0;}
+    .talk-user { width: 110px; }
+    .talk-time { display: block; font-size:.8em; color:grey }
 </style>
 {% end %}
 
@@ -77,14 +75,8 @@
                     <tbody>
                         {% for talk in talks %}
                         <tr id="r{{ talk['talk_id'] }}">
-                            <td class="talk-author"><i class="icon-user"></i> {{ talk['user_name'] }}<span class="talk-datime">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
-                            <td>
-                                {% raw handler.get_escaper().xhtml_escape(talk['talk_text']).replace('\n','<br>\n') %}
-                                <div class="talk-action">
-                                    <a href="javascript:;" title="暂不支持该功能"><i class="icon-thumbs-up"></i> {{ talk['talk_plus'] }}</a> 
-                                    <a href="javascript:;" title="暂不支持该功能" style="color:red"><i class="icon-thumbs-down"></i> {{ talk['talk_mins'] }}</a>
-                                </div>
-                            </td>
+                            <td class="talk-user"><i class="icon-user"></i> {{ talk['user_name'] }}<span class="talk-time">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
+                            <td>{% raw handler.get_escaper().xhtml_escape(talk['talk_text']).replace('\n','<br>\n') %}</td>
                         </tr>
                         {% end %}
                     </tbody>
