@@ -11,8 +11,9 @@ CREATE TABLE links (
 );
 
 
--- Index: idx_linkRank
-CREATE INDEX idx_linkRank ON links ( 
-    link_rank 
+-- Index: idx_linkRank_linkId
+CREATE INDEX idx_linkRank_linkId ON links ( 
+    link_rank DESC,
+    link_id   DESC 
 );
 

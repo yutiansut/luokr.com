@@ -7,6 +7,13 @@ CREATE TABLE confs (
     conf_ctms INT( 10 ) 
 );
 
+
+-- Index: idx_confName
+CREATE UNIQUE INDEX idx_confName ON confs ( 
+    conf_name 
+);
+
+
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('descp', '一个简单的科技和生活主题的网站', 1391144164);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('keyws', '螺壳网 螺壳 科技 生活', 1391144187);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('title', '螺壳网', 1391144889);

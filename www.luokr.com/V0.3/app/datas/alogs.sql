@@ -7,6 +7,13 @@ CREATE TABLE alogs (
     user_name VARCHAR( 80 ),
     alog_text TEXT,
     alog_data TEXT,
-    alog_ctms INT( 10 )      NOT NULL
+    alog_ctms INT( 10 )      NOT NULL 
+);
+
+
+-- Index: idx_userId_alogId
+CREATE INDEX idx_userId_alogId ON alogs ( 
+    user_id DESC,
+    alog_id DESC 
 );
 
