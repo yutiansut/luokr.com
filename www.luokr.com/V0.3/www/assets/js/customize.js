@@ -111,14 +111,8 @@ L.method.request = function(options)
 
     if (setting.element.is('form')) {
         var form = setting.element;
-        // if (!form.valid()) {
-        //     return false;
-        // }
 
-        $.ajax({
-            url       : form.attr('action'),
-            type      : form.attr('method'),
-            data      : form.serialize(),
+        form.ajaxSubmit({
             dataType  : 'json',
             beforeSend: function(){
                 setting.prepare(setting);
@@ -132,7 +126,7 @@ L.method.request = function(options)
         var link = setting.element;
 
         $.ajax({
-            url       : link.attr('href') || link.attr('alt'),
+            url       : link.attr('href') || link.data('href'),
             type      : 'get',
             dataType  : 'json',
             beforeSend: function(){

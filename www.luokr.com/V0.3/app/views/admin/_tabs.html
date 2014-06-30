@@ -7,6 +7,15 @@
 </ul>
 </li>
 
+<!-- files -->
+<li class="dropdown{% if menu == 'files' %} active{% end %}">
+<a class="dropdown-toggle" data-toggle="dropdown" href="#">文件管理 <b class="caret"></b></a>
+<ul class="dropdown-menu">
+    <li><a href="/admin/files">文件列表</a></li>
+    <li><a href="/admin/file/upload">上传文件</a></li>
+</ul>
+</li>
+
 <!-- terms -->
 <li class="dropdown{% if menu == 'terms' %} active{% end %}">
 <a class="dropdown-toggle" data-toggle="dropdown" href="#">标签管理 <b class="caret"></b></a>

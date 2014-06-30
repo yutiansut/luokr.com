@@ -18,14 +18,14 @@ from ctrls.image import ImageRandomCtrl
 
 from ctrls.admin.index import Admin_IndexCtrl
 from ctrls.admin.cache import Admin_CacheCtrl, Admin_CacheDeleteCtrl
-from ctrls.admin.image import Admin_ImageUploadCtrl
+from ctrls.admin.files import Admin_FilesCtrl, Admin_FileCtrl, Admin_FileUploadCtrl, Admin_FileDeleteCtrl
 from ctrls.admin.confs import Admin_ConfsCtrl, Admin_ConfCtrl, Admin_ConfCreateCtrl, Admin_ConfDeleteCtrl
 from ctrls.admin.posts import Admin_PostsCtrl, Admin_PostCtrl, Admin_PostCreateCtrl, Admin_PostHiddenCtrl
-from ctrls.admin.talks import Admin_TalksCtrl, Admin_TalkCtrl, Admin_TalkHiddenCtrl
 from ctrls.admin.links import Admin_LinksCtrl, Admin_LinkCtrl, Admin_LinkCreateCtrl, Admin_LinkDeleteCtrl
+from ctrls.admin.talks import Admin_TalksCtrl, Admin_TalkCtrl, Admin_TalkHiddenCtrl
 from ctrls.admin.mails import Admin_MailsCtrl, Admin_MailAccessCtrl
-from ctrls.admin.users import Admin_UsersCtrl
 from ctrls.admin.terms import Admin_TermsCtrl, Admin_TermCtrl, Admin_TermCreateCtrl
+from ctrls.admin.users import Admin_UsersCtrl
 from ctrls.admin.alogs import Admin_AlogsCtrl
 
 url = [
@@ -51,15 +51,28 @@ url = [
 
     (r'/admin', Admin_IndexCtrl),
 
-    (r'/admin/image/upload', Admin_ImageUploadCtrl),
-
-    (r'/admin/confs', Admin_ConfsCtrl),
-    (r'/admin/conf/create', Admin_ConfCreateCtrl),
-    (r'/admin/conf/delete', Admin_ConfDeleteCtrl),
-    (r'/admin/conf', Admin_ConfCtrl),
+    (r'/admin/alogs', Admin_AlogsCtrl),
 
     (r'/admin/cache', Admin_CacheCtrl),
     (r'/admin/cache/delete', Admin_CacheDeleteCtrl),
+
+    (r'/admin/confs', Admin_ConfsCtrl),
+    (r'/admin/conf', Admin_ConfCtrl),
+    (r'/admin/conf/create', Admin_ConfCreateCtrl),
+    (r'/admin/conf/delete', Admin_ConfDeleteCtrl),
+
+    (r'/admin/files', Admin_FilesCtrl),
+    (r'/admin/file', Admin_FileCtrl),
+    (r'/admin/file/upload', Admin_FileUploadCtrl),
+    (r'/admin/file/delete', Admin_FileDeleteCtrl),
+
+    (r'/admin/links', Admin_LinksCtrl),
+    (r'/admin/link', Admin_LinkCtrl),
+    (r'/admin/link/create', Admin_LinkCreateCtrl),
+    (r'/admin/link/delete', Admin_LinkDeleteCtrl),
+
+    (r'/admin/mails', Admin_MailsCtrl),
+    (r'/admin/mail/access', Admin_MailAccessCtrl),
 
     (r'/admin/posts', Admin_PostsCtrl),
     (r'/admin/post', Admin_PostCtrl),
@@ -70,20 +83,11 @@ url = [
     (r'/admin/talk', Admin_TalkCtrl),
     (r'/admin/talk/hidden', Admin_TalkHiddenCtrl),
 
-    (r'/admin/links', Admin_LinksCtrl),
-    (r'/admin/link', Admin_LinkCtrl),
-    (r'/admin/link/create', Admin_LinkCreateCtrl),
-    (r'/admin/link/delete', Admin_LinkDeleteCtrl),
-
-    (r'/admin/mails', Admin_MailsCtrl),
-    (r'/admin/mail/access', Admin_MailAccessCtrl),
-    (r'/admin/users', Admin_UsersCtrl),
-
     (r'/admin/terms', Admin_TermsCtrl),
     (r'/admin/term', Admin_TermCtrl),
     (r'/admin/term/create', Admin_TermCreateCtrl),
 
-    (r'/admin/alogs', Admin_AlogsCtrl),
+    (r'/admin/users', Admin_UsersCtrl),
 
     (r'.*', ErrorCtrl)
 ]
