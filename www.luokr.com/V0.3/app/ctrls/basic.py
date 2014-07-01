@@ -42,7 +42,8 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def write_error(self, status_code, **kwargs):
         if not self.settings['error']:
-            return self.render('error.html', code = status_code, msgs = self._reason)
+            self.flash(0, {'sta': status_code})
+            return
         return apply(super(BasicCtrl, self).write_error, [status_code], kwargs)
 
     def get_runtime_conf(self, name, json = False):
@@ -128,20 +129,19 @@ class BasicCtrl(tornado.web.RequestHandler):
         if conf and 'smtp_able' in conf and conf['smtp_able']:
             threading.Thread(target=Mailx(conf).send, args = args, kwargs = kwargs).start()
 
-    def flash(self, stat, exts = {}):
-        if stat:
+    def flash(self, isok, exts = {}):
+        if isok:
             exts['err'] = 0
         else:
             exts['err'] = 1
 
-        if 'sta' not in exts:
+        if 'sta' in exts:
+            self.set_status(exts['sta'])
+        else:
             exts['sta'] = self.get_status()
 
         if 'msg' not in exts:
-            try:
-                exts['msg'] = tornado.httputil.responses[exts['sta']]
-            except KeyError:
-                exts['msg'] = ''
+            exts['msg'] = self._reason
 
         if 'url' not in exts: exts['url'] = ''
         if 'ext' not in exts: exts['ext'] = {}
@@ -174,7 +174,7 @@ def alive(method):
     def wrapper(self, *args, **kwargs):
         if not self.current_user:
             if ('Accept' in self.request.headers) and (self.request.headers['Accept'].find('json') >= 0):
-                self.flash(0, {'url': self.get_login_url(), 'sta': 403})
+                self.flash(0, {'sta': 403, 'url': self.get_login_url()})
                 return
 
             if self.request.method in ("GET", "HEAD"):
@@ -191,7 +191,6 @@ def alive(method):
                     url += "?" + urlencode(dict(next=next_url))
                 self.redirect(url)
                 return
-            self.set_status(403)
             self.flash(0, {'sta': 403})
             return
         return method(self, *args, **kwargs)

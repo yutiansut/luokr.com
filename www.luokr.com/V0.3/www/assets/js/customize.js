@@ -8,6 +8,7 @@ L.source = L.source || {};
 L.string = L.string || {};
 L.widget = L.widget || {};
 
+L.string.TIMEOUT = '操作超时！';
 L.string.SUCCESS = '操作成功！';
 L.string.FAILURE = '操作失败！';
 L.string.WAITING = '处理中，请稍侯...';
@@ -83,7 +84,7 @@ L.method.request = function(options)
 
         prepare: L.method.prepare,
         success: L.method.respond,
-        failure: null  // *Unsupported!
+        failure: L.method.failure
     };
 
     $.extend(setting, options || {});
@@ -100,7 +101,8 @@ L.method.request = function(options)
                 },
                 success   : function(respond){
                     setting.success(setting, respond);
-                }
+                },
+                error     : setting.failure(setting)
             });
         }
 
@@ -120,7 +122,8 @@ L.method.request = function(options)
             success   : function(respond){
                 setting.success(setting, respond);
                 L.widget.captcha.reload();
-            }
+            },
+            error     : setting.failure(setting)
         });
     } else {
         var link = setting.element;
@@ -134,7 +137,8 @@ L.method.request = function(options)
             },
             success   : function(respond){
                 setting.success(setting, respond);
-            }
+            },
+            error     : setting.failure(setting)
         });
     }
 
@@ -180,6 +184,22 @@ L.method.respond = function(opts, data)
             }
         });
     }
+}
+
+L.method.failure = function(opts)
+{
+    return function(xhr, err) {
+        var data = {err: 1, msg: '', sta: 0}
+
+        if (err == "error" || err == "parsererror") {
+            data = $.parseJSON(xhr.responseText) || {err: 1, msg: xhr.statusText, sta: xhr.status};
+        } else if (err == "timeout") {
+            data['sta'] = 504;
+            data['msg'] = L.string.TIMEOUT;
+        }
+
+        L.method.respond(opts, data);
+    };
 }
 
 L.method.ajaxSend = function(method, action, params, format)
