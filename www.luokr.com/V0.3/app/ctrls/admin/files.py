@@ -1,6 +1,6 @@
 #coding=utf-8
 
-import os, re, sys, hashlib
+import os, re, sys, hashlib, mimetypes
 from admin import admin, AdminCtrl
 
 class Admin_FilesCtrl(AdminCtrl):
@@ -38,22 +38,26 @@ class Admin_FileUploadCtrl(AdminCtrl):
             return
 
         res = self.request.files['upload'][0]
-        if 'content_type' not in res or res['content_type'].find('/') <= 0 or len(res['content_type']) > 128:
+
+        if 'content_type' not in res or res['content_type'].find('/') < 1 or len(res['content_type']) > 128:
             self.flash(0, {'msg': '文件类型错误'})
             return
 
-        exp = re.match(r'^.*?([a-zA-Z0-9]+)$', res['content_type'])
-        if not exp:
-            self.flash(0, {'msg': '不合法的文件后缀'})
+        if 'filename' not in res or res['filename'] == '':
+            self.flash(0, {'msg': '文件名称错误'})
             return
-        ext = exp.group(1)
+
+        ets = mimetypes.guess_all_extensions(res['content_type'])
+        ext = os.path.splitext(res['filename'])[1].lower()
+        if ets and ext not in ets:
+            ext = ets[0]
 
         md5 = hashlib.md5()
         md5.update(res['body'])
         key = md5.hexdigest()
 
         dir = '/www'
-        url = '/upload/' + self.timer().strftime('%Y/%m/%d') + '/' + key[15] + key[16] + '/' + key[0] + key[1] + key[30] + key[31] + '/' + key + '.' + ext
+        url = '/upload/' + self.timer().strftime('%Y/%m/%d') + '/' + key[15] + key[16] + '/' + key[0] + key[1] + key[30] + key[31] + '/' + key + ext
         uri = self.settings['root_path'] + dir + url
 
         if not os.path.exists(os.path.dirname(uri)):

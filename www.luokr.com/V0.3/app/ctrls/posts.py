@@ -14,7 +14,7 @@ class PostsCtrl(BasicCtrl):
 
         cur = self.dbase('posts').cursor()
 
-        _kws = self.input('k', None)
+        _qry = self.input('q', None)
         _top = False
         _tag = None
 
@@ -29,10 +29,10 @@ class PostsCtrl(BasicCtrl):
         elif _tnm:
             self.send_error(404)
             return
-        elif _kws:
-            cur.execute('select * from posts where post_stat>0 and post_ptms<? and post_content like ? order by post_ptms desc limit ? offset ?', (stime, '%'+_kws+'%', pager['qnty'], (pager['page']-1)*pager['qnty'], ))
+        elif _qry:
+            cur.execute('select * from posts where post_stat>0 and post_ptms<? and (post_title like ? or post_content like ?) order by post_ptms desc limit ? offset ?', (stime, '%'+_qry+'%', '%'+_qry+'%', pager['qnty'], (pager['page']-1)*pager['qnty'], ))
             posts = cur.fetchall()
-            track = '搜索：' + _kws
+            track = '搜索：' + _qry
         else:
             cur.execute('select * from posts where post_stat>0 and post_ptms<? order by post_ptms desc limit ? offset ?', (stime, pager['qnty'], (pager['page']-1)*pager['qnty'], ))
             posts = cur.fetchall()
