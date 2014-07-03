@@ -38,13 +38,13 @@ class BasicCtrl(tornado.web.RequestHandler):
         self.set_header('cache-control', 'no-siteapp')
 
     def head(self, *args, **kwargs):
-        apply(self.get, args, kwargs)
+        return self.get(*args, **kwargs)
 
     def write_error(self, status_code, **kwargs):
         if not self.settings['error']:
             self.flash(0, {'sta': status_code})
             return
-        return apply(super(BasicCtrl, self).write_error, [status_code], kwargs)
+        return super(BasicCtrl, self).write_error(*[status_code], **kwargs)
 
     def get_runtime_conf(self, name, json = False):
         if json:
@@ -122,7 +122,7 @@ class BasicCtrl(tornado.web.RequestHandler):
         return tornado.httputil.url_concat(base, args)
 
     def input(self, *args, **kwargs):
-        return apply(self.get_argument, args, kwargs)
+        return self.get_argument(*args, **kwargs)
 
     def email(self, *args, **kwargs):
         conf = self.get_runtime_conf('mailx', json = True)
