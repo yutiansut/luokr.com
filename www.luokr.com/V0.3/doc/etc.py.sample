@@ -22,4 +22,5 @@ etc['dbase'] = {
         'mails': os.path.join(etc['root_path'], 'app', 'datas', 'mails.db3'),
         'posts': os.path.join(etc['root_path'], 'app', 'datas', 'posts.db3'),
         'talks': os.path.join(etc['root_path'], 'app', 'datas', 'talks.db3'),
+        'terms': os.path.join(etc['root_path'], 'app', 'datas', 'terms.db3'),
         'users': os.path.join(etc['root_path'], 'app', 'datas', 'users.db3')}

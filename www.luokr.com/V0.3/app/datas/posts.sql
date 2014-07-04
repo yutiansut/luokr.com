@@ -1,20 +1,4 @@
 
--- Table: post_terms
-CREATE TABLE post_terms ( 
-    post_id INTEGER,
-    term_id INTEGER 
-);
-
--- Table: terms
-CREATE TABLE terms ( 
-    term_id   INTEGER        PRIMARY KEY AUTOINCREMENT,
-    term_name VARCHAR( 30 )  NOT NULL,
-    term_sign VARCHAR( 30 )  NOT NULL
-                             UNIQUE,
-    term_refc INT( 10 )      DEFAULT ( 0 ),
-    term_ctms INT( 10 ) 
-);
-
 -- Table: posts
 CREATE TABLE posts ( 
     post_id      INTEGER          PRIMARY KEY AUTOINCREMENT,
@@ -32,6 +16,12 @@ CREATE TABLE posts (
     post_rank    INT( 10 )        DEFAULT ( 99 ),
     post_stat    INT( 1 )         NOT NULL
                                   DEFAULT ( 0 ) 
+);
+
+-- Table: post_terms
+CREATE TABLE post_terms ( 
+    post_id INTEGER,
+    term_id INTEGER 
 );
 
 -- Index: idx_postId_termId

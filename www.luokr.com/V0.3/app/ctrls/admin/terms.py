@@ -10,7 +10,7 @@ class Admin_TermsCtrl(AdminCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['list'] = 0;
 
-        cur = self.dbase('posts').cursor()
+        cur = self.dbase('terms').cursor()
         cur.execute('select * from terms order by term_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
         terms = cur.fetchall()
         cur.close()
@@ -24,7 +24,7 @@ class Admin_TermCtrl(AdminCtrl):
     @admin
     def get(self):
         term_id = self.input('term_id')
-        cur = self.dbase('posts').cursor()
+        cur = self.dbase('terms').cursor()
         cur.execute('select * from terms where term_id = ?', (term_id,))
         term = cur.fetchone()
 
@@ -37,7 +37,7 @@ class Admin_TermCtrl(AdminCtrl):
             term_sign = self.input('term_sign')
             term_name = self.input('term_name')
 
-            con = self.dbase('posts')
+            con = self.dbase('terms')
             cur = con.cursor()
             cur.execute('update terms set term_name = ?, term_sign = ? where term_id = ?', \
                     (term_name, term_sign, term_id ,))
@@ -62,7 +62,7 @@ class Admin_TermCreateCtrl(AdminCtrl):
             term_name = self.input('term_name')
             term_ctms = self.stime()
 
-            con = self.dbase('posts')
+            con = self.dbase('terms')
             cur = con.cursor()
             cur.execute('insert into terms (term_name, term_sign, term_ctms) values (?, ?, ?)', \
                     (term_name, term_sign, term_ctms ,))
