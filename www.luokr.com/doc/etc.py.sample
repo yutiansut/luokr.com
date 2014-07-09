@@ -16,7 +16,6 @@ etc['xsrf_cookies'] = True
 etc['dbase'] = {
         'alogs': os.path.join(etc['root_path'], 'app', 'datas', 'alogs.db3'),
         'confs': os.path.join(etc['root_path'], 'app', 'datas', 'confs.db3'),
-        'feeds': os.path.join(etc['root_path'], 'app', 'datas', 'feeds.db3'),
         'files': os.path.join(etc['root_path'], 'app', 'datas', 'files.db3'),
         'links': os.path.join(etc['root_path'], 'app', 'datas', 'links.db3'),
         'mails': os.path.join(etc['root_path'], 'app', 'datas', 'mails.db3'),

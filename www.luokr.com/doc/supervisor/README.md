@@ -1,11 +1,11 @@
-####These config files are based on Ubuntu14.04 supervisor configurations.
+### Configurations are based on Ubuntu14.04
+#### Location: `/etc/supervisor/`
+
 
 install supervisor(root)：
 
     apt-get install supervisor
 
-config path is: `/etc/supervisor/`
-
-manger supervisor：
+control supervisor(root)：
 
     service supervisor [force-reload|force-stop|reload|restart|start|status|stop]
