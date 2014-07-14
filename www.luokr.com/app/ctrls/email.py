@@ -5,7 +5,7 @@ from basic import BasicCtrl
 class EmailCtrl(BasicCtrl):
     def post(self):
         if not self.human_valid():
-            self.flash(0)
+            self.flash(0, {'msg': '验证码错误'})
             return
 
         name = self.input('name')
