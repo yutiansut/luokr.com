@@ -101,6 +101,7 @@
                 <label class="control-label" for="input_post_rank">文章分值</label>
                 <div class="controls">
                     <input type="text" id="input_post_rank" name="post_rank" value="{{ post['post_rank'] }}" required>
+                    <span class="help-inline">分值大于等于 <a href="/admin/conf?conf_name=index_posts_top_rank" target="_blank">{{ handler.get_runtime_conf('index_posts_top_rank') }}</a> 的文章会置顶推荐</span>
                 </div>
             </div>
 

@@ -58,7 +58,7 @@ class PostsCtrl(BasicCtrl):
         cur_terms.execute('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
         keyws_tag = cur_terms.fetchall()
 
-        cur_posts.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_rank desc, post_id desc limit 9', (stime,))
+        cur_posts.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? and post_rank>=? order by post_rank desc, post_id desc limit 9', (stime, self.get_runtime_conf('index_posts_top_rank')))
         posts_top = cur_posts.fetchall()
 
         cur_posts.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_remc desc, post_id desc limit 9', (stime,))
@@ -129,7 +129,7 @@ class PostCtrl(BasicCtrl):
         else:
             post_next = 0
 
-        cur_posts.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_rank desc, post_id desc limit 9', (stime,))
+        cur_posts.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? and post_rank>=? order by post_rank desc, post_id desc limit 9', (stime, self.get_runtime_conf('index_posts_top_rank')))
         posts_top = cur_posts.fetchall()
 
         cur_posts.execute('select post_id,post_title,post_ptms from posts where post_stat>0 and post_ptms<? order by post_remc desc, post_id desc limit 9', (stime,))
