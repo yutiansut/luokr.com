@@ -21,11 +21,11 @@
         <table class="table table-hover table-striped table-bordered">
             <thead>
                 <tr>
-                    <th style="width: 50px">#</th>
-                    <th>文件类型</th>
-                    <th>基目录</th>
+                    <th style="width: 60px">#</th>
+                    <th>分区</th>
                     <th>路径名</th>
-                    <th style="width: 120px">创建时间</th>
+                    <th>文件类型</th>
+                    <th style="width: 140px">创建时间</th>
                     <th style="width: 80px">操作</th>
                 </tr>
             </thead>
@@ -34,9 +34,9 @@
                 {% for file in files %}
                 <tr>
                     <td>{{ file['file_id'] }}</td>
-                    <td>{{ file['file_type'] }}</td>
                     <td>{{ file['file_base'] }}</td>
                     <td>{{ file['file_path'] }}</td>
+                    <td>{{ file['file_type'] }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(file['file_ctms'])) }}</td>
                     <td>
                         <a href="{{ file['file_path'] }}" target="_blank">查看</a>

@@ -73,3 +73,25 @@ class Admin_TalkHiddenCtrl(AdminCtrl):
         except:
             pass
         self.flash(0)
+
+class Admin_TalkDeleteCtrl(AdminCtrl):
+    @admin
+    def post(self):
+        try:
+            user = self.current_user
+
+            talk_id   = self.input('talk_id')
+            talk_ctms = self.input('talk_ctms')
+
+            con = self.dbase('talks')
+            cur = con.cursor()
+            cur.execute('delete from talks where talk_id = ? and talk_ctms = ?', (talk_id, talk_ctms ,))
+            con.commit()
+            cur.close()
+            if cur.rowcount:
+                self.model('alogs').add(self.dbase('alogs'), '删除评论：' + str(talk_id), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.flash(1)
+                return
+        except:
+            pass
+        self.flash(0)

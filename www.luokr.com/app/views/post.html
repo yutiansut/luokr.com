@@ -57,8 +57,11 @@
             {% raw post['post_content'] %}
         </div>
         <div class="article-foot">
-            {% if post['post_source'].strip() != '' %}<p><small>来源：{% raw post['post_source'] %}</small></p>{% end %}
-            <p class="text-right"><small>{{ post['post_author'] }} 发布于 {{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small></p>
+            <p>
+            {% if post['post_source'].strip() != '' %}<small>来源：{% raw post['post_source'] %}</small>{% end %}
+            {% if post['post_author'].strip() != '' and (post['user_id'] not in psers or psers[post['user_id']]['user_name'] != post['post_author']) %}{% if post['post_source'].strip() != '' %}<br>{% end %}<small>作者：{{ post['post_author'] }}</small>{% end %}
+            </p>
+            <p class="text-right"><small>{% if post['user_id'] in psers %}{{ psers[post['user_id']]['user_name'] }}{% end %} 发布于 {{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small></p>
 
             <ul class="pager">
                 {% if post_prev %}<li class="previous"><a href="/p/{{ post_prev }}">&larr; 上一篇</a></li>{% end %}

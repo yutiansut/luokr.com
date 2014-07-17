@@ -14,6 +14,7 @@ class PostsCtrl(BasicCtrl):
 
         cur_posts = self.dbase('posts').cursor()
         cur_terms = self.dbase('terms').cursor()
+        cur_users = self.dbase('users').cursor()
 
         _qry = self.input('q', None)
         _top = False
@@ -43,6 +44,7 @@ class PostsCtrl(BasicCtrl):
 
         ptids = {}
         ptags = {}
+        psers = {}
         if posts:
             pager['list'] = len(posts)
 
@@ -50,10 +52,11 @@ class PostsCtrl(BasicCtrl):
             ptids = cur_posts.fetchall()
             if ptids:
                 cur_terms.execute('select * from terms where term_id in (' + ','.join(str(i['term_id']) for i in ptids) + ')')
-                ptags = cur_terms.fetchall()
-                if ptags:
-                    ptids = self.utils().array_group(ptids, 'post_id')
-                    ptags = self.utils().array_keyto(ptags, 'term_id')
+                ptags = self.utils().array_keyto(cur_terms.fetchall(), 'term_id')
+            ptids = self.utils().array_group(ptids, 'post_id')
+
+            cur_users.execute('select * from users where user_id in (' + ','.join(str(i['user_id']) for i in posts) + ')')
+            psers = self.utils().array_keyto(cur_users.fetchall(), 'user_id')
 
         cur_terms.execute('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
         keyws_tag = cur_terms.fetchall()
@@ -69,6 +72,7 @@ class PostsCtrl(BasicCtrl):
 
         cur_posts.close()
         cur_terms.close()
+        cur_users.close()
 
         cur_talks = self.dbase('talks').cursor()
         cur_talks.execute('select * from talks where talk_rank>0 order by talk_id desc limit 9')
@@ -83,7 +87,7 @@ class PostsCtrl(BasicCtrl):
         else:
             links_top = None
 
-        self.render('posts.html', track = track, pager = pager, posts = posts, ptids = ptids, ptags = ptags\
+        self.render('posts.html', track = track, pager = pager, posts = posts, psers = psers, ptids = ptids, ptags = ptags\
                 , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)
 
 
@@ -101,19 +105,21 @@ class PostCtrl(BasicCtrl):
             return self.send_error(404)
 
         cur_terms = self.dbase('terms').cursor()
+        cur_users = self.dbase('users').cursor()
 
         ptids = {}
         ptags = {}
+        psers = {}
         if post:
             cur_posts.execute('select post_id,term_id from post_terms where post_id = ?', (post_id, ))
             ptids = cur_posts.fetchall()
             if ptids:
                 cur_terms.execute('select * from terms where term_id in (' + ','.join(str(i['term_id']) for i in ptids) + ')')
-                ptags = cur_terms.fetchall()
-                if ptags:
-                    ptids = self.utils().array_group(ptids, 'post_id')
-                    ptags = self.utils().array_keyto(ptags, 'term_id')
+                ptags = self.utils().array_keyto(cur_terms.fetchall(), 'term_id')
+            ptids = self.utils().array_group(ptids, 'post_id')
 
+            cur_users.execute('select * from users where user_id=?', (post['user_id'], ))
+            psers = self.utils().array_keyto(cur_users.fetchall(), 'user_id')
 
         cur_posts.execute('select post_id from posts where post_stat>0 and post_ptms<? and post_id<? order by post_id desc limit 1', (stime, post_id, ))
         post_prev = cur_posts.fetchone()
@@ -143,6 +149,7 @@ class PostCtrl(BasicCtrl):
 
         cur_posts.close()
         cur_terms.close()
+        cur_users.close()
 
         cur_talks = self.dbase('talks').cursor()
 
@@ -156,6 +163,6 @@ class PostCtrl(BasicCtrl):
 
         links_top = None
 
-        self.render('post.html', post = post, ptids = ptids, ptags = ptags, talks = talks\
+        self.render('post.html', post = post, psers = psers, ptids = ptids, ptags = ptags, talks = talks\
                 , post_prev = post_prev, post_next = post_next\
                 , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)

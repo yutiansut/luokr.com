@@ -22,7 +22,7 @@ from ctrls.admin.files import Admin_FilesCtrl, Admin_FileCtrl, Admin_FileUploadC
 from ctrls.admin.confs import Admin_ConfsCtrl, Admin_ConfCtrl, Admin_ConfCreateCtrl, Admin_ConfDeleteCtrl
 from ctrls.admin.posts import Admin_PostsCtrl, Admin_PostCtrl, Admin_PostCreateCtrl, Admin_PostHiddenCtrl
 from ctrls.admin.links import Admin_LinksCtrl, Admin_LinkCtrl, Admin_LinkCreateCtrl, Admin_LinkDeleteCtrl
-from ctrls.admin.talks import Admin_TalksCtrl, Admin_TalkCtrl, Admin_TalkHiddenCtrl
+from ctrls.admin.talks import Admin_TalksCtrl, Admin_TalkCtrl, Admin_TalkHiddenCtrl, Admin_TalkDeleteCtrl
 from ctrls.admin.mails import Admin_MailsCtrl, Admin_MailAccessCtrl
 from ctrls.admin.terms import Admin_TermsCtrl, Admin_TermCtrl, Admin_TermCreateCtrl
 from ctrls.admin.users import Admin_UsersCtrl
@@ -82,6 +82,7 @@ url = [
     (r'/admin/talks', Admin_TalksCtrl),
     (r'/admin/talk', Admin_TalkCtrl),
     (r'/admin/talk/hidden', Admin_TalkHiddenCtrl),
+    (r'/admin/talk/delete', Admin_TalkDeleteCtrl),
 
     (r'/admin/terms', Admin_TermsCtrl),
     (r'/admin/term', Admin_TermCtrl),
