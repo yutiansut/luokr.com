@@ -57,7 +57,7 @@ class Admin_FileUploadCtrl(AdminCtrl):
         key = md5.hexdigest()
 
         dir = '/www'
-        url = '/upload/' + self.timer().strftime('%Y/%m/%d') + '/' + key[15] + key[16] + '/' + key[0] + key[1] + key[30] + key[31] + '/' + key + ext
+        url = '/upload/' + self.timer().strftime('%Y/%m/%d/') + key[0] + key[1] + key[30] + key[31] + '/' + key + ext
         uri = self.settings['root_path'] + dir + url
 
         if not os.path.exists(os.path.dirname(uri)):
