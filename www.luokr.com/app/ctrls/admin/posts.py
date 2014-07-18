@@ -11,29 +11,21 @@ class Admin_PostsCtrl(AdminCtrl):
         pager['list'] = 0;
 
         cur_posts = self.dbase('posts').cursor()
-        cur_terms = self.dbase('terms').cursor()
+        cur_users = self.dbase('users').cursor()
 
         cur_posts.execute('select * from posts order by post_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
         posts = cur_posts.fetchall()
 
-        ptids = {}
-        ptags = {}
+        psers = {}
         if posts:
             pager['list'] = len(posts)
 
-            cur_posts.execute('select post_id,term_id from post_terms where post_id in (' + ','.join(str(i['post_id']) for i in posts) + ')')
-            ptids = cur_posts.fetchall()
-
-            if ptids:
-                cur_terms.execute('select * from terms where term_id in (' + ','.join(str(i['term_id']) for i in ptids) + ')')
-                ptags = cur_terms.fetchall()
-                if ptags:
-                    ptids = self.utils().array_group(ptids, 'post_id')
-                    ptags = self.utils().array_keyto(ptags, 'term_id')
+            cur_users.execute('select * from users where user_id in (' + ','.join(str(i['user_id']) for i in posts) + ')')
+            psers = self.utils().array_keyto(cur_users.fetchall(), 'user_id')
 
         cur_posts.close()
-        cur_terms.close()
-        self.render('admin/posts.html', pager = pager, posts = posts, ptids = ptids, ptags = ptags)
+        cur_users.close()
+        self.render('admin/posts.html', pager = pager, posts = posts, psers = psers)
 
 class Admin_PostHiddenCtrl(AdminCtrl):
     @admin
