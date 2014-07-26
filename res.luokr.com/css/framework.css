@@ -2,6 +2,23 @@ body {
     font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #f7f7f9;
+    background-image: linear-gradient(#f1f1f1, #ddd);
+    background-repeat: repeat-x;
+    border-color: #ddd #ccc #ccc #ddd;
+    border-image: none;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 1px;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
 .center {
     padding-left: 20px;
     padding-right: 20px;
