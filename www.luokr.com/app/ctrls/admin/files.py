@@ -60,20 +60,19 @@ class Admin_FileUploadCtrl(AdminCtrl):
         url = '/upload/' + self.timer().strftime('%Y/%m/%d/') + key[0] + key[1] + key[30] + key[31] + '/' + key + ext
         uri = self.settings['root_path'] + dir + url
 
-        if not os.path.exists(uri):
-            if not os.path.exists(os.path.dirname(uri)):
-                os.makedirs(os.path.dirname(uri), mode=0777)
+        if not os.path.exists(os.path.dirname(uri)):
+            os.makedirs(os.path.dirname(uri), mode=0777)
 
-            fin = open(uri, 'w')
-            fin.write(res['body'])
-            fin.close()
+        fin = open(uri, 'w')
+        fin.write(res['body'])
+        fin.close()
 
-            con = self.dbase('files')
-            cur = con.cursor()
-            cur.execute('insert into files (file_hash, file_base, file_path, file_type, file_ctms) values (?, ?, ?, ?, ?)',
-                    (key, dir, url, res['content_type'], self.stime()))
-            con.commit()
-            cur.close()
+        con = self.dbase('files')
+        cur = con.cursor()
+        cur.execute('insert into files (file_hash, file_base, file_path, file_type, file_ctms) values (?, ?, ?, ?, ?)',
+                (key, dir, url, res['content_type'], self.stime()))
+        con.commit()
+        cur.close()
 
         if self.input('CKEditorFuncNum', None) is not None:
             out = '<script type="text/javascript">'
