@@ -1,8 +1,8 @@
 luokr.com
 =========
 
-The initial version of LUOKR.COM was developed in July 2013 by Alvan. it is a Python-based server application using the Tornado framework at backend and the Bootstrap framework at frontend.
-Now it just a simple blog(like wordpress) about technology and life.
+The initial version of luokr.com was developed by @Alvan in July 2013. It is a Python-based server application using Tornado framework at backend and Bootstrap framework at frontend.
+Now just a simple blog(like wordpress) about technology and life.
 
 
 Below is the main directory structure:
