@@ -5,10 +5,6 @@ from basic import BasicCtrl
 class LoginCtrl(BasicCtrl):
     def get(self):
         next = self.input('next', '/panel')
-        if self.get_current_user():
-            self.redirect(next)
-            return
-
         self.render('login.html', next = next)
 
     def post(self):
