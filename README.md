@@ -14,9 +14,9 @@ Below is the main directory structure:
     -------- svr.py     # to start the app, run `python svr.py`
     -------- url.py     # url mapping
     -------- ctrls/     # controllers, see Tornado's RequestHandler
-    -------- datas/     # contains data files
-    -------- model/     # contains model class files
-    -------- views/     # contains templates
+    -------- datas/     # data files
+    -------- model/     # model class files
+    -------- views/     # templates
     ---- doc/           # documents
     ---- lib/           # library files
     ---- www/           # static files
