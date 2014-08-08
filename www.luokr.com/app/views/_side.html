@@ -26,6 +26,16 @@
         {% end %}
     </ul>
 
+    {% if slabs_top %}
+    {% for val in slabs_top %}
+    {% if val['head'] != "" or val['body'] != "" %}
+    <div class="nav board" data-title="{{ val['head'] }}">
+        {% raw val['body'] %}
+    </div>
+    {% end %}
+    {% end %}
+    {% end %}
+
     {% if posts_top %}
     <ul class="nav nav-tabs nav-stacked">
         <li class="active"><a href="javascript:;">置顶文章</a></li>

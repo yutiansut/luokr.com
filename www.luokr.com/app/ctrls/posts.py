@@ -87,8 +87,11 @@ class PostsCtrl(BasicCtrl):
         else:
             links_top = None
 
-        self.render('posts.html', track = track, pager = pager, posts = posts, psers = psers, ptids = ptids, ptags = ptags\
-                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)
+        slabs_top = self.get_runtime_conf('slabs', json = True)
+
+        self.render('posts.html', track = track, pager = pager, posts = posts, psers = psers, ptids = ptids, ptags = ptags
+                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new
+                , slabs_top = slabs_top, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)
 
 
 class PostCtrl(BasicCtrl):
@@ -161,8 +164,11 @@ class PostCtrl(BasicCtrl):
 
         cur_talks.close()
 
+        slabs_top = self.get_runtime_conf('slabs', json = True)
+
         links_top = None
 
-        self.render('post.html', post = post, psers = psers, ptids = ptids, ptags = ptags, talks = talks\
-                , post_prev = post_prev, post_next = post_next\
-                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)
+        self.render('post.html', post = post, psers = psers, ptids = ptids, ptags = ptags, talks = talks
+                , post_prev = post_prev, post_next = post_next
+                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new
+                , slabs_top = slabs_top, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)
