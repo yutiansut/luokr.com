@@ -1,4 +1,11 @@
 
+-- Table: post_terms
+CREATE TABLE post_terms ( 
+    post_id INTEGER,
+    term_id INTEGER 
+);
+
+
 -- Table: posts
 CREATE TABLE posts ( 
     post_id      INTEGER          PRIMARY KEY AUTOINCREMENT,
@@ -12,17 +19,12 @@ CREATE TABLE posts (
     post_ctms    INT( 10 )        NOT NULL,
     post_utms    INT( 10 )        NOT NULL,
     post_ptms    INT( 10 )        NOT NULL,
-    post_remc    INT( 10 )        DEFAULT ( 0 ),
+    post_refc    INT( 10 )        DEFAULT ( 0 ),
     post_rank    INT( 10 )        DEFAULT ( 99 ),
     post_stat    INT( 1 )         NOT NULL
                                   DEFAULT ( 0 ) 
 );
 
--- Table: post_terms
-CREATE TABLE post_terms ( 
-    post_id INTEGER,
-    term_id INTEGER 
-);
 
 -- Index: idx_postId_termId
 CREATE UNIQUE INDEX idx_postId_termId ON post_terms ( 
@@ -46,10 +48,10 @@ CREATE INDEX idx_postPtms_postStat_postRank ON posts (
 );
 
 
--- Index: idx_postPtms_postStat_postRemc
-CREATE INDEX idx_postPtms_postStat_postRemc ON posts ( 
+-- Index: idx_postPtms_postStat_postRefc
+CREATE INDEX idx_postPtms_postStat_postRefc ON posts ( 
     post_ptms,
     post_stat,
-    post_remc 
+    post_refc 
 );
 

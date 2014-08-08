@@ -28,7 +28,7 @@ class VoiceCtrl(BasicCtrl):
         con_talks = self.dbase('talks')
         cur_talks = con_talks.cursor()
 
-        cur_posts.execute('update posts set post_remc = post_remc + 1 where post_id = ?', (post['post_id'],))
+        cur_posts.execute('update posts set post_refc = post_refc + 1 where post_id = ?', (post['post_id'],))
 
         cur_talks.execute('insert into talks (post_id, user_ip, user_id, user_name, user_mail, talk_text, talk_rank, talk_ctms, talk_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', \
                 (post['post_id'], self.request.remote_ip, usid, name, mail, text, 0, time, time))
