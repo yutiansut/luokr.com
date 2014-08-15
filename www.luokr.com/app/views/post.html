@@ -5,8 +5,8 @@
 
 {% block keyws %}{% if post['post_id'] in ptids %}{% for term in ptids[post['post_id']] %}{{ ptags[term['term_id']]['term_name']}},{% end %}{% end %}{{ handler.get_runtime_conf('keyws') }}{% end %}
 
-{% block mnav %}
-{% module Template("_mnav.html", mnav='posts') %}
+{% block navs %}
+{% module Template("_navs.html", menu='posts') %}
 {% end %}
 
 {% block css_head %}
