@@ -29,17 +29,17 @@ Screenshots
 -----------
 
 posts:
-![www.luokr.com.posts.png](/res.luokr.com/img/20140530/www.luokr.com.posts.png)
+![www.luokr.com.posts.png](res.luokr.com/img/20140530/www.luokr.com.posts.png)
 
 about:
-![www.luokr.com.about.png](/res.luokr.com/img/20140216/www.luokr.com.about.png)
+![www.luokr.com.about.png](res.luokr.com/img/20140216/www.luokr.com.about.png)
 
 login:
-![www.luokr.com.login.png](/res.luokr.com/img/20140530/www.luokr.com.login.png)
+![www.luokr.com.login.png](res.luokr.com/img/20140530/www.luokr.com.login.png)
 
 admin:
-![www.luokr.com.admin.png](/res.luokr.com/img/20140415/www.luokr.com.admin.png)
+![www.luokr.com.admin.png](res.luokr.com/img/20140415/www.luokr.com.admin.png)
 
 admin edit post:
-![www.luokr.com.admin.post.update.png](/res.luokr.com/img/20140415/www.luokr.com.admin.post.update.png)
+![www.luokr.com.admin.post.update.png](res.luokr.com/img/20140415/www.luokr.com.admin.post.update.png)
 
