@@ -477,7 +477,7 @@ class IOLoop(Configurable):
 
         .. versionadded:: 4.0
         """
-        self.call_at(self.time() + delay, callback, *args, **kwargs)
+        return self.call_at(self.time() + delay, callback, *args, **kwargs)
 
     def call_at(self, when, callback, *args, **kwargs):
         """Runs the ``callback`` at the absolute time designated by ``when``.
@@ -493,7 +493,7 @@ class IOLoop(Configurable):
 
         .. versionadded:: 4.0
         """
-        self.add_timeout(when, callback, *args, **kwargs)
+        return self.add_timeout(when, callback, *args, **kwargs)
 
     def remove_timeout(self, timeout):
         """Cancels a pending timeout.
@@ -969,10 +969,11 @@ class PeriodicCallback(object):
         if not self._running:
             return
         try:
-            self.callback()
+            return self.callback()
         except Exception:
             self.io_loop.handle_callback_exception(self.callback)
-        self._schedule_next()
+        finally:
+            self._schedule_next()
 
     def _schedule_next(self):
         if self._running:
