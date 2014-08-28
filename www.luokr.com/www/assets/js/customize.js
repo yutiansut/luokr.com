@@ -254,7 +254,7 @@ L.widget.captcha.create = function()
         '</div>' +
         '';
         
-        element.addClass('.captcha').html(tpl);
+        element.addClass('recaptcha').html(tpl);
     }
 
     $('#recaptcha_image').html('<img class="captcha-image" src="/image/random?' + (new Date).getTime() + '">');
