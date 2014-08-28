@@ -4,22 +4,8 @@
 
 {% block css_head %}
 <style>
-    .form-horizontal .control-label {
-        float: left;
-        width: 120px;
+    #form-email .control-label {
         text-align: left;
-    }
-    .form-horizontal .controls {
-        margin-left: 120px;
-    }
-
-    @media (max-width: 480px) {
-        .form-horizontal .control-label {
-            width: auto;
-        }
-        .form-horizontal .controls {
-            margin-left: 0;
-        }
     }
 </style>
 {% end %}
@@ -55,16 +41,14 @@
                             <textarea id="form-email-text" name="text" rows="8" class="span6" required></textarea>
                         </div>
                     </div>
-
                     <div class="control-group">
                         <div class="controls">
-                            <div id="recaptcha"></div>
+                            <div class="recaptcha" id="recaptcha"></div>
                         </div>
                     </div>
 
                     <div class="control-group">
                         <div class="controls">
-                            <div id="recaptcha"></div>
                             <button type="submit" class="btn btn-success input-large">发送内容</button>
                             <span class="help-inline"></span>
                         </div>

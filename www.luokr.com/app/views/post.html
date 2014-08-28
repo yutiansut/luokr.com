@@ -11,27 +11,13 @@
 
 {% block css_head %}
 <style>
-    .form-horizontal .control-label {
-        float: left;
-        width: 120px;
+    #form-talk .control-label {
         text-align: left;
     }
-    .form-horizontal .controls {
-        margin-left: 120px;
-    }
 
-    @media (max-width: 480px) {
-        .form-horizontal .control-label {
-            width: auto;
-        }
-        .form-horizontal .controls {
-            margin-left: 0;
-        }
-    }
-
-    #talks { margin-top: 20px; }
+    #list-talk { margin-top: 20px; }
     .talk-user { width: 110px; }
-    .talk-time { display: block; font-size:.8em; color:grey }
+    .talk-time { display: block; font-size: .8em; color: grey; }
 </style>
 {% end %}
 
@@ -39,49 +25,49 @@
 <div class="row">
     <div class="span8">
         <article class="article-wrap">
-        <div class="article-head">
-            <a href="/p/{{ post['post_id']}}"><h3>{{ post['post_title'] }}</h3></a>
-            <p><small>标签：</small>
-            {% if post['post_id'] in ptids %}
-            <small>
-                {% for term in ptids[post['post_id']] %}
-                <a href="/t/{% raw handler.get_escaper().url_escape(ptags[term['term_id']]['term_sign']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
+            <div class="article-head">
+                <a href="/p/{{ post['post_id']}}"><h3>{{ post['post_title'] }}</h3></a>
+                <p><small>标签：</small>
+                {% if post['post_id'] in ptids %}
+                <small>
+                    {% for term in ptids[post['post_id']] %}
+                    <a href="/t/{% raw handler.get_escaper().url_escape(ptags[term['term_id']]['term_sign']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
+                    {% end %}
+                </small>
+                {% else %}
+                <small>无</small>
                 {% end %}
-            </small>
-            {% else %}
-            <small>无</small>
-            {% end %}
-            </p>
-        </div>
-        <div class="article-body">
-            {% raw post['post_content'] %}
-        </div>
-        <div class="article-foot">
-            <p>
-            {% if post['post_source'].strip() != '' %}<small>来源：{% raw post['post_source'] %}</small>{% end %}
-            {% if post['post_author'].strip() != '' and (post['user_id'] not in psers or psers[post['user_id']]['user_name'] != post['post_author']) %}{% if post['post_source'].strip() != '' %}<br>{% end %}<small>作者：{{ post['post_author'] }}</small>{% end %}
-            </p>
-            <p class="text-right"><small>{% if post['user_id'] in psers %}{{ psers[post['user_id']]['user_name'] }}{% end %} 发布于 {{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small></p>
+                </p>
+            </div>
+            <div class="article-body">
+                {% raw post['post_content'] %}
+            </div>
+            <div class="article-foot">
+                <p>
+                {% if post['post_source'].strip() != '' %}<small>来源：{% raw post['post_source'] %}</small>{% end %}
+                {% if post['post_author'].strip() != '' and (post['user_id'] not in psers or psers[post['user_id']]['user_name'] != post['post_author']) %}{% if post['post_source'].strip() != '' %}<br>{% end %}<small>作者：{{ post['post_author'] }}</small>{% end %}
+                </p>
+                <p class="text-right"><small>{% if post['user_id'] in psers %}{{ psers[post['user_id']]['user_name'] }}{% end %} 发布于 {{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small></p>
 
-            <ul class="pager">
-                {% if post_prev %}<li class="previous"><a href="/p/{{ post_prev }}">&larr; 上一篇</a></li>{% end %}
-                {% if post_next %}<li class="next"><a href="/p/{{ post_next }}">下一篇 &rarr;</a></li>{% end %}
-            </ul>
-        </div>
+                <ul class="pager">
+                    {% if post_prev %}<li class="previous"><a href="/p/{{ post_prev }}">&larr; 上一篇</a></li>{% end %}
+                    {% if post_next %}<li class="next"><a href="/p/{{ post_next }}">下一篇 &rarr;</a></li>{% end %}
+                </ul>
+            </div>
         </article>
 
-        <div id="talks">
+        <div id="list-talk">
             <fieldset>
                 <legend>文章评论</legend>
                 {% if talks %}
                 <table class="table table-hover table-striped table-bordered">
                     <tbody>
-                        {% for talk in talks %}
-                        <tr id="r{{ talk['talk_id'] }}">
-                            <td class="talk-user"><i class="icon-user"></i> {{ talk['user_name'] }}<span class="talk-time">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
-                            <td>{% raw handler.get_escaper().xhtml_escape(talk['talk_text']).replace('\n','<br>\n') %}</td>
-                        </tr>
-                        {% end %}
+                    {% for talk in talks %}
+                    <tr id="r{{ talk['talk_id'] }}">
+                        <td class="talk-user"><i class="icon-user"></i> {{ talk['user_name'] }}<span class="talk-time">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
+                        <td>{% raw handler.get_escaper().xhtml_escape(talk['talk_text']).replace('\n','<br>\n') %}</td>
+                    </tr>
+                    {% end %}
                     </tbody>
                 </table>
                 {% end %}
@@ -106,7 +92,7 @@
                 <div class="control-group">
                     <label class="control-label" for="form-talk-text">评论内容：</label>
                     <div class="controls">
-                        <textarea id="form-talk-text" name="text" rows="5" class="span6" required></textarea>
+                        <textarea id="form-talk-text" name="text" rows="6" class="span6" required></textarea>
                     </div>
                 </div>
                 <div class="control-group">
