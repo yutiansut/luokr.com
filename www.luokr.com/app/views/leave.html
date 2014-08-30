@@ -2,84 +2,28 @@
 
 {% block title %}退出 - {{ handler.get_runtime_conf('title') }}{% end %}
 
-{% block css_head %}
-<style>
-    .main-card {
-        position: relative;
-        width: 210px;
-        margin: 10px auto;
-        padding: 20px 40px 40px;
-        background: #fff;
-        z-index: 9;
-    }
-
-    .main-card::before, .main-card::after, .card-base {
-        content: "";
-        position: absolute;
-        width: 100%;height: 100%;
-        left: 0;
-        background: #fff;
-        border: 1px solid #ccc;
-    }
-
-    .card-base {
-        top: -1.5px;
-        z-index: -1;
-    }
-
-    .main-card::before {
-        top: 3.5px;
-        -webkit-transform: rotateZ(4deg);
-        -moz-transform: rotateZ(4deg);
-        -ms-transform: rotateZ(4deg);
-        z-index: -2;
-    }
-
-    .main-card::after {
-        top: 5px;
-        -webkit-transform: rotateZ(-2deg);
-        -moz-transform: rotateZ(-2deg);
-        -ms-transform: rotateZ(-2deg);
-        z-index: -3;
-    }
-
-    .auth-logo {
-        text-align: center;
-    }
-
-    .auth-logo img.avatar {
-        width: 100px; height: 100px;
-        margin: 10px auto 30px;
-        border-radius: 100%;
-        border: 2px solid #aaa;
-    }
-</style>
-{% end %}
-
 {% block main %}
-<div class="container">
-    <div class="main-card">
-        <div class="auth-logo">
-            <img class="avatar" src="{{ handler.get_runtime_conf('sites_asset') }}img/l.jpg">
+<div class="main-card">
+    <div class="auth-logo">
+        <img class="avatar" src="{{ handler.get_runtime_conf('sites_asset') }}img/l.jpg">
+    </div>
+
+    <form action="/leave" method="post">
+        {% raw xsrf_form_html() %}
+
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-danger input-block-level">注销会话</button>
+            </div>
         </div>
 
-        <form action="/leave" method="post">
-            {% raw xsrf_form_html() %}
-
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="btn btn-danger input-block-level">注销会话</button>
-                </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="button" class="btn input-block-level" onclick="history.go(-1)">返回</button>
             </div>
+        </div>
+    </form>
 
-            <div class="control-group">
-                <div class="controls">
-                    <button type="button" class="btn input-block-level" onclick="history.go(-1)">返回</button>
-                </div>
-            </div>
-        </form>
-
-        <div class="card-base"></div>
-    </div>
+    <div class="card-base"></div>
 </div>
 {% end %}
