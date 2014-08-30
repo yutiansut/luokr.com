@@ -24,51 +24,53 @@
 <!--[if lt IE 9]><script src="{{ handler.get_runtime_conf('sites_asset') }}js/html5shiv.min.js"></script><![endif]-->
 </head>
 
-<body class="topfix" data-exts-scrollup="1" data-exts-autofixbar="1" data-spy="scroll">
-    <nav class="navbar topbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <div class="container">
-                <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
-                {% if handler.current_user %}
-                <ul class="nav pull-right">
-                    <li><a href="/panel"><i class="icon-user" style="vertical-align: baseline"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>
-                    <li><a href="/leave"><i class="icon-off" style="vertical-align: baseline"></i></a></li>
-                </ul>
-                {% end %}
-
-                <div class="nav-collapse collapse">
-                    <ul class="nav">
-                        {% block navs %}{% end %}
+<body class="ground" data-exts-scrollup="1" data-exts-autofixbar="1" data-spy="scroll">
+    <div class="facade">
+        <div class="topbar navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="container">
+                    <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
+                    {% if handler.current_user %}
+                    <ul class="nav pull-right">
+                        <li><a href="/panel"><i class="icon-user" style="vertical-align: baseline"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>
+                        <li><a href="/leave"><i class="icon-off" style="vertical-align: baseline"></i></a></li>
                     </ul>
+                    {% end %}
+
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            {% block navs %}{% end %}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </nav>
 
-    <div class="center">
-        <div class="container">
-            {% block tips %}{% module Template("_tips.html", tips = handler.get_runtime_conf('index_notes')) %}{% end %}
-            {% block main %}{% end %}
+        <div class="vessel center topfix">
+            <div class="container">
+                {% block tips %}{% module Template("_tips.html", tips = handler.get_runtime_conf('index_notes')) %}{% end %}
+                {% block main %}{% end %}
+            </div>
         </div>
     </div>
 
-    <footer class="footer">
-    <div class="container">
-        {% if handler.get_runtime_conf('qrimg') %}<img class="qrcode pull-right" src="{{ handler.get_runtime_conf('qrimg') }}">{% end %}
-        {% block power %}{% raw handler.get_runtime_conf('power') %}{% end %}
-        {% block built %}{% raw handler.get_runtime_conf('built') %}{% end %}
-        <ul class="footer-links">
-            <li><a href="/links" target="_blank">友情链接</a></li>
-            <li><a href="/about" target="_blank">关于我们</a></li>
-            <li><a href="/about#email" target="_blank">留言反馈</a></li>
-        </ul>
+    <div class="footer center ground">
+        <div class="container">
+            {% if handler.get_runtime_conf('qrimg') %}<img class="qrcode pull-right" src="{{ handler.get_runtime_conf('qrimg') }}">{% end %}
+            {% block power %}{% raw handler.get_runtime_conf('power') %}{% end %}
+            {% block built %}{% raw handler.get_runtime_conf('built') %}{% end %}
+            <ul class="footer-links">
+                <li><a href="/links" target="_blank">友情链接</a></li>
+                <li><a href="/about" target="_blank">关于我们</a></li>
+                <li><a href="/about#email" target="_blank">留言反馈</a></li>
+            </ul>
+        </div>
     </div>
-    </footer>
 
     <script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery-1.10.1.min.js"></script>
     <script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.form.min.js"></script>

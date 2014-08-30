@@ -4,34 +4,43 @@
 
 {% block css_head %}
 <style>
-    .main-container {
+    .main-card {
         position: relative;
         width: 210px;
         margin: 10px auto;
         padding: 20px 40px 40px;
         background: #fff;
-        border: 1px solid #ccc;
+        z-index: 9;
     }
 
-    .main-container::before,.main-container::after {
+    .main-card::before, .main-card::after, .card-base {
         content: "";
         position: absolute;
         width: 100%;height: 100%;
-        top: 3.5px;left: 0;
+        left: 0;
         background: #fff;
-        z-index: -1;
-        -webkit-transform: rotateZ(4deg);
-        -moz-transform: rotateZ(4deg);
-        -ms-transform: rotateZ(4deg);
         border: 1px solid #ccc;
     }
 
-    .main-container::after {
-        top: 5px;
+    .card-base {
+        top: -1.5px;
+        z-index: -1;
+    }
+
+    .main-card::before {
+        top: 3.5px;
+        -webkit-transform: rotateZ(4deg);
+        -moz-transform: rotateZ(4deg);
+        -ms-transform: rotateZ(4deg);
         z-index: -2;
+    }
+
+    .main-card::after {
+        top: 5px;
         -webkit-transform: rotateZ(-2deg);
         -moz-transform: rotateZ(-2deg);
         -ms-transform: rotateZ(-2deg);
+        z-index: -3;
     }
 
     .auth-logo {
@@ -64,39 +73,38 @@
 {% end %}
 
 {% block main %}
-<div class="container">
-    <div class="main-container">
-        <div class="auth-logo">
-            <img class="avatar" src="{{ handler.get_runtime_conf('sites_asset') }}img/l.jpg">
-        </div>
-        <div class="auth-form">
-            <form id="form-auth" action="/login" method="post">
-                {% raw xsrf_form_html() %}
-                {% if next %}
-                <input type="hidden" name="redirect" value="{{ next }}">
-                {% end %}
-                <div class="control-group">
-                    <div class="controls">
-                        <input class="input-block-level" style="min-height: 34px;" type="text" name="username" autocomplete="off" placeholder="账号" required>
-                        <input class="input-block-level" style="min-height: 34px;" type="password" name="password" autocomplete="off" placeholder="密码" required>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <div id="recaptcha"></div>
-                </div>
-
-                <div class="control-group">
-                    <div class="controls">
-                        <button type="submit" class="btn btn-success input-block-level">登录</button>
-                    </div>
-                </div>
-
-                <a rel="nofollow" href="/apply?entry=login" target="_blank" class="pull-right">没有帐号？</a>
-                <label class="checkbox"><input type="checkbox" name="remember" value="30">保持登录状态</label>
-            </form>
-        </div>
+<div class="main-card">
+    <div class="auth-logo">
+        <img class="avatar" src="{{ handler.get_runtime_conf('sites_asset') }}img/l.jpg">
     </div>
+    <div class="auth-form">
+        <form id="form-auth" action="/login" method="post">
+            {% raw xsrf_form_html() %}
+            {% if next %}
+            <input type="hidden" name="redirect" value="{{ next }}">
+            {% end %}
+            <div class="control-group">
+                <div class="controls">
+                    <input class="input-block-level" style="min-height: 34px;" type="text" name="username" autocomplete="off" placeholder="账号" required>
+                    <input class="input-block-level" style="min-height: 34px;" type="password" name="password" autocomplete="off" placeholder="密码" required>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div id="recaptcha"></div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-success input-block-level">登录</button>
+                </div>
+            </div>
+
+            <a rel="nofollow" href="/apply?entry=login" target="_blank" class="pull-right">没有帐号？</a>
+            <label class="checkbox"><input type="checkbox" name="remember" value="30">保持登录状态</label>
+        </form>
+    </div>
+    <div class="card-base"></div>
 </div>
 {% end %}
 
