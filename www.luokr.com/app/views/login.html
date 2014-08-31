@@ -3,38 +3,39 @@
 {% block title %}登录 - {{ handler.get_runtime_conf('title') }}{% end %}
 
 {% block main %}
-<div class="main-card">
-    <div class="auth-logo">
-        <img class="avatar" src="{{ handler.get_runtime_conf('sites_asset') }}img/l.jpg">
-    </div>
-    <div class="auth-form">
-        <form id="form-auth" action="/login" method="post">
-            {% raw xsrf_form_html() %}
-            {% if next %}
-            <input type="hidden" name="redirect" value="{{ next }}">
-            {% end %}
-            <div class="control-group">
-                <div class="controls">
-                    <input class="input-block-level" style="min-height: 34px;" type="text" name="username" autocomplete="off" placeholder="账号" required>
-                    <input class="input-block-level" style="min-height: 34px;" type="password" name="password" autocomplete="off" placeholder="密码" required>
+<div class="card-wrap">
+    <div class="card-main">
+        <div class="card-logo">
+            <img class="avatar" src="{{ handler.get_runtime_conf('sites_asset') }}img/l.jpg">
+        </div>
+        <div class="card-form">
+            <form id="form-auth" action="/login" method="post">
+                {% raw xsrf_form_html() %}
+                {% if next %}
+                <input type="hidden" name="redirect" value="{{ next }}">
+                {% end %}
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="input-block-level" style="min-height: 34px;" type="text" name="username" autocomplete="off" placeholder="账号" required>
+                        <input class="input-block-level" style="min-height: 34px;" type="password" name="password" autocomplete="off" placeholder="密码" required>
+                    </div>
                 </div>
-            </div>
 
-            <div class="control-group">
-                <div id="recaptcha"></div>
-            </div>
-
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="btn btn-success input-block-level">登录</button>
+                <div class="control-group">
+                    <div id="recaptcha"></div>
                 </div>
-            </div>
 
-            <a rel="nofollow" href="/apply?entry=login" target="_blank" class="pull-right">没有帐号？</a>
-            <label class="checkbox"><input type="checkbox" name="remember" value="30">保持登录状态</label>
-        </form>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-success input-block-level">登录</button>
+                    </div>
+                </div>
+
+                <a rel="nofollow" href="/apply?entry=login" target="_blank" class="pull-right">没有帐号？</a>
+                <label class="checkbox"><input type="checkbox" name="remember" value="30">保持登录状态</label>
+            </form>
+        </div>
     </div>
-    <div class="card-base"></div>
 </div>
 {% end %}
 

@@ -3,27 +3,27 @@
 {% block title %}退出 - {{ handler.get_runtime_conf('title') }}{% end %}
 
 {% block main %}
-<div class="main-card">
-    <div class="auth-logo">
-        <img class="avatar" src="{{ handler.get_runtime_conf('sites_asset') }}img/l.jpg">
+<div class="card-wrap">
+    <div class="card-main">
+        <div class="card-logo">
+            <img class="avatar" src="{{ handler.get_runtime_conf('sites_asset') }}img/l.jpg">
+        </div>
+
+        <form class="card-form" action="/leave" method="post">
+            {% raw xsrf_form_html() %}
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-danger input-block-level">注销会话</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="button" class="btn input-block-level" onclick="history.go(-1)">返回</button>
+                </div>
+            </div>
+        </form>
     </div>
-
-    <form action="/leave" method="post">
-        {% raw xsrf_form_html() %}
-
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn btn-danger input-block-level">注销会话</button>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div class="controls">
-                <button type="button" class="btn input-block-level" onclick="history.go(-1)">返回</button>
-            </div>
-        </div>
-    </form>
-
-    <div class="card-base"></div>
 </div>
 {% end %}
