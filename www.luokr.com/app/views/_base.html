@@ -12,11 +12,11 @@
 
 {% block css_head_mid %}{% end %}
 
-<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css">
-<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework-responsive.min.css">
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.css?20140901">
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework-responsive.min.css?20140901">
 
-<link rel="stylesheet" href="/assets/css/customize.css">
-<link rel="stylesheet" href="/assets/css/customize-responsive.css">
+<link rel="stylesheet" href="/assets/css/customize.css?20140901">
+<link rel="stylesheet" href="/assets/css/customize-responsive.css?20140901">
 
 {% block css_head %}{% end %}
 {% block js_head %}{% end %}
@@ -26,7 +26,7 @@
 
 <body class="ground" data-exts-scrollup="1" data-exts-autofixbar="1" data-spy="scroll">
     <div class="facade">
-        <div class="topbar navbar navbar-fixed-top">
+        <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                     <span class="icon-bar"></span>
@@ -57,18 +57,18 @@
                 {% block main %}{% end %}
             </div>
         </div>
-    </div>
 
-    <div class="footer center ground">
-        <div class="container">
-            {% if handler.get_runtime_conf('qrimg') %}<img class="qrcode pull-right" src="{{ handler.get_runtime_conf('qrimg') }}">{% end %}
-            {% block power %}{% raw handler.get_runtime_conf('power') %}{% end %}
-            {% block built %}{% raw handler.get_runtime_conf('built') %}{% end %}
-            <ul class="footer-links">
-                <li><a href="/links" target="_blank">友情链接</a></li>
-                <li><a href="/about" target="_blank">关于我们</a></li>
-                <li><a href="/about#email" target="_blank">留言反馈</a></li>
-            </ul>
+        <div class="footer center ground">
+            <div class="container">
+                {% if handler.get_runtime_conf('qrimg') %}<img class="qrcode pull-right" src="{{ handler.get_runtime_conf('qrimg') }}">{% end %}
+                {% block power %}{% raw handler.get_runtime_conf('power') %}{% end %}
+                {% block built %}{% raw handler.get_runtime_conf('built') %}{% end %}
+                <ul class="footer-links">
+                    <li><a href="/links" target="_blank">友情链接</a></li>
+                    <li><a href="/about" target="_blank">关于我们</a></li>
+                    <li><a href="/about#email" target="_blank">留言反馈</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 

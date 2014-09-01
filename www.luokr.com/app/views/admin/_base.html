@@ -12,8 +12,8 @@
 
 {% block css_head_mid %}{% end %}
 
-<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css">
-<link rel="stylesheet" href="/assets/css/customize.css">
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css?20140901">
+<link rel="stylesheet" href="/assets/css/customize.css?20140901">
 
 {% block css_head %}{% end %}
 {% block js_head %}{% end %}
@@ -23,7 +23,7 @@
 
 <body class="ground" data-exts-scrollup="1" data-spy="scroll">
     <div class="facade">
-        <div class="navbar topbar navbar-static-top">
+        <div class="navbar navbar-static-top">
             <div class="navbar-inner">
                 <div class="container">
                     <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
@@ -49,12 +49,12 @@
                 {% block main %}{% end %}
             </div>
         </div>
-    </div>
 
-    <div class="footer center ground">
-        <div class="container">
-            {% block power %}{% raw handler.get_runtime_conf('power') %}{% end %}
-            {% block built %}{% raw handler.get_runtime_conf('built') %}{% end %}
+        <div class="footer center ground">
+            <div class="container">
+                {% block power %}{% raw handler.get_runtime_conf('power') %}{% end %}
+                {% block built %}{% raw handler.get_runtime_conf('built') %}{% end %}
+            </div>
         </div>
     </div>
 
