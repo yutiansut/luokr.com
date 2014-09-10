@@ -35,7 +35,7 @@ class BasicCtrl(tornado.web.RequestHandler):
         self.clear_header('server')
         self.set_header('x-frame-options', 'SAMEORIGIN')
         self.set_header('x-xss-protection', '1; mode=block')
-        self.set_header('cache-control', 'no-siteapp')
+        self.set_header('cache-control', 'no-transform')
 
     def head(self, *args, **kwargs):
         return self.get(*args, **kwargs)
