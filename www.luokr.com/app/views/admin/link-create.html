@@ -21,15 +21,15 @@
         <form class="form-horizontal request-ajax-form" method="post">
             {% raw xsrf_form_html() %}
             <div class="control-group">
-                <label class="control-label" for="input_link_name">链接标题</label>
-                <div class="controls">
-                    <input type="text" id="input_link_name" name="link_name" value="" required>
-                </div>
-            </div>
-            <div class="control-group">
                 <label class="control-label" for="input_link_href">链接地址</label>
                 <div class="controls">
                     <input type="url" id="input_link_href" name="link_href" value="" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="input_link_name">链接标题</label>
+                <div class="controls">
+                    <input type="text" id="input_link_name" name="link_name" value="" required>
                 </div>
             </div>
             <div class="control-group">
