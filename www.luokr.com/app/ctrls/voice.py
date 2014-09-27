@@ -14,7 +14,7 @@ class VoiceCtrl(BasicCtrl):
             return
 
         usid = '0'
-        rank = 0
+        rank = '0'
         if self.current_user:
             usid = self.current_user['user_id']
             rank = self.get_runtime_conf('posts_talks_min_rank')
@@ -42,7 +42,7 @@ class VoiceCtrl(BasicCtrl):
         cur_posts.close()
 
         if cur_talks.lastrowid:
-            if rank > 0:
+            if float(rank) > 0:
                 self.flash(1, {'msg': '评论发表成功'})
             else:
                 self.flash(1, {'msg': '当前评论内容暂不公开'})
