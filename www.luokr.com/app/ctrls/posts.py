@@ -75,7 +75,7 @@ class PostsCtrl(BasicCtrl):
         cur_users.close()
 
         cur_talks = self.dbase('talks').cursor()
-        cur_talks.execute('select * from talks where talk_rank>0 order by talk_id desc limit 9')
+        cur_talks.execute('select * from talks where talk_rank>=? order by talk_id desc limit 9', (self.get_runtime_conf('posts_talks_min_rank'), ))
         talks_new = cur_talks.fetchall()
         cur_talks.close()
 
@@ -156,10 +156,10 @@ class PostCtrl(BasicCtrl):
 
         cur_talks = self.dbase('talks').cursor()
 
-        cur_talks.execute('select * from talks where talk_rank>0 order by talk_id desc limit 9')
+        cur_talks.execute('select * from talks where talk_rank>=? order by talk_id desc limit 9', (self.get_runtime_conf('posts_talks_min_rank'), ))
         talks_new = cur_talks.fetchall()
 
-        cur_talks.execute('select * from talks where post_id = ? and talk_rank > 0 order by talk_id asc', (post['post_id'],))
+        cur_talks.execute('select * from talks where post_id=? and talk_rank>=? order by talk_id asc', (post['post_id'], self.get_runtime_conf('posts_talks_min_rank')))
         talks = cur_talks.fetchall()
 
         cur_talks.close()

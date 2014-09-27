@@ -43,6 +43,7 @@
                 <label class="control-label" for="input_talk_rank">评论分值</label>
                 <div class="controls">
                     <input type="text" id="input_talk_rank" name="talk_rank" value="{{ talk['talk_rank'] }}" required>
+                    <span class="help-inline">分值大于等于 <a href="/admin/conf?conf_name=posts_talks_min_rank" target="_blank">{{ handler.get_runtime_conf('posts_talks_min_rank') }}</a> 的评论会随文章展示</span>
                 </div>
             </div>
             <div class="control-group">
@@ -62,7 +63,7 @@
                 <div class="controls">
                     <button type="submit" class="btn btn-success">提交更新</button>
                     <button type="reset" class="btn">重置</button>
-                    <button class="btn btn-danger" style="margin-left:18px" onclick="L.method.confirm('清理操作将会导致评论分值归 0，且隐藏评论。确认要执行该操作吗？') && L.method.ajaxSend('post', '/admin/talk/hidden?talk_id={{ talk['talk_id'] }}', '{{ handler.fetch_xsrfs() }}');return false">清理</button>
+                    <button class="btn btn-danger" style="margin-left:18px" onclick="L.method.confirm('清理操作将会导致评论分值归 0。确认要执行该操作吗？') && L.method.ajaxSend('post', '/admin/talk/hidden?talk_id={{ talk['talk_id'] }}', '{{ handler.fetch_xsrfs() }}');return false">清理</button>
                 </div>
             </div>
         </form>

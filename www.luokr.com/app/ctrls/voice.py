@@ -14,8 +14,10 @@ class VoiceCtrl(BasicCtrl):
             return
 
         usid = '0'
+        rank = 0
         if self.current_user:
             usid = self.current_user['user_id']
+            rank = self.get_runtime_conf('posts_talks_min_rank')
 
         name = self.input('name')
         mail = self.input('mail')
@@ -31,7 +33,7 @@ class VoiceCtrl(BasicCtrl):
         cur_posts.execute('update posts set post_refc = post_refc + 1 where post_id = ?', (post['post_id'],))
 
         cur_talks.execute('insert into talks (post_id, user_ip, user_id, user_name, user_mail, talk_text, talk_rank, talk_ctms, talk_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?)', \
-                (post['post_id'], self.request.remote_ip, usid, name, mail, text, 0, time, time))
+                (post['post_id'], self.request.remote_ip, usid, name, mail, text, rank, time, time))
 
         con_talks.commit()
         cur_talks.close()
@@ -39,8 +41,11 @@ class VoiceCtrl(BasicCtrl):
         con_posts.commit()
         cur_posts.close()
 
-        if (cur_talks.lastrowid):
-            self.flash(1, {'msg': '当前评论内容暂不公开'})
+        if cur_talks.lastrowid:
+            if rank > 0:
+                self.flash(1, {'msg': '评论发表成功'})
+            else:
+                self.flash(1, {'msg': '当前评论内容暂不公开'})
             return
 
         self.flash(0)

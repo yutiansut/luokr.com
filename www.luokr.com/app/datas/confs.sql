@@ -33,5 +33,6 @@ INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('admin_notes
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('admin_email', '["a@luokr.com"]', 1391152188);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('index_links_min_rank', '100', 1391152190);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('index_posts_top_rank', '100', 1391152191);
+INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('posts_talks_min_rank', '50', 1391152192);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('gskey', '', 1391154294);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('mailx', '{"smtp_able": 1, "smtp_host": "smtp.gmail.com", "smtp_port": 587, "smtp_from": "name<name@gmail.com>", "smtp_user": "", "smtp_pswd": ""}', 1391154296);
