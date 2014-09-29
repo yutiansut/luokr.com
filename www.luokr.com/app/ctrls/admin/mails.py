@@ -37,3 +37,25 @@ class Admin_MailAccessCtrl(AdminCtrl):
         except:
             pass
         self.flash(0)
+
+class Admin_MailDeleteCtrl(AdminCtrl):
+    @admin
+    def post(self):
+        try:
+            user = self.current_user
+
+            mail_id   = self.input('mail_id')
+            mail_utms = self.input('mail_utms')
+
+            con = self.dbase('mails')
+            cur = con.cursor()
+            cur.execute('delete from mails where mail_id = ? and mail_utms = ?', (mail_id, mail_utms ,))
+            con.commit()
+            cur.close()
+            if cur.rowcount:
+                self.model('alogs').add(self.dbase('alogs'), '删除留言：' + str(mail_id), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.flash(1)
+                return
+        except:
+            pass
+        self.flash(0)
