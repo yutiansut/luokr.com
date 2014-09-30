@@ -1,5 +1,8 @@
 body {
     font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 kbd {
@@ -19,24 +22,10 @@ kbd {
     padding: 1px 4px;
 }
 
-.facade,
-.ground {
-    min-width: 1035px;
-    padding: 0;
-}
-
-.facade {
-    background-color: #fff;
-}
-
-.ground {
-    /* background-color: #f5f5f5; */
-    background-color: #eee;
-}
-
 .vessel {
-    min-width: 245px;
-    min-height: 396px;
+    min-width: 980px;
+    min-height: 375px;
+    flex: 1;
 }
 
 .center {
@@ -126,6 +115,8 @@ kbd {
 }
 
 .footer {
+    /* background-color: #f5f5f5; */
+    background-color: #eee;
     margin-top: 50px;
     min-width: 980px;
     text-align: right;
@@ -176,7 +167,7 @@ kbd {
 }
 
 @media print {
-    .navbar, .mrside, .footer {
+    .navbar, .footer {
         display: none;
     }
 }

@@ -66,6 +66,9 @@ img.avatar {
 .carousel-control:hover {
     opacity: 0.8;
 }
+.sidebar a {
+    font-size: 13px;
+}
 .article-list {
     padding-top: 10px;
 }
@@ -178,4 +181,10 @@ div.ajax-form-loading
 }
 .recaptcha_is_building_widget {
     display: none;
+}
+
+@media print {
+    .sidebar {
+        display: none;
+    }
 }

@@ -1,5 +1,9 @@
-.facade, .ground, .footer, .navbar-inner {
+.footer, .navbar-inner {
     min-width: 0;
+}
+
+.vessel {
+    min-width: 245px;
 }
 
 @media (max-width: 979px) {
@@ -42,9 +46,10 @@
 }
 
 @media (max-width: 767px) {
-    .facade .navbar-fixed-top, .facade .navbar-fixed-bottom, .facade .navbar-static-top,
-    .ground .navbar-fixed-top, .ground .navbar-fixed-bottom, .ground .navbar-static-top {
-        margin-left: 0;
-        margin-right: 0;
+    .footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 }
