@@ -167,7 +167,7 @@ kbd {
 }
 
 @media print {
-    .navbar, .footer {
+    .header, .footer {
         display: none;
     }
 }
