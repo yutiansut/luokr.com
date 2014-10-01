@@ -23,7 +23,7 @@
 
 <body data-exts-scrollup="1" data-spy="scroll">
 <header class="header">
-    <div class="navbar navbar-static-top">
+    <nav class="navbar navbar-static-top">
         <div class="navbar-inner">
             <div class="container">
                 <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
@@ -41,15 +41,15 @@
                 </div>
             </div>
         </div>
-    </div>
+    </nav>
 </header>
 
-<div class="vessel">
+<main class="vessel">
     <div class="container">
         {% block tips %}{% module Template("admin/_tips.html", tips = handler.get_runtime_conf('admin_notes')) %}{% end %}
         {% block main %}{% end %}
     </div>
-</div>
+</main>
 
 <footer class="footer">
     <div class="container">
