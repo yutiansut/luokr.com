@@ -1,8 +1,13 @@
+html {
+    display: flex;
+}
+
 body {
     font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 kbd {
@@ -23,13 +28,12 @@ kbd {
 }
 
 .vessel {
-    min-width: 980px;
-    min-height: 375px;
-}
+    flex: 1;
+    /* stupid IE10 tweener syntax */
+    -ms-flex-preferred-size: auto;
 
-.center {
-    padding-left: 20px;
-    padding-right: 20px;
+    min-width: 980px;
+    /* min-height: 375px; */
 }
 
 .navbar-inner {
@@ -109,12 +113,7 @@ kbd {
     margin-bottom: 20px;
 }
 
-.mrside a {
-    font-size: 13px;
-}
-
 .footer {
-    flex: 1;
     /* background-color: #f5f5f5; */
     background-color: #eee;
     margin-top: 50px;
