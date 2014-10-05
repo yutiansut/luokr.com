@@ -1,13 +1,53 @@
 html {
+    /* For IE to trigger correct calculation of heights */
+    /* Ye Olde Flexbox for Webkit */
+    display: -webkit-box;
+    /* Tweener flexbox for IE10 */
+    display: -ms-flexbox;
+    /* Prefixed "new flexbox" */
+    display: -webkit-flex;
+    /* unprefixed standard "new flexbox" version for the rest */
     display: flex;
 }
 
 body {
     font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    min-height: 100vh;
+
+    /**
+     * 1. Making the <body> element behave like a flexbox container.
+     * 2. Making flex children line up vertically (horizontal is default)
+     * 3. Setting the min-height to 100% of the viewport height.
+     * 4. Trigger correct calculation of heights on IE11.
+     */
+    /* [1] */
+    /* Ye Olde Flexbox for Webkit */
+    display: -webkit-box;
+    /* Tweener flexbox for IE10 */
+    display: -ms-flexbox;
+    /* Prefixed "new flexbox" */
+    display: -webkit-flex;
+    /* unprefixed standard "new flexbox" version for the rest */
     display: flex;
+
+    /* [2] */
+    /* Your grandparents flexbox for old Webkit */
+    -webkit-box-orient: vertical;
+    /* Prefixed new syntax: */
+    -webkit-flex-direction: column;
+    /* (Same syntax for weird IE tweener) */
+    -ms-flex-direction: column;
+    /* unprefixed new syntax */
     flex-direction: column;
+
+    /* [3] */
+    min-height: 100vh;
+
+    /* [4] */
     width: 100%;
+}
+
+main {
+    display: block;
 }
 
 kbd {
@@ -28,9 +68,13 @@ kbd {
 }
 
 .vessel {
-    flex: 1;
-    /* stupid IE10 tweener syntax */
-    -ms-flex-preferred-size: auto;
+    -webkit-box-flex: 1 0 auto;
+    /* IE10, ugh */
+    -ms-flex: 1 0 auto;
+    /* Unprefixed */
+    flex: 1 0 auto;
+    /* prefixed webkit syntax */
+    -webkit-flex: 1 0 auto;
 
     min-width: 980px;
     /* min-height: 375px; */
