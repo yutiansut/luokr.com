@@ -1,9 +1,26 @@
+.vessel {
+    min-width: 245px;
+}
+
 .footer, .navbar-inner {
     min-width: 0;
 }
 
-.vessel {
-    min-width: 245px;
+@media (min-width: 979px) {
+    html {
+        /* Ye Olde Flexbox for Webkit */
+        display: -webkit-box;
+        /* Tweener flexbox for IE10 */
+        display: -ms-flexbox;
+        /* Prefixed "new flexbox" */
+        display: -webkit-flex;
+        /* unprefixed standard "new flexbox" version for the rest */
+        display: flex;
+    }
+
+    body {
+        width: 100%;
+    }
 }
 
 @media (max-width: 979px) {
@@ -20,10 +37,6 @@
         line-height: 20px;
         font-size: 14px;
         border-top: none;
-    }
-
-    .navbar-fixed-top, .navbar-static-top {
-        margin-bottom: 20px;
     }
 
     .navbar-fixed-top .container .brand {

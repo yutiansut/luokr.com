@@ -1,15 +1,3 @@
-html {
-    /* For IE to trigger correct calculation of heights */
-    /* Ye Olde Flexbox for Webkit */
-    display: -webkit-box;
-    /* Tweener flexbox for IE10 */
-    display: -ms-flexbox;
-    /* Prefixed "new flexbox" */
-    display: -webkit-flex;
-    /* unprefixed standard "new flexbox" version for the rest */
-    display: flex;
-}
-
 body {
     font-family: "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
@@ -41,9 +29,6 @@ body {
 
     /* [3] */
     min-height: 100vh;
-
-    /* [4] */
-    width: 100%;
 }
 
 main {
@@ -78,6 +63,14 @@ kbd {
 
     min-width: 980px;
     /* min-height: 375px; */
+}
+
+.header {
+    padding-bottom: 20px;
+}
+
+.navbar {
+    margin-bottom: 0;
 }
 
 .navbar-inner {
@@ -118,12 +111,8 @@ kbd {
     box-shadow: none;
 }
 
-.navbar-static-top {
-    margin-bottom: 30px;
-}
-
 .topfix {
-    padding-top: 111px;
+    padding-top: 81px;
 }
 
 .board {
