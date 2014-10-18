@@ -24,6 +24,10 @@
 }
 
 @media (max-width: 979px) {
+    .header {
+        padding-bottom: 20px;
+    }
+
     .topfix {
         padding-top: 0;
     }
