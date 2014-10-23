@@ -10,6 +10,7 @@ CREATE TABLE post_terms (
 CREATE TABLE posts ( 
     post_id      INTEGER          PRIMARY KEY AUTOINCREMENT,
     user_id      INTEGER          DEFAULT ( 0 ),
+    post_type    VARCHAR( 30 ),
     post_title   VARCHAR( 120 ),
     post_descp   VARCHAR( 200 ),
     post_author  VARCHAR( 80 ),
@@ -23,7 +24,7 @@ CREATE TABLE posts (
     post_rank    INT( 10 )        DEFAULT ( 99 ),
     post_plus    INT( 10 )        DEFAULT ( 0 ),
     post_mins    INT( 10 )        DEFAULT ( 0 ),
-    post_stat    INT( 1 )         NOT NULL
+    post_stat    INT( 3 )         NOT NULL
                                   DEFAULT ( 0 ) 
 );
 

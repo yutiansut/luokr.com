@@ -60,6 +60,7 @@ class Admin_PostCreateCtrl(AdminCtrl):
         try:
             user = self.current_user
 
+            post_type    = self.input('post_type', 'blog')
             post_title   = self.input('post_title')
             post_descp   = self.input('post_descp')
             post_author  = self.input('post_author')
@@ -106,8 +107,8 @@ class Admin_PostCreateCtrl(AdminCtrl):
                 if term_id:
                     term_imap[term_id] = term_sign
 
-            cur_posts.execute('insert into posts (user_id, post_title, post_descp, post_author, post_source, post_summary, post_content,post_stat, post_rank, post_ptms, post_ctms, post_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', \
-                    (user['user_id'], post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_ctms, post_utms ,))
+            cur_posts.execute('insert into posts (user_id, post_type, post_title, post_descp, post_author, post_source, post_summary, post_content,post_stat, post_rank, post_ptms, post_ctms, post_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', \
+                    (user['user_id'], post_type, post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_ctms, post_utms ,))
             post_id = cur_posts.lastrowid
 
             if term_imap:
