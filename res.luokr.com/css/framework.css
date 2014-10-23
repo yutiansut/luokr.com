@@ -137,6 +137,15 @@ kbd {
     top: -1px;
 }
 
+a.ilike {
+    border: 1px solid #eee !important;
+    color: #ca6445;
+    -webkit-border-radius: 2px !important;
+    -moz-border-radius: 2px !important;
+    border-radius: 2px !important;
+    padding: 5px 11px !important;
+}
+
 .opsbar {
     margin-top: 4px;
     margin-bottom: 10px;

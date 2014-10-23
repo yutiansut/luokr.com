@@ -5,6 +5,7 @@ from ctrls.error import ErrorCtrl
 from ctrls.about import AboutCtrl
 from ctrls.apply import ApplyCtrl
 from ctrls.email import EmailCtrl
+from ctrls.score import ScoreCtrl
 from ctrls.voice import VoiceCtrl
 from ctrls.links import LinksCtrl
 from ctrls.posts import PostsCtrl, PostCtrl
@@ -36,6 +37,7 @@ url = [
     (r'/apply', ApplyCtrl),
     (r'/email', EmailCtrl),
     (r'/links', LinksCtrl),
+    (r'/score', ScoreCtrl),
     (r'/voice', VoiceCtrl),
 
     (r'/s', PostsCtrl),

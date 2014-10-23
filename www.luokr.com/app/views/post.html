@@ -53,8 +53,9 @@
                 <p class="text-right"><small>{% if post['user_id'] in psers %}{{ psers[post['user_id']]['user_name'] }}{% end %} 发布于 {{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small></p>
 
                 <ul class="pager">
-                    {% if post_prev %}<li class="previous"><a href="/p/{{ post_prev }}">&larr; 上一篇</a></li>{% end %}
-                    {% if post_next %}<li class="next"><a href="/p/{{ post_next }}">下一篇 &rarr;</a></li>{% end %}
+                    <li class="previous{% if not post_prev %} disabled{% end %}"><a href="{% if post_prev %}/p/{{ post_prev }}{% else %}javascript:;{% end %}">&larr; 上一篇</a></li>
+                    <li><a href="javascript:;" class="ilike" data-post-id="{{ post['post_id'] }}">+ 1</a></li>
+                    <li class="next{% if not post_next %} disabled{% end %}"><a href="{% if post_next %}/p/{{ post_next }}{% else %}javascript:;{% end %}">下一篇 &rarr;</a></li>
                 </ul>
             </div>
         </article>
@@ -122,6 +123,15 @@
 <script src="{{ handler.get_runtime_conf('sites_asset') }}google-code-prettify/src/run_prettify.js?skin=solarized-dark" type="text/javascript"></script>
 <script>
     $(function(){
+        $('.pager .ilike').click(function(){
+            var i = $(this);
+            if (i.attr('disabled') != 'disabled') {
+                i.attr('disabled', 'disabled').parent().addClass('disabled');
+                $.post('/score?p=' + i.data('post-id'), {'_xsrf': '{{ handler.xsrf_token }}'}, function(){
+                }, 'json');
+            }
+        });
+
         $('#form-talk').submit(function(){
             var f = $(this);
             f.find('button[type=submit]').attr('disabled', 'disabled');

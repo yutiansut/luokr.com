@@ -21,6 +21,8 @@ CREATE TABLE posts (
     post_ptms    INT( 10 )        NOT NULL,
     post_refc    INT( 10 )        DEFAULT ( 0 ),
     post_rank    INT( 10 )        DEFAULT ( 99 ),
+    post_plus    INT( 10 )        DEFAULT ( 0 ),
+    post_mins    INT( 10 )        DEFAULT ( 0 ),
     post_stat    INT( 1 )         NOT NULL
                                   DEFAULT ( 0 ) 
 );
