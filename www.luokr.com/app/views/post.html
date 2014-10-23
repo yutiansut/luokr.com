@@ -54,7 +54,7 @@
 
                 <ul class="pager">
                     <li class="previous{% if not post_prev %} disabled{% end %}"><a href="{% if post_prev %}/p/{{ post_prev }}{% else %}javascript:;{% end %}">&larr; 上一篇</a></li>
-                    <li><a href="javascript:;" class="ilike" data-post-id="{{ post['post_id'] }}">+ 1</a></li>
+                    <li><a href="javascript:;" title="点赞（+1）" class="ilike" data-post-id="{{ post['post_id'] }}">+ 1</a></li>
                     <li class="next{% if not post_next %} disabled{% end %}"><a href="{% if post_next %}/p/{{ post_next }}{% else %}javascript:;{% end %}">下一篇 &rarr;</a></li>
                 </ul>
             </div>
