@@ -29,7 +29,7 @@
     <div class="span8">
         <article class="article-wrap">
             <div class="article-head">
-                <a href="/p/{{ post['post_id']}}"><h3>{{ post['post_title'] }}</h3></a>
+                <a href="/p/{{ post['post_id']}}" title="{{ post['post_descp'] and post['post_descp'] or post['post_title'] }}"><h3>{{ post['post_title'] }}</h3></a>
                 <p><small>标签：</small>
                 {% if post['post_id'] in ptids %}
                 <small>

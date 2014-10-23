@@ -47,7 +47,7 @@
             {% for post in posts %}
             <article class="article-wrap">
             <div class="article-head">
-                <a href="/p/{{ post['post_id']}}"><h4>{{ post['post_title'] }}</h4></a>
+                <a href="/p/{{ post['post_id']}}" title="{{ post['post_descp'] and post['post_descp'] or post['post_title'] }}"><h4>{{ post['post_title'] }}</h4></a>
                 <p><small>标签：</small>
                 {% if post['post_id'] in ptids %}
                 <small>
@@ -69,7 +69,7 @@
                 {% if post['post_author'].strip() != '' and (post['user_id'] not in psers or psers[post['user_id']]['user_name'] != post['post_author']) %}{% if post['post_source'].strip() != '' %}<br>{% end %}<small>作者：{{ post['post_author'] }}</small>{% end %}
                 </p>
                 <p class="text-right"><small>{% if post['user_id'] in psers %}{{ psers[post['user_id']]['user_name'] }}{% end %} 发布于 {{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small></p>
-                <p class="text-right"><a href="/p/{{ post['post_id']}}">全文 » </a></p>
+                <p class="text-right"><a href="/p/{{ post['post_id']}}" title="{{ post['post_descp'] and post['post_descp'] or post['post_title'] }}">全文 &raquo; </a></p>
             </div>
             </article>
             {% end %}
