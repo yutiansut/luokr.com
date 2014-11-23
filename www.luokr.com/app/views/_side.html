@@ -67,7 +67,7 @@
     <ul class="nav nav-tabs nav-stacked">
         <li class="active"><a href="javascript:;">最新评论</a></li>
         {% for val in talks_new %}
-        <li><a class="texted" href="/p/{{ val['post_id']}}#r{{ val['talk_id']}}">{{ val['talk_text'].decode('utf-8')[:39].encode('utf-8') }}</a></li>
+        <li><a class="texted" title="{{ val['talk_text'] }}" href="/p/{{ val['post_id']}}#r{{ val['talk_id']}}">{{ val['talk_text'] }}</a></li>
         {% end %}
     </ul>
     {% end %}
