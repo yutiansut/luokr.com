@@ -10,7 +10,7 @@ Below is the main directory structure:
     res.luokr.com/      # global resources
     www.luokr.com/
     ---- app/
-    -------- etc.py     # configuration file, please see doc/etc.py.sample for more details
+    -------- etc.py     # configuration file, see `doc/etc.py.sample` for more details
     -------- svr.py     # to start the app, run `python svr.py`
     -------- url.py     # url mapping
     -------- ctrls/     # controllers, see Tornado's RequestHandler
@@ -20,6 +20,7 @@ Below is the main directory structure:
     ---- doc/           # documents
     ---- lib/           # library files
     ---- www/           # static files
+
 
 
 The background landing address is `/admin`, default username is `admin` and the password is `888888`.
