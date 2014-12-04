@@ -177,7 +177,7 @@ a.ilike {
     margin: 10px 0;
 }
 .footer-links li {
-    display: inline;
+    display: inline-block;
     padding: 0 2px;
 }
 .footer-links li:first-child {
