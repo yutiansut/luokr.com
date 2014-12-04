@@ -70,3 +70,9 @@
         padding-right: 20px;
     }
 }
+
+@media (max-width: 396px) {
+    .card-main {
+        padding: 20px;
+    }
+}
