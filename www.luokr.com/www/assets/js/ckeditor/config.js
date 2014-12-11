@@ -6,8 +6,9 @@ CKEDITOR.editorConfig = function( config ) {
     // Define changes to default configuration here. For example:
     config.language = 'zh-cn';
     config.toolbarGroups = [
-        { name: 'pbckcode' },
-        { name: 'document',    groups: [ 'mode', 'document', 'doctools' ] },
+        { name: 'mode'},
+        { name: 'pbckcode'},
+        { name: 'doctools'},
         { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
         { name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
         { name: 'forms' },

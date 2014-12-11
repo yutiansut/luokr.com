@@ -72,7 +72,7 @@
             <div class="control-group">
                 <label class="control-label" for="input_post_summary">文章摘要</label>
                 <div class="controls">
-                    <textarea class="input-block-level" style="height:auto" rows="5" type="text" id="input_post_summary" name="post_summary" required>{{ post['post_summary'] }}</textarea>
+                    <textarea class="input-block-level{% if not mode %} ckeditor{% end %}" style="height:auto" rows="5" id="input_post_summary" name="post_summary" required>{{ post['post_summary'] }}</textarea>
                 </div>
             </div>
 
@@ -135,7 +135,20 @@
 <script type="text/javascript" src="/assets/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
     CKEDITOR.replace('input_post_content', {
-        filebrowserImageUploadUrl : '/admin/file/upload',
+        height: 270,
+        filebrowserImageUploadUrl: '/admin/file/upload'
+    });
+
+    CKEDITOR.replace('input_post_summary', {
+        // toolbarGroups: [
+        //     { name: 'mode'},
+        //     { name: 'pbckcode'},
+        //     { name: 'doctools'},
+        //     { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+        //     { name: 'about' }
+        // ],
+        height: 150,
+        filebrowserImageUploadUrl: '/admin/file/upload'
     });
 </script>
 {% end %}
