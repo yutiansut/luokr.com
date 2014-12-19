@@ -22,4 +22,8 @@ class Shell_IndexCtrl(BasicCtrl):
         if posts:
             pager['list'] = len(posts)
 
+        if self.input('_pjax', None) == '#shell-index-posts':
+            self.render('shell/index/posts.html', user = user, pager = pager, posts = posts)
+            return
+
         self.render('shell/index.html', user = user, pager = pager, posts = posts)

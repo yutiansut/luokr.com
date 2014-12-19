@@ -58,6 +58,10 @@ class PostsCtrl(BasicCtrl):
             cur_users.execute('select * from users where user_id in (' + ','.join(str(i['user_id']) for i in posts) + ')')
             psers = self.utils().array_keyto(cur_users.fetchall(), 'user_id')
 
+        if self.input('_pjax', None) == '#index-index-posts':
+            self.render('index/index/posts.html', pager = pager, posts = posts, ptids = ptids, ptags = ptags, psers = psers)
+            return
+
         cur_terms.execute('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
         keyws_tag = cur_terms.fetchall()
 

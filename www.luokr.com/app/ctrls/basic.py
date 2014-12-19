@@ -77,7 +77,7 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def merge_query(self, args, dels = []):
         for k in self.request.arguments.keys():
-            if k not in args:
+            if k not in args and k[0] != '_':
                 args[k] = self.get_argument(k)
         for k in dels:
             if k in args:
