@@ -6,13 +6,7 @@ class PanelCtrl(BasicCtrl):
     @alive
     def get(self, *args):
         user = self.current_user
-
-        cur = self.dbase('alogs').cursor()
-        cur.execute('select * from alogs where user_id=? order by alog_id desc limit 5', (user['user_id'], ))
-        logs = cur.fetchall()
-        cur.close()
-
-        self.render('panel.html', user = user, logs = logs)
+        self.render('panel.html', user = user)
 
     @alive
     def post(self, *args):
@@ -21,6 +15,7 @@ class PanelCtrl(BasicCtrl):
 
             user_name = self.input('name')
             user_mail = self.input('mail')
+            user_sign = self.input('sign')
             user_pswd = self.input('pswd', None)
             user_npwd = self.input('npwd', None)
             user_rpwd = self.input('rpwd', None)
@@ -37,12 +32,12 @@ class PanelCtrl(BasicCtrl):
                     return
 
                 user_salt = self.model('admin').generate_randsalt(self.utils().str_md5(user_npwd))
-                cur.execute('update users set user_name = ?, user_mail = ?, user_pswd = ?, user_salt = ?, user_atms = ?, user_utms = ? where user_id = ?',\
-                        (user_name, user_mail, self.model('admin').generate_password(user_npwd, user_salt), user_salt, self.stime(), self.stime(), user['user_id'], ))
+                cur.execute('update users set user_name = ?, user_mail = ?, user_sign = ?, user_pswd = ?, user_salt = ?, user_atms = ?, user_utms = ? where user_id = ?',\
+                        (user_name, user_mail, user_sign, self.model('admin').generate_password(user_npwd, user_salt), user_salt, self.stime(), self.stime(), user['user_id'], ))
                 con.commit()
             else:
-                cur.execute('update users set user_name = ?, user_mail = ?, user_utms = ? where user_id = ?',\
-                        (user_name, user_mail, self.stime(), user['user_id'], ))
+                cur.execute('update users set user_name = ?, user_mail = ?, user_sign = ?, user_utms = ? where user_id = ?',\
+                        (user_name, user_mail, user_sign, self.stime(), user['user_id'], ))
                 con.commit()
 
             cur.close()

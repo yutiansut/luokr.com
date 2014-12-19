@@ -115,13 +115,21 @@ kbd {
     padding-top: 81px;
 }
 
+.block {
+    display: block;
+    margin: 20px 0;
+}
+
 .board {
     /* background-color: #FFFFFF; */
     border: 1px solid #DDDDDD;
     border-radius: 4px;
     /* margin-bottom: 16px; */
-    padding: 39px 19px 14px;
-    position: relative;   
+    padding: 19px 19px 14px;
+    position: relative;
+}
+.board[data-title] {
+    padding-top: 39px;
 }
 .board[data-title]:after {
     background-color: #F5F5F5;
@@ -135,6 +143,32 @@ kbd {
     padding: 3px 7px;
     position: absolute;
     top: -1px;
+}
+
+.named {
+    border-bottom: 1px solid #DDDDDD;
+    padding: 0;
+    position: relative;
+    margin-top: 50px;
+}
+.named[data-title]:after {
+    background-color: #F5F5F5;
+    border: 1px solid #DDDDDD;
+    border-bottom: 0;
+    border-radius: 4px 4px 0 0;
+    color: #9DA0A4;
+    content: attr(data-title);
+    font-size: 12px;
+    font-weight: bold;
+    left: 0;
+    padding: 3px 7px;
+    position: absolute;
+    bottom: 0;
+}
+
+.lines {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
 }
 
 a.ilike {

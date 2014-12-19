@@ -24,9 +24,17 @@ class AdminModel:
         return user
 
     @staticmethod
-    def get_user_by_sign(dbase, sign):
+    def get_user_by_acct(dbase, acct):
         cur = dbase.cursor()
-        cur.execute('select * from users where user_sign = ?', (sign,))
+        cur.execute('select * from users where user_acct = ?', (acct,))
+        user = cur.fetchone()
+        cur.close()
+        return user
+
+    @staticmethod
+    def get_user_by_name(dbase, name):
+        cur = dbase.cursor()
+        cur.execute('select * from users where user_name = ?', (name,))
         user = cur.fetchone()
         cur.close()
         return user

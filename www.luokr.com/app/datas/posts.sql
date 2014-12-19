@@ -35,6 +35,13 @@ CREATE UNIQUE INDEX idx_postId_termId ON post_terms (
     term_id 
 );
 
+-- Index: idx_postPtms_postStat
+CREATE INDEX idx_userId_postPtms_postStat ON posts ( 
+    user_id,
+    post_ptms,
+    post_stat 
+);
+
 
 -- Index: idx_postPtms_postStat
 CREATE INDEX idx_postPtms_postStat ON posts ( 

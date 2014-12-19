@@ -21,7 +21,7 @@ class LoginCtrl(BasicCtrl):
             if remember:
                 remember = int(remember)
 
-            user = self.model('admin').get_user_by_sign(self.dbase('users'), username)
+            user = self.model('admin').get_user_by_acct(self.dbase('users'), username)
 
             if user:
                 ckey = 'login:user#' + str(user['user_id'])
