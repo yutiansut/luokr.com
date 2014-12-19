@@ -54,7 +54,7 @@
 {% block js_foot %}
 <script>
     $(function(){
-        $(document).pjax('a[data-pjax]', '#index-index-posts');
+        $('#index-index-posts').pjax('a[data-pjax]', '#index-index-posts');
     });
 </script>
 {% end %}

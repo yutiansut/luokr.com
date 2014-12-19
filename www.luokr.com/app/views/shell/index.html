@@ -30,7 +30,7 @@
 {% block js_foot %}
 <script>
     $(function(){
-        $(document).pjax('a[data-pjax]', '#shell-index-posts');
+        $('#shell-index-posts').pjax('a[data-pjax]', '#shell-index-posts');
     });
 </script>
 {% end %}
