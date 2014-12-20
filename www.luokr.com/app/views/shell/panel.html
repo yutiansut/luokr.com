@@ -1,4 +1,4 @@
-{% extends "_base.html" %}
+{% extends "../_base.html" %}
 
 {% block title %}帐号信息 - {{ handler.get_runtime_conf('title') }}{% end %}
 
@@ -10,8 +10,7 @@
 <div class="row">
     <div class="span8 offset1">
         <ul class="nav nav-tabs">
-            <li><a href="/@{{ handler.current_user['user_name'] }}">个人主页</a></li>
-            <li class="active"><a href="/panel">帐号信息</a></li>
+            {% module Template("shell/_tabs.html", menu='panel') %}
         </ul>
 
         <form class="form-horizontal request-ajax-form" method="post" autocomplete="off">
@@ -19,44 +18,38 @@
             <div class="control-group">
                 <label class="control-label" for="inputPswd">当前密码：</label>
                 <div class="controls">
-                    <input type="password" id="inputPswd" name="pswd">
+                    <input type="password" id="inputPswd" name="pswd" minlength="6">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputNpwd">新的密码：</label>
                 <div class="controls">
-                    <input type="password" id="inputNpwd" name="npwd">
+                    <input type="password" id="inputNpwd" name="npwd" minlength="6">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputRpwd">确认密码：</label>
                 <div class="controls">
-                    <input type="password" id="inputRpwd" name="rpwd">
+                    <input type="password" id="inputRpwd" name="rpwd" minlength="6">
                 </div>
             </div>
 
             <div class="control-group">
-                <label class="control-label" for="inputAcct">登录账号：</label>
+                <label class="control-label" for="inputAcct">用户名称：</label>
                 <div class="controls">
-                    <input type="text" id="inputAcct" value="{{ user['user_acct'] }}" required disabled="disabled">
+                    <input type="text" id="inputAcct" value="{{ user['user_name'] }}" required disabled="disabled">
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputName">我的名称：</label>
+                <label class="control-label" for="inputMail">联系邮箱：</label>
                 <div class="controls">
-                    <input type="text" id="inputName" name="name" value="{{ user['user_name'] }}" required>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputMail">我的邮箱：</label>
-                <div class="controls">
-                    <input type="email" id="inputMail" name="mail" value="{{ user['user_mail'] }}" required>
+                    <input type="email" id="inputMail" name="mail" value="{{ user['user_mail'] }}" maxlength="64" required>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputSign">个性签名：</label>
                 <div class="controls">
-                    <textarea id="inputSign" name="sign" rows="3">{{ user['user_sign'] }}</textarea>
+                    <textarea id="inputSign" name="sign" rows="3" maxlength="128">{{ user['user_sign'] }}</textarea>
                 </div>
             </div>
 

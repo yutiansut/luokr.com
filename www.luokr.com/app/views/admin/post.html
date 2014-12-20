@@ -55,9 +55,9 @@
             <div class="control-group">
                 <label class="control-label" for="input_term_list">文章标签</label>
                 <div class="controls">
-                    <input class="input-xlarge" type="text" id="input_term_list" name="term_list" value="{% if post['post_id'] in ptids %}{% for term in ptids[post['post_id']] %}{{ ptags[term['term_id']]['term_sign']}} {% end %}{% end %}">
+                    <input class="input-xlarge" type="text" id="input_term_list" name="term_list" value="{% if post['post_id'] in ptids %}{% for term in ptids[post['post_id']] %}{{ ptags[term['term_id']]['term_name']}} {% end %}{% end %}">
                     {% for term in terms %}
-                    <span class="inline-help label label-success" alt="{{ term['term_sign'] }}">{{ term['term_name'] }}</span>&nbsp;
+                    <span class="inline-help label label-success" alt="{{ term['term_name'] }}">{{ term['term_name'] }}</span>&nbsp;
                     {% end %}
                 </div>
             </div>
@@ -98,17 +98,29 @@
             </div>
 
             <div class="control-group">
+                <label class="control-label" for="input_post_ptms">发布时间</label>
+                <div class="controls">
+                    <input type="text" id="input_post_ptms" name="post_ptms" value="{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(post['post_ptms'])) }}" required>
+                </div>
+            </div>
+
+            <div class="control-group">
                 <label class="control-label" for="input_post_rank">文章分值</label>
                 <div class="controls">
                     <input type="text" id="input_post_rank" name="post_rank" value="{{ post['post_rank'] }}" required>
                     <span class="help-inline">分值大于等于 <a href="/admin/conf?conf_name=index_posts_top_rank" target="_blank">{{ handler.get_runtime_conf('index_posts_top_rank') }}</a> 的文章会置顶推荐</span>
                 </div>
             </div>
-
             <div class="control-group">
-                <label class="control-label" for="input_post_ptms">发布时间</label>
+                <label class="control-label" for="input_post_plus">文章加分</label>
                 <div class="controls">
-                    <input type="text" id="input_post_ptms" name="post_ptms" value="{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(post['post_ptms'])) }}" required>
+                    <input type="text" id="input_post_plus" value="{{ post['post_plus'] }}" disabled>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="input_post_mins">文章减分</label>
+                <div class="controls">
+                    <input type="text" id="input_post_mins" value="{{ post['post_mins'] }}" disabled>
                 </div>
             </div>
 

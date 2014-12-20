@@ -21,7 +21,7 @@ class PostsCtrl(BasicCtrl):
         _tag = None
 
         if _tnm:
-            cur_terms.execute('select * from terms where term_sign = ? limit 1', (str(_tnm).lower(),))
+            cur_terms.execute('select * from terms where term_name = ? limit 1', (str(_tnm),))
             _tag = cur_terms.fetchone()
 
         if _tag:

@@ -1,8 +1,8 @@
 #coding=utf-8
 
-from app.ctrls.basic import BasicCtrl
+from shell import shell, ShellCtrl
 
-class Shell_IndexCtrl(BasicCtrl):
+class Shell_IndexCtrl(ShellCtrl):
     def get(self, name):
         stime = self.stime()
         pager = {}

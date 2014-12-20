@@ -8,7 +8,7 @@
             {% if post['post_id'] in ptids %}
             <small>
                 {% for term in ptids[post['post_id']] %}
-                <a href="/t/{% raw handler.get_escaper().url_escape(ptags[term['term_id']]['term_sign']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
+                <a href="/t/{% raw handler.get_escaper().url_escape(ptags[term['term_id']]['term_name']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
                 {% end %}
             </small>
             {% else %}

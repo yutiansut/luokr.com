@@ -16,7 +16,8 @@
     }
 
     #list-talk table td {padding-bottom: 20px;}
-    .talk-time { display: block; font-size: .8em; color: grey; }
+    .talk-time {display: block; font-size: .8em; color: grey;}
+    .talk-cont {word-wrap: break-word; word-break: break-all;};
 
     @media print {
         #list-talk, #form-talk {display: none}
@@ -34,7 +35,7 @@
                 {% if post['post_id'] in ptids %}
                 <small>
                     {% for term in ptids[post['post_id']] %}
-                    <a href="/t/{% raw handler.get_escaper().url_escape(ptags[term['term_id']]['term_sign']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
+                    <a href="/t/{% raw handler.get_escaper().url_escape(ptags[term['term_id']]['term_name']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
                     {% end %}
                 </small>
                 {% else %}
@@ -68,8 +69,8 @@
                     <tbody>
                     {% for talk in talks %}
                     <tr id="r{{ talk['talk_id'] }}">
-                        <td class="talk-user span2"><i class="icon-user"></i> {{ talk['user_name'] }}<span class="talk-time">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
-                        <td>{% raw handler.get_escaper().xhtml_escape(talk['talk_text']).replace('\n','\n<br>') %}</td>
+                        <td class="talk-user span2"><i class="icon-user"></i> {% if talk['user_id'] %}<a href="/@{{ talk['user_name'] }}" target="_blank">{{ talk['user_name'] }}</a>{% else %}{{ talk['user_name'] }}{% end %}<span class="talk-time">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
+                        <td class="talk-cont">{% raw handler.get_escaper().xhtml_escape(talk['talk_text']).replace('\n','\n<br>') %}</td>
                     </tr>
                     {% end %}
                     </tbody>
@@ -81,16 +82,17 @@
         <form id="form-talk" class="form-horizontal" method="post" action="/voice?p={{ post['post_id'] }}">
             {% raw xsrf_form_html() %}
             <fieldset>
+                
                 <div class="control-group">
-                    <label class="control-label" for="form-talk-name">您的称呼：</label>
+                    <label class="control-label" for="form-talk-name">您的名称：</label>
                     <div class="controls">
-                        <input id="form-talk-name" type="text" name="name" class="span3" required>
+                        <input id="form-talk-name" type="text" name="name" class="span3" minlength="3" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_name'] }}" readonly{% end %} required>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="form-talk-mail">您的邮箱：</label>
                     <div class="controls">
-                        <input id="form-talk-mail" type="email" name="mail" class="span3" required>
+                        <input id="form-talk-mail" type="email" name="mail" class="span3" minlength="6" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_mail'] }}" readonly{% end %} required>
                     </div>
                 </div>
                 <div class="control-group">

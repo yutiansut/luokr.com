@@ -4,7 +4,7 @@ from basic import BasicCtrl
 
 class LoginCtrl(BasicCtrl):
     def get(self):
-        next = self.input('next', '/panel')
+        next = self.input('next', '/shell')
         self.render('login.html', next = next)
 
     def post(self):
@@ -16,12 +16,12 @@ class LoginCtrl(BasicCtrl):
             username = self.input('username')
             password = self.input('password')
             remember = self.input('remember', None)
-            redirect = self.input('redirect', '/panel')
+            redirect = self.input('redirect', '/shell')
 
             if remember:
                 remember = int(remember)
 
-            user = self.model('admin').get_user_by_acct(self.dbase('users'), username)
+            user = self.model('admin').get_user_by_name(self.dbase('users'), username)
 
             if user:
                 ckey = 'login:user#' + str(user['user_id'])

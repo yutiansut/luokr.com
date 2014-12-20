@@ -13,14 +13,17 @@ class VoiceCtrl(BasicCtrl):
             self.flash(0, {'msg': '文章不存在'})
             return
 
-        usid = '0'
         rank = '0'
+        usid = '0'
         if self.current_user:
-            usid = self.current_user['user_id']
             rank = self.get_runtime_conf('posts_talks_min_rank')
+            usid = self.current_user['user_id']
+            name = self.current_user['user_name']
+            mail = self.current_user['user_mail']
+        else:
+            name = self.input('name')
+            mail = self.input('mail')
 
-        name = self.input('name')
-        mail = self.input('mail')
         text = self.input('text')
         time = self.stime()
 

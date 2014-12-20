@@ -1,6 +1,6 @@
 {% extends "../_base.html" %}
 
-{% block title %}{{ user['user_name'] }} - {{ handler.get_runtime_conf('title') }}{% end %}
+{% block title %}{{ user['user_name'] }}{% if user['user_sign'] %} ({{ user['user_sign'] }}){% end %} - {{ handler.get_runtime_conf('title') }}{% end %}
 
 {% block css_head %}
 <style>

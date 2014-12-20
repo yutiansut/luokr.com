@@ -93,19 +93,17 @@ class Admin_PostCreateCtrl(AdminCtrl):
             term_imap = {}
             term_ctms = self.stime()
             for term_name in term_list:
-                term_sign = term_name.lower()
-
-                cur_terms.execute('select term_id from terms where term_sign = ?', (term_sign ,))
+                cur_terms.execute('select term_id from terms where term_name = ?', (term_name ,))
                 term_id = cur_terms.fetchone()
                 if term_id:
                     term_id = term_id['term_id']
                 else:
-                    cur_terms.execute('insert or ignore into terms (term_name, term_sign, term_ctms) values (?, ?, ?)', (term_name, term_sign , term_ctms, ))
+                    cur_terms.execute('insert or ignore into terms (term_name, term_ctms) values (?, ?)', (term_name , term_ctms, ))
                     if cur_terms.lastrowid:
                         term_id = cur_terms.lastrowid
 
                 if term_id:
-                    term_imap[term_id] = term_sign
+                    term_imap[term_id] = term_name
 
             cur_posts.execute('insert into posts (user_id, post_type, post_title, post_descp, post_author, post_source, post_summary, post_content,post_stat, post_rank, post_ptms, post_ctms, post_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', \
                     (user['user_id'], post_type, post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_ctms, post_utms ,))
@@ -214,19 +212,17 @@ class Admin_PostCtrl(AdminCtrl):
             term_imap = {}
             term_ctms = self.stime()
             for term_name in term_list:
-                term_sign = term_name.lower()
-
-                cur_terms.execute('select term_id from terms where term_sign = ?', (term_sign ,))
+                cur_terms.execute('select term_id from terms where term_name = ?', (term_name ,))
                 term_id = cur_terms.fetchone()
                 if term_id:
                     term_id = term_id['term_id']
                 else:
-                    cur_terms.execute('insert or ignore into terms (term_name, term_sign, term_ctms) values (?, ?, ?)', (term_name, term_sign , term_ctms, ))
+                    cur_terms.execute('insert or ignore into terms (term_name, term_ctms) values (?, ?)', (term_name , term_ctms, ))
                     if cur_terms.lastrowid:
                         term_id = cur_terms.lastrowid
 
                 if term_id:
-                    term_imap[term_id] = term_sign
+                    term_imap[term_id] = term_name
 
             cur_posts.execute('select term_id from post_terms where post_id = ?', (post_id, ))
             post_tids = cur_posts.fetchall()

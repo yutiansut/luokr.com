@@ -151,13 +151,12 @@ kbd {
     position: relative;
     margin-top: 50px;
 }
-.named[data-title]:after {
+.named>.named-title {
     background-color: #F5F5F5;
     border: 1px solid #DDDDDD;
     border-bottom: 0;
     border-radius: 4px 4px 0 0;
     color: #9DA0A4;
-    content: attr(data-title);
     font-size: 12px;
     font-weight: bold;
     left: 0;

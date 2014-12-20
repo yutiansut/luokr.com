@@ -21,7 +21,7 @@
     <ul class="inline">
         {% if keyws_tag %}
         {% for val in keyws_tag %}
-        <li><a href="/t/{{ handler.get_escaper().url_escape(val['term_sign']) }}">{{ val['term_name'] }}</a></li>
+        <li><a href="/t/{{ handler.get_escaper().url_escape(val['term_name']) }}">{{ val['term_name'] }}</a></li>
         {% end %}
         {% end %}
     </ul>

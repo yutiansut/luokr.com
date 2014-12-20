@@ -22,8 +22,7 @@
             <thead>
                 <tr>
                     <th style="width: 60px">#</th>
-                    <th>标签名称</th>
-                    <th style="width: 120px">标签标识</th>
+                    <th style="width: 120px">标签名称</th>
                     <th style="width: 140px">创建时间</th>
                     <th style="width: 80px">引用次数</th>
                     <th style="width: 80px">操作</th>
@@ -35,7 +34,6 @@
                 <tr>
                     <td>{{ term['term_id'] }}</td>
                     <td>{{ term['term_name'] }}</td>
-                    <td>{{ term['term_sign'] }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(term['term_ctms'])) }}</td>
                     <td>{{ term['term_refc'] }}</td>
                     <td><a href="/admin/term?term_id={{ term['term_id'] }}">编辑</a></td>
@@ -43,7 +41,7 @@
                 {% end %}
                 {% else %}
                 <tr>
-                    <td colspan="6" style="text-align:center">没有发现内容</td>
+                    <td colspan="5" style="text-align:center">没有发现内容</td>
                 </tr>
                 {% end %}
             </tbody>

@@ -34,13 +34,12 @@ class Admin_TermCtrl(AdminCtrl):
     def post(self):
         try:
             term_id   = self.input('term_id')
-            term_sign = self.input('term_sign')
             term_name = self.input('term_name')
 
             con = self.dbase('terms')
             cur = con.cursor()
-            cur.execute('update terms set term_name = ?, term_sign = ? where term_id = ?', \
-                    (term_name, term_sign, term_id ,))
+            cur.execute('update terms set term_name = ? where term_id = ?', \
+                    (term_name, term_id ,))
             con.commit()
             cur.close()
             if cur.rowcount:
@@ -58,14 +57,13 @@ class Admin_TermCreateCtrl(AdminCtrl):
     @admin
     def post(self):
         try:
-            term_sign = self.input('term_sign')
             term_name = self.input('term_name')
             term_ctms = self.stime()
 
             con = self.dbase('terms')
             cur = con.cursor()
-            cur.execute('insert into terms (term_name, term_sign, term_ctms) values (?, ?, ?)', \
-                    (term_name, term_sign, term_ctms ,))
+            cur.execute('insert into terms (term_name, term_ctms) values (?, ?)', \
+                    (term_name, term_ctms ,))
             con.commit()
             cur.close()
             if cur.lastrowid:

@@ -15,8 +15,8 @@ from ctrls.leave import LeaveCtrl
 
 from ctrls.image import ImageRandomCtrl
 
-from ctrls.panel import PanelCtrl
 from ctrls.shell.index import Shell_IndexCtrl
+from ctrls.shell.panel import Shell_PanelCtrl
 
 from ctrls.admin.index import Admin_IndexCtrl
 from ctrls.admin.cache import Admin_CacheCtrl, Admin_CacheDeleteCtrl
@@ -48,8 +48,8 @@ url = [
     (r'/login', LoginCtrl),
     (r'/leave', LeaveCtrl),
 
-    (r'/panel', PanelCtrl),
-    (r'/@([-a-zA-Z0-9]+)', Shell_IndexCtrl),
+    (r'/shell', Shell_PanelCtrl),
+    (r'/@([^/]+)', Shell_IndexCtrl),
 
     (r'/image/random', ImageRandomCtrl),
 
