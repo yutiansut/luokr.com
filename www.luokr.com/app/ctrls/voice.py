@@ -15,7 +15,7 @@ class VoiceCtrl(BasicCtrl):
 
         rank = '0'
         usid = '0'
-        if self.current_user:
+        if self.input('auth', False) and self.current_user:
             rank = self.get_runtime_conf('posts_talks_min_rank')
             usid = self.current_user['user_id']
             name = self.current_user['user_name']

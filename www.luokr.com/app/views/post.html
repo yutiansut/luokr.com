@@ -82,17 +82,26 @@
         <form id="form-talk" class="form-horizontal" method="post" action="/voice?p={{ post['post_id'] }}">
             {% raw xsrf_form_html() %}
             <fieldset>
-                
+
+                {% if handler.current_user %}
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input type="checkbox" name="auth" value="1" checked="checked"> 以登录用户身份评论
+                        </label>
+                    </div>
+                </div>
+                {% end %}
                 <div class="control-group">
                     <label class="control-label" for="form-talk-name">您的名称：</label>
                     <div class="controls">
-                        <input id="form-talk-name" type="text" name="name" class="span3" minlength="3" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_name'] }}" readonly{% end %} required>
+                        <input id="form-talk-name" type="text" name="name" class="span3" minlength="3" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_name'] }}" data-value="{{ handler.current_user['user_name'] }}" readonly{% end %} required>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="form-talk-mail">您的邮箱：</label>
                     <div class="controls">
-                        <input id="form-talk-mail" type="email" name="mail" class="span3" minlength="6" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_mail'] }}" readonly{% end %} required>
+                        <input id="form-talk-mail" type="email" name="mail" class="span3" minlength="6" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_mail'] }}" data-value="{{ handler.current_user['user_mail'] }}" readonly{% end %} required>
                     </div>
                 </div>
                 <div class="control-group">
@@ -132,6 +141,16 @@
                 $.post('/score?p=' + i.data('post-id'), {'_xsrf': '{{ handler.xsrf_token }}'}, function(){
                     i.text(i.data('plus-ts'));
                 }, 'json');
+            }
+        });
+
+        $('#form-talk [name=auth]').change(function() {
+            var c = $(this);
+            if (c.prop("checked")) {
+                $('#form-talk [name=name]').val($('#form-talk [name=name]').data('value')).prop('readonly', true);
+                $('#form-talk [name=mail]').val($('#form-talk [name=mail]').data('value')).prop('readonly', true);
+            } else {
+                $('#form-talk [name=name], #form-talk [name=mail]').prop("readonly", false);
             }
         });
 
