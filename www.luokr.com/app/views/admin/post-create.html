@@ -6,7 +6,7 @@
 {% module Template("admin/_navs.html", menu='admin') %}
 {% end %}
 
-{% block css_head %}
+{% block head_css %}
 <style>
     .form-horizontal .control-label {
         float: left;
@@ -130,7 +130,7 @@
 </div>
 {% end %}
 
-{% block js_foot  %}
+{% block foot_js  %}
 {% if not mode %}
 <script type="text/javascript" src="/assets/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">

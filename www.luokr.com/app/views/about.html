@@ -2,7 +2,7 @@
 
 {% block title %}关于我们 - {{ handler.get_runtime_conf('title') }}{% end %}
 
-{% block css_head %}
+{% block head_css %}
 <style>
     #form-email .control-label {
         text-align: left;
@@ -60,7 +60,7 @@
 </div>
 {% end %}
 
-{% block js_foot %}
+{% block foot_js %}
 <script>
     $(function(){
         $('#form-email').submit(function(){

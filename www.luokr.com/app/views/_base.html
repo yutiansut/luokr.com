@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/bootstrap.min.css?5ecf828dc1ce521d238f94a67176a09a">
 <link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/bootstrap-responsive.min.css?f889adb0886162aa4ceab5ff6338d888">
 
-{% block css_head_mid %}{% end %}
+{% block head_css_mid %}{% end %}
 
 <link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css?6498d4368bf2a64b252377b5f1c39f99">
 <link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework-responsive.min.css?a46d50bc89a072ee417d0ac79b1b237b">
@@ -18,8 +18,8 @@
 <link rel="stylesheet" href="/assets/css/customize.css?2f617fb666e3e79a9648247d768feb65">
 <link rel="stylesheet" href="/assets/css/customize-responsive.css?1905abbfdcc8c75e08744b8d6fcc2ec7">
 
-{% block css_head %}{% end %}
-{% block js_head %}{% end %}
+{% block head_css %}{% end %}
+{% block head_js %}{% end %}
 
 <!--[if lt IE 9]><script src="{{ handler.get_runtime_conf('sites_asset') }}js/html5shiv.min.js"></script><![endif]-->
 </head>
@@ -77,7 +77,7 @@
 <script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.scrollUp.min.js"></script>
 <script src="{{ handler.get_runtime_conf('sites_asset') }}js/bootstrap.min.js"></script>
 <script src="/assets/js/customize.js"></script>
-{% block js_foot %}{% end %}
+{% block foot_js %}{% end %}
 
 {% block stats %}{% raw handler.get_runtime_conf('stats') %}{% end %}
 </body>

@@ -2,7 +2,7 @@
 
 {% block title %}{{ user['user_name'] }}{% if user['user_sign'] %} ({{ user['user_sign'] }}){% end %} - {{ handler.get_runtime_conf('title') }}{% end %}
 
-{% block css_head %}
+{% block head_css %}
 <style>
     .lines {
         padding: 16px;
@@ -27,7 +27,7 @@
 </div>
 {% end %}
 
-{% block js_foot %}
+{% block foot_js %}
 <script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.pjax.min.js"></script>
 <script>
     $(function(){

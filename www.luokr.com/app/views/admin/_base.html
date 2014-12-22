@@ -10,13 +10,13 @@
 <link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/bootstrap.min.css">
 <link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/googstyle.min.css">
 
-{% block css_head_mid %}{% end %}
+{% block head_css_mid %}{% end %}
 
 <link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css">
 <link rel="stylesheet" href="/assets/css/customize.css">
 
-{% block css_head %}{% end %}
-{% block js_head %}{% end %}
+{% block head_css %}{% end %}
+{% block head_js %}{% end %}
 
 <!--[if lt IE 9]><script src="{{ handler.get_runtime_conf('sites_asset') }}js/html5shiv.min.js"></script><![endif]-->
 </head>
@@ -64,6 +64,6 @@
 <script src="{{ handler.get_runtime_conf('sites_asset') }}js/bootstrap.min.js"></script>
 <script src="/assets/js/easydialog.js"></script>
 <script src="/assets/js/customize.js"></script>
-{% block js_foot %}{% end %}
+{% block foot_js %}{% end %}
 </body>
 </html>
