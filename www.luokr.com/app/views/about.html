@@ -26,13 +26,13 @@
                     <div class="control-group">
                         <label class="control-label" for="form-email-name">您的名称：</label>
                         <div class="controls">
-                            <input id="form-email-name" type="text" name="name" class="span3" minlength="3" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_name'] }}"{% end %} required>
+                            <input id="form-email-name" type="text" name="name" class="span3" minlength="3" maxlength="64" required>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="form-email-mail">您的邮箱：</label>
                         <div class="controls">
-                            <input id="form-email-mail" type="email" name="mail" class="span3" minlength="6" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_mail'] }}"{% end %} required>
+                            <input id="form-email-mail" type="email" name="mail" class="span3" minlength="6" maxlength="64" required>
                         </div>
                     </div>
                     <div class="control-group">
