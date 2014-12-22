@@ -16,6 +16,25 @@
         <form class="form-horizontal request-ajax-form" method="post" autocomplete="off">
             {% raw xsrf_form_html() %}
             <div class="control-group">
+                <label class="control-label" for="inputName">用户名称：</label>
+                <div class="controls">
+                    <input type="text" id="inputName" value="{{ user['user_name'] }}" required disabled>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputMail">联系邮箱：</label>
+                <div class="controls">
+                    <input type="email" id="inputMail" name="mail" value="{{ user['user_mail'] }}" maxlength="64" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputSign">个性签名：</label>
+                <div class="controls">
+                    <input type="text" id="inputSign" name="sign" value="{{ user['user_sign'] }}" maxlength="128" required>
+                </div>
+            </div>
+
+            <div class="control-group">
                 <label class="control-label" for="inputPswd">当前密码：</label>
                 <div class="controls">
                     <input type="password" id="inputPswd" name="pswd" minlength="6">
@@ -31,25 +50,6 @@
                 <label class="control-label" for="inputRpwd">确认密码：</label>
                 <div class="controls">
                     <input type="password" id="inputRpwd" name="rpwd" minlength="6">
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label" for="inputAcct">用户名称：</label>
-                <div class="controls">
-                    <input type="text" id="inputAcct" value="{{ user['user_name'] }}" required disabled="disabled">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputMail">联系邮箱：</label>
-                <div class="controls">
-                    <input type="email" id="inputMail" name="mail" value="{{ user['user_mail'] }}" maxlength="64" required>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputSign">个性签名：</label>
-                <div class="controls">
-                    <textarea id="inputSign" name="sign" rows="3" maxlength="128">{{ user['user_sign'] }}</textarea>
                 </div>
             </div>
 

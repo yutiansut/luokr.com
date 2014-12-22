@@ -4,4 +4,4 @@
     {% end %}
 </div>
 <p class="named block"><span class="named-title">@{{ user['user_name'] }}</span></p>
-<p class="muted block">{% raw handler.get_escaper().xhtml_escape(user['user_sign']).replace('\n','\n<br>') %}</p>
+<p class="muted block">{{ user['user_sign'] }}</p>
