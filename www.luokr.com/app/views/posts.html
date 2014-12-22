@@ -42,19 +42,11 @@
             <li class="active">{{ track }}</li>
         </ul>
 
-        <div id="index-index-posts">
+        <div>
             {% module Template("index/index/posts.html", pager=pager, posts=posts, psers=psers, ptids=ptids, ptags=ptags) %}
         </div>
     </div>
     
     {% include "_side.html" %}
 </div>
-{% end %}
-
-{% block js_foot %}
-<script>
-    $(function(){
-        $('#index-index-posts').pjax('a[data-pjax]', '#index-index-posts');
-    });
-</script>
 {% end %}
