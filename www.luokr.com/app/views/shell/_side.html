@@ -4,4 +4,4 @@
     {% end %}
 </div>
 <p class="named block"><span class="named-title">@{{ user['user_name'] }}</span></p>
-<p class="muted block">{{ user['user_sign'] }}</p>
+{% if user['user_sign'] %}<p class="muted block">{{ user['user_sign'] }}</p>{% end %}

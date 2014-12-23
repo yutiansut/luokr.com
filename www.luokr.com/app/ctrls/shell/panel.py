@@ -14,7 +14,7 @@ class Shell_PanelCtrl(ShellCtrl):
             user = self.current_user
 
             user_mail = self.input('mail')
-            user_sign = self.input('sign')
+            user_sign = self.input('sign', '')
             user_pswd = self.input('pswd', None)
             user_npwd = self.input('npwd', None)
             user_rpwd = self.input('rpwd', None)
