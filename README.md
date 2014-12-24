@@ -26,6 +26,15 @@ Below is the main directory structure:
 The background landing address is `/admin`, default username is `admin` and the password is `888888`.
 You can change it after you logined.
 
+Requirement
+------------
+
+(Python >= 2.7)
+
+* tornado (>= 3.1.1)
+* pil or pillow
+
+
 Screenshots
 -----------
 

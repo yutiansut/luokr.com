@@ -1,6 +1,6 @@
 import os.path
 import random
-import Image, ImageFont, ImageDraw, ImageFilter
+from PIL import Image, ImageFont, ImageDraw, ImageFilter
 
 try:
     import cStringIO as StringIO
