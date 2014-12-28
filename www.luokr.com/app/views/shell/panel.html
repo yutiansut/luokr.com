@@ -18,44 +18,44 @@
             <div class="control-group">
                 <label class="control-label" for="inputName">用户名称：</label>
                 <div class="controls">
-                    <input type="text" id="inputName" value="{{ user['user_name'] }}" required disabled>
+                    <input class="span3" type="text" id="inputName" value="{{ user['user_name'] }}" required disabled>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputMail">联系邮箱：</label>
                 <div class="controls">
-                    <input type="email" id="inputMail" name="mail" value="{{ user['user_mail'] }}" maxlength="64" required>
+                    <input class="span3" type="email" id="inputMail" name="mail" value="{{ user['user_mail'] }}" maxlength="64" required>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputSign">个性签名：</label>
                 <div class="controls">
-                    <input type="text" id="inputSign" name="sign" value="{{ user['user_sign'] }}" maxlength="128">
+                    <input class="span3" type="text" id="inputSign" name="sign" value="{{ user['user_sign'] }}" maxlength="128">
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label" for="inputPswd">当前密码：</label>
                 <div class="controls">
-                    <input type="password" id="inputPswd" name="pswd" minlength="6">
+                    <input class="span3" type="password" id="inputPswd" name="pswd" minlength="6">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputNpwd">新的密码：</label>
                 <div class="controls">
-                    <input type="password" id="inputNpwd" name="npwd" minlength="6">
+                    <input class="span3" type="password" id="inputNpwd" name="npwd" minlength="6">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputRpwd">确认密码：</label>
                 <div class="controls">
-                    <input type="password" id="inputRpwd" name="rpwd" minlength="6">
+                    <input class="span3" type="password" id="inputRpwd" name="rpwd" minlength="6">
                 </div>
             </div>
 
             <div class="control-group">
                 <div class="controls">
-                    <button type="submit" class="btn btn-success input-medium">提交更新</button>
+                    <button type="submit" class="btn btn-success">提交更新</button>
                     <button type="reset" class="btn">重置</button>
                 </div>
             </div>
