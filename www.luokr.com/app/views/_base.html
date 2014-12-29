@@ -12,8 +12,8 @@
 
 {% block head_css_mid %}{% end %}
 
-<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css?6498d4368bf2a64b252377b5f1c39f99">
-<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework-responsive.min.css?a46d50bc89a072ee417d0ac79b1b237b">
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css?b4ae12acc036ef2b9fe8e06db4e6cae6">
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework-responsive.min.css?86b57899315a31074e71a6122acf256f">
 
 <link rel="stylesheet" href="/assets/css/customize.css?2f617fb666e3e79a9648247d768feb65">
 <link rel="stylesheet" href="/assets/css/customize-responsive.css?1905abbfdcc8c75e08744b8d6fcc2ec7">
@@ -36,9 +36,10 @@
             <div class="container">
                 <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
                 {% if handler.current_user %}
-                <ul class="nav pull-right">
-                    <li><a href="/shell"><i class="icon-user" style="vertical-align: baseline"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>
-                    <li><a href="/leave"><i class="icon-off" style="vertical-align: baseline"></i></a></li>
+                <ul class="nav nav-tool-bar pull-right">
+                    <li><a href="/@{{handler.get_escaper().url_escape(handler.current_user['user_name'])}}"><i class="icon-user"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>
+                    <li><a href="/shell"><i class="icon-cog"></i></a></li>
+                    <li><a href="/leave"><i class="icon-off"></i></a></li>
                 </ul>
                 {% end %}
 

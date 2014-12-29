@@ -28,9 +28,10 @@
             <div class="container">
                 <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
                 {% if handler.current_user %}
-                <ul class="nav pull-right">
-                    <li><a href="/shell"><i class="icon-user" style="vertical-align: baseline"></i><span> {{ handler.current_user['user_name'] }}</span></a></li>
-                    <li><a href="/leave"><i class="icon-off" style="vertical-align: baseline"></i></a></li>
+                <ul class="nav nav-tool-bar pull-right">
+                    <li><a href="/@{{handler.get_escaper().url_escape(handler.current_user['user_name'])}}"><i class="icon-user"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>
+                    <li><a href="/shell"><i class="icon-cog"></i></a></li>
+                    <li><a href="/leave"><i class="icon-off"></i></a></li>
                 </ul>
                 {% end %}
 
