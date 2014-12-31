@@ -37,19 +37,18 @@ Requirement
 
 Screenshots
 -----------
-
-posts:
-![www.luokr.com.posts.png](res.luokr.com/img/20140530/www.luokr.com.posts.png)
-
-about:
+* About
 ![www.luokr.com.about.png](res.luokr.com/img/20140216/www.luokr.com.about.png)
 
-login:
+* Login
 ![www.luokr.com.login.png](res.luokr.com/img/20140530/www.luokr.com.login.png)
 
-admin:
-![www.luokr.com.admin.png](res.luokr.com/img/20140415/www.luokr.com.admin.png)
+* Posts
+![www.luokr.com.posts.png](res.luokr.com/img/20140530/www.luokr.com.posts.png)
 
-admin edit post:
-![www.luokr.com.admin.post.update.png](res.luokr.com/img/20140415/www.luokr.com.admin.post.update.png)
+* Admin
+![www.luokr.com.admin.png](res.luokr.com/img/20141231/www.luokr.com.admin.png)
+
+* Admin (Edit Post)
+![www.luokr.com.admin.post.update.png](res.luokr.com/img/20141231/www.luokr.com.admin.post.update.png)
 
