@@ -13,7 +13,7 @@ class AdminModel:
 
     @staticmethod
     def generate_authword(atms, salt):
-        return hashlib.md5('AL.auth:' + hashlib.md5(str(atms) + '!'  + str(salt)).hexdigest()).hexdigest()
+        return hashlib.md5('AL.auth:' + hashlib.md5(str(atms) + '$'  + str(salt)).hexdigest()).hexdigest()
 
     @staticmethod
     def get_user_by_usid(dbase, usid):

@@ -33,9 +33,11 @@ class LoginCtrl(BasicCtrl):
 
             if user and self.model('admin').generate_password(password, user['user_salt']) == user['user_pswd']:
                 try:
+                    usid = str(user['user_id'])
+                    self.set_cookie("_usid", usid, expires_days=remember)
+
                     auth = self.model('admin').generate_authword(user['user_atms'], user['user_salt'])
                     self.set_secure_cookie("_auth", auth, expires_days=remember, httponly = True)
-                    self.set_cookie("_usid", str(user['user_id']), expires_days=remember)
 
                     self.flash(1, {'url': redirect})
                     self.model('alogs').add(self.dbase('alogs'), '登录', user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
