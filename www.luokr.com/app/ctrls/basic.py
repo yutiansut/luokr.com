@@ -72,11 +72,11 @@ class BasicCtrl(tornado.web.RequestHandler):
             if user and user['user_auid'] == auid and \
                     self.model('admin').generate_authword(user['user_atms'], user['user_salt']) == auth:
                 return user
-            self.del_current_user()
-    def del_current_user(self):
+            self.del_current_sess()
+    def del_current_sess(self):
         self.clear_cookie("_auid")
         self.clear_cookie("_auth")
-        self.clear_cookie("_usid")
+        # self.clear_cookie("_usid")
 
     def merge_query(self, args, dels = []):
         for k in self.request.arguments.keys():

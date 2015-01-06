@@ -9,5 +9,5 @@ class LeaveCtrl(BasicCtrl):
 
     @alive
     def post(self):
-        self.del_current_user()
+        self.del_current_sess()
         self.redirect('/')
