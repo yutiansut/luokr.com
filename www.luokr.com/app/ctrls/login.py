@@ -36,6 +36,9 @@ class LoginCtrl(BasicCtrl):
                     usid = str(user['user_id'])
                     self.set_cookie("_usid", usid, expires_days=remember)
 
+                    auid = str(user['user_auid'])
+                    self.set_secure_cookie("_auid", auid, expires_days=remember, httponly = True)
+
                     auth = self.model('admin').generate_authword(user['user_atms'], user['user_salt'])
                     self.set_secure_cookie("_auth", auth, expires_days=remember, httponly = True)
 

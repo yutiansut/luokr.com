@@ -30,9 +30,10 @@ class Shell_PanelCtrl(ShellCtrl):
                     self.flash(0, {'msg': '密码输入错误'})
                     return
 
+                user_auid = self.model('admin').generate_authuqid()
                 user_salt = self.model('admin').generate_randsalt(self.utils().str_md5(user_npwd))
-                cur.execute('update users set user_mail = ?, user_sign = ?, user_pswd = ?, user_salt = ?, user_atms = ?, user_utms = ? where user_id = ?',\
-                        (user_mail, user_sign, self.model('admin').generate_password(user_npwd, user_salt), user_salt, self.stime(), self.stime(), user['user_id'], ))
+                cur.execute('update users set user_auid = ?, user_mail = ?, user_sign = ?, user_pswd = ?, user_salt = ?, user_atms = ?, user_utms = ? where user_id = ?',\
+                        (user_auid, user_mail, user_sign, self.model('admin').generate_password(user_npwd, user_salt), user_salt, self.stime(), self.stime(), user['user_id'], ))
                 con.commit()
             else:
                 cur.execute('update users set user_mail = ?, user_sign = ?, user_utms = ? where user_id = ?',\

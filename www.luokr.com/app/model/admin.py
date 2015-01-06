@@ -3,6 +3,15 @@
 import random, hashlib
 
 class AdminModel:
+
+    @staticmethod
+    def generate_authuqid(list = '-_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', size = 64):
+        auid = ''
+        while (size > 0):
+            auid = auid + random.choice(list)
+            size = size - 1
+        return auid
+
     @staticmethod
     def generate_randsalt(list = '0123456789abcdefghijklmnopqrstuvwxyz', size = 8):
         return ''.join(random.sample(list, size))

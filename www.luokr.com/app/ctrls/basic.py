@@ -65,13 +65,16 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def get_current_user(self):
         usid = self.get_cookie("_usid")
+        auid = self.get_secure_cookie('_auid')
         auth = self.get_secure_cookie('_auth')
         if usid and auth:
             user = self.model('admin').get_user_by_usid(self.dbase('users'), usid)
-            if user and self.model('admin').generate_authword(user['user_atms'], user['user_salt']) == auth:
+            if user and user['user_auid'] == auid and \
+                    self.model('admin').generate_authword(user['user_atms'], user['user_salt']) == auth:
                 return user
             self.del_current_user()
     def del_current_user(self):
+        self.clear_cookie("_auid")
         self.clear_cookie("_auth")
         self.clear_cookie("_usid")
 

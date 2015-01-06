@@ -2,6 +2,8 @@
 -- Table: users
 CREATE TABLE users ( 
     user_id   INTEGER         PRIMARY KEY AUTOINCREMENT,
+    user_auid VARCHAR( 64 )   NOT NULL
+                              DEFAULT ( '' ),
     user_name VARCHAR( 64 )   NOT NULL
                               UNIQUE
                               COLLATE 'NOCASE',
