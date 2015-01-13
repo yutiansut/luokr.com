@@ -42,7 +42,7 @@
                     <td>{{ post['post_title'] }}</td>
                     <td>{{ post['post_rank'] }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_utms'])) }}</td>
-                    <td>
+                    <td class="actor-block">
                         <a href="/p/{{ post['post_id'] }}" target="_blank">查看</a>
                         <a href="/admin/post?post_id={{ post['post_id'] }}">编辑</a>
                     </td>

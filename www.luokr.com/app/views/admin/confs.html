@@ -34,7 +34,7 @@
                     <td>{{ conf['conf_name'] }}</td>
                     <td>{{ conf['conf_vals'] }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(conf['conf_ctms'])) }}</td>
-                    <td>
+                    <td class="actor-block">
                         <a href="/admin/conf?conf_name={{ handler.get_escaper().url_escape(conf['conf_name']) }}">编辑</a>
                         <a href="javascript:;" onclick="L.method.confirm() && L.method.ajaxSend('post', '/admin/conf/delete?conf_name={{ handler.get_escaper().url_escape(conf['conf_name']) }}', '{{ handler.fetch_xsrfs() }}')">删除</a>
                     </td>

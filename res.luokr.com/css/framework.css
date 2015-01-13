@@ -179,6 +179,10 @@ kbd {
     padding: 8px;
 }
 
+a.actor, .actor-block a {
+    display: inline-block;
+}
+
 a.ilike {
     border: 1px solid #eee !important;
     color: #ca6445;
@@ -186,15 +190,6 @@ a.ilike {
     -moz-border-radius: 2px !important;
     border-radius: 2px !important;
     padding: 5px 11px !important;
-}
-
-.opsbar {
-    margin-top: 4px;
-    margin-bottom: 10px;
-}
-
-.lefter > .nav-list {
-    margin-bottom: 20px;
 }
 
 .footer {

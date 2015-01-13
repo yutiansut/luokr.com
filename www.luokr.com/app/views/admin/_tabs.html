@@ -7,6 +7,15 @@
 </ul>
 </li>
 
+<!-- users -->
+<li class="dropdown{% if menu == 'users' %} active{% end %}">
+<a class="dropdown-toggle" data-toggle="dropdown" href="#">用户管理 <b class="caret"></b></a>
+<ul class="dropdown-menu">
+    <li><a href="/admin/users">用户列表</a></li>
+    <li><a href="/admin/user/create">新增用户</a></li>
+</ul>
+</li>
+
 <!-- files -->
 <li class="dropdown{% if menu == 'files' %} active{% end %}">
 <a class="dropdown-toggle" data-toggle="dropdown" href="#">文件管理 <b class="caret"></b></a>
@@ -25,18 +34,6 @@
 </ul>
 </li>
 
-<!-- posts -->
-<li class="dropdown{% if menu == 'posts' %} active{% end %}">
-<a class="dropdown-toggle" data-toggle="dropdown" href="#">文章管理 <b class="caret"></b></a>
-<ul class="dropdown-menu">
-    <li><a href="/admin/posts">文章列表</a></li>
-    <li><a href="/admin/post/create">新增文章</a></li>
-</ul>
-</li>
-
-<!-- talks -->
-<li{% if menu == 'talks' %} class="active"{% end %}><a href="/admin/talks">评论管理</a></li>
-
 <!-- links -->
 <li class="dropdown{% if menu == 'links' %} active{% end %}">
 <a class="dropdown-toggle" data-toggle="dropdown" href="#">链接管理 <b class="caret"></b></a>
@@ -46,7 +43,16 @@
 </ul>
 </li>
 
+<!-- posts -->
+<li class="dropdown{% if menu == 'posts' %} active{% end %}">
+<a class="dropdown-toggle" data-toggle="dropdown" href="#">文章管理 <b class="caret"></b></a>
+<ul class="dropdown-menu">
+    <li><a href="/admin/posts">文章列表</a></li>
+    <li><a href="/admin/post/create">新增文章</a></li>
+</ul>
+</li>
+
+<li{% if menu == 'talks' %} class="active"{% end %}><a href="/admin/talks">评论管理</a></li>
 <li{% if menu == 'mails' %} class="active"{% end %}><a href="/admin/mails">留言管理</a></li>
-<li{% if menu == 'users' %} class="active"{% end %}><a href="/admin/users">用户管理</a></li>
 <li{% if menu == 'cache' %} class="active"{% end %}><a href="/admin/cache">缓存管理</a></li>
 <li{% if menu == 'alogs' %} class="active"{% end %}><a href="/admin/alogs">系统日志</a></li>

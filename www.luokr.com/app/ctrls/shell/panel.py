@@ -26,7 +26,7 @@ class Shell_PanelCtrl(ShellCtrl):
             con = self.dbase('users')
             cur = con.cursor()
             if user_pswd:
-                if len(user_npwd) < 6 or (not user_npwd == user_rpwd) or (not self.model('admin').generate_password(user_pswd, user['user_salt']) == user['user_pswd']):
+                if len(user_npwd) < 6 or user_npwd != user_rpwd or self.model('admin').generate_password(user_pswd, user['user_salt']) != user['user_pswd']:
                     self.flash(0, {'msg': '密码输入错误'})
                     return
 

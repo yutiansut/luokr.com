@@ -27,7 +27,7 @@ from ctrls.admin.links import Admin_LinksCtrl, Admin_LinkCtrl, Admin_LinkCreateC
 from ctrls.admin.talks import Admin_TalksCtrl, Admin_TalkCtrl, Admin_TalkHiddenCtrl, Admin_TalkDeleteCtrl
 from ctrls.admin.mails import Admin_MailsCtrl, Admin_MailAccessCtrl, Admin_MailDeleteCtrl
 from ctrls.admin.terms import Admin_TermsCtrl, Admin_TermCtrl, Admin_TermCreateCtrl
-from ctrls.admin.users import Admin_UsersCtrl
+from ctrls.admin.users import Admin_UsersCtrl, Admin_UserCtrl, Admin_UserCreateCtrl
 from ctrls.admin.alogs import Admin_AlogsCtrl
 
 url = [
@@ -94,6 +94,8 @@ url = [
     (r'/admin/term/create', Admin_TermCreateCtrl),
 
     (r'/admin/users', Admin_UsersCtrl),
+    (r'/admin/user', Admin_UserCtrl),
+    (r'/admin/user/create', Admin_UserCreateCtrl),
 
     (r'.*', ErrorCtrl)
 ]

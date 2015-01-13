@@ -36,7 +36,9 @@
                     <td>{{ term['term_name'] }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(term['term_ctms'])) }}</td>
                     <td>{{ term['term_refc'] }}</td>
-                    <td><a href="/admin/term?term_id={{ term['term_id'] }}">编辑</a></td>
+                    <td class="actor-block">
+                        <a href="/admin/term?term_id={{ term['term_id'] }}">编辑</a>
+                    </td>
                 </tr>
                 {% end %}
                 {% else %}

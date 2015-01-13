@@ -40,7 +40,9 @@
                     <td>{{ user['user_perm'] }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(user['user_ctms'])) }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(user['user_utms'])) }}</td>
-                    <td></td>
+                    <td class="actor-block">
+                        <a href="/admin/user?user_id={{ user['user_id'] }}">编辑</a>
+                    </td>
                 </tr>
                 {% end %}
                 {% else %}

@@ -38,7 +38,7 @@
                     <td><a target="_blank" href="{{ link['link_href'] }}">{{ link['link_href'] }}</a></td>
                     <td>{{ link['link_rank'] }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(link['link_utms'])) }}</td>
-                    <td>
+                    <td class="actor-block">
                         <a href="/links" target="_blank">查看</a>
                         <a href="/admin/link?link_id={{ link['link_id'] }}">编辑</a>
                         <a href="javascript:;" onclick="L.method.confirm() && L.method.ajaxSend('post', '/admin/link/delete?link_id={{ link['link_id'] }}&link_utms={{ link['link_utms'] }}', '{{ handler.fetch_xsrfs() }}')">删除</a>
