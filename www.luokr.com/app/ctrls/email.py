@@ -23,8 +23,8 @@ class EmailCtrl(BasicCtrl):
 
         if (cur.lastrowid):
             self.flash(1)
-            self.email(self.get_runtime_conf('admin_email', json = True),
+            self.email('%s <%s>' %(name, mail), self.get_runtime_conf('admin_email', json = True),
                     'Received Feedback (%s)' % self.timer().strftime('%F %T %Z', self.timer().localtime(time)),
-                    'Mail From %s<%s>:\r\n\r\n%s' %(name, mail, text))
+                    'Mail From %s <%s>:\r\n\r\n%s' %(name, mail, text))
         else:
             self.flash(0)
