@@ -69,8 +69,8 @@ class Admin_FileUploadCtrl(AdminCtrl):
 
         con = self.dbase('files')
         cur = con.cursor()
-        cur.execute('insert into files (file_hash, file_base, file_path, file_type, file_ctms) values (?, ?, ?, ?, ?)',
-                (key, dir, url, res['content_type'], self.stime()))
+        cur.execute('insert into files (file_hash, file_base, file_path, file_type, file_memo, file_ctms) values (?, ?, ?, ?, ?, ?)',
+                (key, dir, url, res['content_type'], res['filename'], self.stime()))
         con.commit()
         cur.close()
 
