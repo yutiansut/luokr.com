@@ -1,4 +1,5 @@
 <ul class="unstyled">
+    {% if posts %}
     {% for post in posts %}
     <li class="lines clearfix">
     <a target="_blank" title="{{ post['post_title'] }}" href="/p/{{ post['post_id']}}">
@@ -9,6 +10,9 @@
         <small class="muted">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small>
     </div>
     </li>
+    {% end %}
+    {% else %}
+    <li class="text-center">没有发现记录</li>
     {% end %}
 </ul>
 <div class="pagination pagination-centered">
