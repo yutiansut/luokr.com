@@ -16,7 +16,7 @@ Below is the main directory structure:
     -------- ctrls/     # controllers, see Tornado's RequestHandler
     -------- datas/     # data files
     -------- model/     # model class files
-    -------- setup/     # init scripts, run 'python setup/datas.py' to make databases, etc.
+    -------- setup/     # init scripts, run `python setup/datas.py` to make databases, etc.
     -------- views/     # templates
     ---- doc/           # documents
     ---- lib/           # library files
