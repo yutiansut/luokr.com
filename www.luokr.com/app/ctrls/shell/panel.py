@@ -15,6 +15,7 @@ class Shell_PanelCtrl(ShellCtrl):
 
             user_mail = self.input('mail')
             user_sign = self.input('sign', '')
+            user_meta = self.input('meta', '')
             user_pswd = self.input('pswd', None)
             user_npwd = self.input('npwd', None)
             user_rpwd = self.input('rpwd', None)
@@ -32,12 +33,12 @@ class Shell_PanelCtrl(ShellCtrl):
 
                 user_auid = self.model('admin').generate_randauid()
                 user_salt = self.model('admin').generate_randsalt()
-                cur.execute('update users set user_auid = ?, user_mail = ?, user_sign = ?, user_pswd = ?, user_salt = ?, user_atms = ?, user_utms = ? where user_id = ?',\
-                        (user_auid, user_mail, user_sign, self.model('admin').generate_password(user_npwd, user_salt), user_salt, self.stime(), self.stime(), user['user_id'], ))
+                cur.execute('update users set user_auid = ?, user_mail = ?, user_sign = ?, user_meta = ?, user_pswd = ?, user_salt = ?, user_atms = ?, user_utms = ? where user_id = ?',\
+                        (user_auid, user_mail, user_sign, user_meta, self.model('admin').generate_password(user_npwd, user_salt), user_salt, self.stime(), self.stime(), user['user_id'], ))
                 con.commit()
             else:
-                cur.execute('update users set user_mail = ?, user_sign = ?, user_utms = ? where user_id = ?',\
-                        (user_mail, user_sign, self.stime(), user['user_id'], ))
+                cur.execute('update users set user_mail = ?, user_sign = ?, user_meta = ?, user_utms = ? where user_id = ?',\
+                        (user_mail, user_sign, user_meta, self.stime(), user['user_id'], ))
                 con.commit()
 
             cur.close()

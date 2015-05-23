@@ -5,3 +5,5 @@
 </div>
 <p class="named block"><span class="named-title">@{{ user['user_name'] }}</span></p>
 {% if user['user_sign'] %}<p class="muted block">{{ user['user_sign'] }}</p>{% end %}
+{% if user['user_meta'] %}<p class="muted block coded">{% raw handler.utils().build_links(handler.get_escaper().xhtml_escape(user['user_meta']).replace('\n','\n<br>')) %}</p>{% end %}
+

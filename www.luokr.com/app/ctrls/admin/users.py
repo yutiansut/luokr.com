@@ -28,9 +28,9 @@ class Admin_UserCtrl(AdminCtrl):
             self.flash(0, {'sta': 404})
             return
 
-        if user['user_id'] == self.current_user['user_id']:
-            self.flash(0, {'sta': 403})
-            return
+        # if user['user_id'] == self.current_user['user_id']:
+            # self.flash(0, {'sta': 403})
+            # return
 
         self.render('admin/user.html', user = user)
 
@@ -49,6 +49,7 @@ class Admin_UserCtrl(AdminCtrl):
             user_mail = self.input('user_mail')
             user_sign = self.input('user_sign')
             user_logo = self.input('user_logo')
+            user_meta = self.input('user_meta')
             user_perm = self.input('user_perm')
             user_pswd = self.input('user_pswd', '')
             user_rpwd = self.input('user_rpwd', '')
@@ -64,12 +65,12 @@ class Admin_UserCtrl(AdminCtrl):
                 user_auid = self.model('admin').generate_randauid()
                 user_salt = self.model('admin').generate_randsalt()
                 user_pswd = self.model('admin').generate_password(user_pswd, user_salt)
-                cur.execute('update users set user_auid = ?, user_mail = ?, user_sign = ?, user_logo = ?, user_pswd = ?, user_salt = ?, user_perm = ?, user_atms = ?, user_utms = ? where user_id = ?',\
-                        (user_auid, user_mail, user_sign, user_logo, user_pswd, user_salt, user_perm, self.stime(), self.stime(), user['user_id'], ))
+                cur.execute('update users set user_auid = ?, user_mail = ?, user_sign = ?, user_logo = ?, user_meta, user_pswd = ?, user_salt = ?, user_perm = ?, user_atms = ?, user_utms = ? where user_id = ?',\
+                        (user_auid, user_mail, user_sign, user_logo, user_meta, user_pswd, user_salt, user_perm, self.stime(), self.stime(), user['user_id'], ))
                 con.commit()
             else:
-                cur.execute('update users set user_mail = ?, user_sign = ?, user_logo = ?, user_perm = ?, user_utms = ? where user_id = ?',\
-                        (user_mail, user_sign, user_logo, user_perm, self.stime(), user['user_id'], ))
+                cur.execute('update users set user_mail = ?, user_sign = ?, user_logo = ?, user_meta = ?, user_perm = ?, user_utms = ? where user_id = ?',\
+                        (user_mail, user_sign, user_logo, user_meta, user_perm, self.stime(), user['user_id'], ))
                 con.commit()
             if cur.rowcount:
                 self.model('alogs').add(self.dbase('alogs'), "更新用户：" + str(user['user_id']), alog_data = user['user_name'], user_ip = self.request.remote_ip, user_id = self.current_user['user_id'], user_name = self.current_user['user_name'])
@@ -96,6 +97,7 @@ class Admin_UserCreateCtrl(AdminCtrl):
             user_rpwd = self.input('user_rpwd')
             user_sign = self.input('user_sign', '')
             user_logo = self.input('user_logo', '')
+            user_meta = self.input('user_meta', '')
             user_ctms = self.stime()
             user_utms = user_ctms
             user_atms = user_ctms
@@ -117,10 +119,10 @@ class Admin_UserCreateCtrl(AdminCtrl):
             cur = con.cursor()
             cur.execute('insert into users (\
                     user_auid, user_name, user_salt, user_pswd, user_perm, \
-                    user_mail, user_sign, user_logo, user_ctms, user_utms, user_atms) \
-                    values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', \
+                    user_mail, user_sign, user_logo, user_meta, user_ctms, user_utms, user_atms) \
+                    values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', \
                     (user_auid, user_name, user_salt, user_pswd, user_perm, \
-                    user_mail, user_sign, user_logo, user_ctms, user_utms, user_atms))
+                    user_mail, user_sign, user_logo, user_meta, user_ctms, user_utms, user_atms))
             con.commit()
             cur.close()
             if cur.lastrowid:

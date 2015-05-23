@@ -154,6 +154,10 @@ kbd {
     top: -1px;
 }
 
+.coded {
+    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+}
+
 .named {
     border-bottom: 1px solid #DDDDDD;
     padding: 0;

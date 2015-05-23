@@ -17,9 +17,11 @@ CREATE TABLE users (
                               DEFAULT ( '' ),
     user_logo VARCHAR( 256 )  NOT NULL
                               DEFAULT ( '' ),
+    user_meta TEXT            NOT NULL
+                              DEFAULT ( '' ),
     user_ctms INT( 10 )       NOT NULL,
     user_utms INT( 10 )       NOT NULL,
     user_atms INT( 10 )       NOT NULL 
 );
 
-INSERT INTO [users] ([user_id], [user_name], [user_salt], [user_pswd], [user_perm], [user_mail], [user_sign], [user_logo], [user_ctms], [user_utms], [user_atms]) VALUES (1, 'admin', 'asdflkjh', 'b6ce17f5578131e2997ccfb99dcc3500', 2147483647, '', '', '', 1374486661, 1374786660, 1374765138);
+INSERT INTO [users] ([user_id], [user_name], [user_salt], [user_pswd], [user_perm], [user_mail], [user_sign], [user_logo], [user_meta], [user_ctms], [user_utms], [user_atms]) VALUES (1, 'admin', 'asdflkjh', 'b6ce17f5578131e2997ccfb99dcc3500', 2147483647, '', '', '', '', 1374486661, 1374786660, 1374765138);

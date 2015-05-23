@@ -33,6 +33,12 @@
                     <input class="span3" type="text" id="inputSign" name="sign" value="{{ user['user_sign'] }}" maxlength="128">
                 </div>
             </div>
+            <div class="control-group">
+                <label class="control-label" for="inputMeta">社会标签：</label>
+                <div class="controls">
+                    <textarea class="span3" id="inputMeta" name="meta">{{ user['user_meta'] }}</textarea>
+                </div>
+            </div>
 
             <div class="control-group">
                 <label class="control-label" for="inputPswd">当前密码：</label>
