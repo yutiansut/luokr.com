@@ -45,9 +45,17 @@ class AdminModel:
         return user
 
     @staticmethod
-    def chk_user_is_root(user):
+    def chk_user_if_perm(user, perm):
         try:
             user = dict(user)
-            return user and 'user_perm' in user and user['user_perm'] & 0x7FFFFFFF == 0x7FFFFFFF
+            return user and 'user_perm' in user and user['user_perm'] & perm == perm
         except:
             return False
+
+    @staticmethod
+    def chk_user_is_live(user):
+        return AdminModel.chk_user_if_perm(user, 0x00000001)
+
+    @staticmethod
+    def chk_user_is_root(user):
+        return AdminModel.chk_user_if_perm(user, 0x7FFFFFFF)
