@@ -33,6 +33,12 @@ from ctrls.admin.alogs import Admin_AlogsCtrl
 url = [
     (r'/', PostsCtrl),
 
+    (r'/s', PostsCtrl),
+    (r'/t/([^/]+)', PostsCtrl),
+    (r'/p/([1-9][0-9]*)', PostCtrl),
+
+    (r'/image/random', ImageRandomCtrl),
+
     (r'/hello', HelloCtrl),
     (r'/about', AboutCtrl),
     (r'/apply', ApplyCtrl),
@@ -41,24 +47,15 @@ url = [
     (r'/score', ScoreCtrl),
     (r'/voice', VoiceCtrl),
 
-    (r'/s', PostsCtrl),
-    (r'/t/([^/]+)', PostsCtrl),
-    (r'/p/([1-9][0-9]*)', PostCtrl),
-
     (r'/login', LoginCtrl),
     (r'/leave', LeaveCtrl),
 
     (r'/shell', Shell_PanelCtrl),
     (r'/@([^/]+)', Shell_IndexCtrl),
 
-    (r'/image/random', ImageRandomCtrl),
-
     (r'/admin', Admin_IndexCtrl),
 
     (r'/admin/alogs', Admin_AlogsCtrl),
-
-    (r'/admin/cache', Admin_CacheCtrl),
-    (r'/admin/cache/delete', Admin_CacheDeleteCtrl),
 
     (r'/admin/confs', Admin_ConfsCtrl),
     (r'/admin/conf', Admin_ConfCtrl),
@@ -96,6 +93,9 @@ url = [
     (r'/admin/users', Admin_UsersCtrl),
     (r'/admin/user', Admin_UserCtrl),
     (r'/admin/user/create', Admin_UserCreateCtrl),
+
+    (r'/admin/cache', Admin_CacheCtrl),
+    (r'/admin/cache/delete', Admin_CacheDeleteCtrl),
 
     (r'.*', ErrorCtrl)
 ]

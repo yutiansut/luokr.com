@@ -80,7 +80,7 @@ class Admin_FileUploadCtrl(AdminCtrl):
             out += '</script>'
             self.write(out)
         else:
-            self.flash(1, {'msg': "上传成功"})
+            self.flash(1, {'msg': "上传成功", 'ext': {'url': url}})
 
 class Admin_FileDeleteCtrl(AdminCtrl):
     @admin
