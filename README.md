@@ -44,6 +44,9 @@ Screenshots
 * Login
 ![www.luokr.com.login.png](res.luokr.com/img/20150101/www.luokr.com.login.png)
 
+* Shell
+![www.luokr.com.shell.gif](res.luokr.com/img/20150526/www.luokr.com.shell.gif)
+
 * Posts
 ![www.luokr.com.posts.png](res.luokr.com/img/20150101/www.luokr.com.posts.png)
 
