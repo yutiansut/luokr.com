@@ -2,13 +2,13 @@
 
 import functools
 
-from app.ctrls.basic import alive, BasicCtrl
+from app.ctrls.basic import logon, BasicCtrl
 
 class AdminCtrl(BasicCtrl):
     pass
 
 def admin(method):
-    @alive
+    @logon
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
         if self.model('admin').chk_user_is_root(self.current_user):
