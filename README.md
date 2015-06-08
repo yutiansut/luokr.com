@@ -24,7 +24,7 @@ Below is the main directory structure:
 
 
 
-The background landing address is `/admin`, default username is `admin` and the password is `888888`.
+The background landing address is `/admin`, default username is `admin` and password is `123456`.
 You can change it after you logined.
 
 Requirement
