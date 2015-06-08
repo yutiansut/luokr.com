@@ -103,6 +103,12 @@ class Admin_FileDeleteCtrl(AdminCtrl):
             if os.path.isfile(uri):
                 os.remove(uri)
 
+                # Delete empty directories recursively
+                dir = os.path.dirname(uri)
+                while dir != self.settings['root_path'] and os.path.isdir(dir) and not os.listdir(dir):
+                    os.rmdir(dir)
+                    dir = os.path.dirname(dir)
+
             cur.execute('delete from files where file_id = ? and file_ctms = ?', (fid, ctm))
             con.commit()
             cur.close()
