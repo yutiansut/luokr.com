@@ -35,7 +35,7 @@
                 {% for user in users %}
                 <tr>
                     <td>{{ user['user_id'] }}</td>
-                    <td>{{ user['user_name'] }}</td>
+                    <td><a href="/@{{ user['user_name'] }}" target="_blank">{{ user['user_name'] }}</a></td>
                     <td>{{ user['user_mail'] }}</td>
                     <td>{{ user['user_perm'] }}</td>
                     <td>{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(user['user_ctms'])) }}</td>
