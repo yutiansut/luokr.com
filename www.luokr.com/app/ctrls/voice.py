@@ -16,7 +16,8 @@ class VoiceCtrl(BasicCtrl):
         rank = '0'
         usid = '0'
         if self.input('auth', False) and self.current_user:
-            rank = self.get_runtime_conf('posts_talks_min_rank')
+            if self.model('admin').chk_user_is_live(self.current_user):
+                rank = self.get_runtime_conf('posts_talks_min_rank')
             usid = self.current_user['user_id']
             name = self.current_user['user_name']
             mail = self.current_user['user_mail']
