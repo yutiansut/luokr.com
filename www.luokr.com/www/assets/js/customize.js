@@ -57,6 +57,17 @@ L.method.date = function(a, s)
     });  
 };  
 
+L.method.nl2br = function(t, b)
+{
+    return t.replace(/\r\n/g, "\n").replace(/[\r\n]/g, typeof(b) == "undefined" ? '<br>' : b);
+}
+
+L.method.shtml = function(html)
+{
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(html));
+    return div.innerHTML;
+};
 
 L.method.confirm = function(message)
 {
@@ -145,19 +156,19 @@ L.method.request = function(options)
     return false;
 }
 
-L.method.respond = function(opts, data)
+L.method.respond = function(opts, resp)
 {
     var args = {forward: true};
     $.extend(args, opts || {});
 
     var msgs = [];
-    if (data.msg != null && data.msg != '') {
-        msgs.push(data.sta ? data.sta + ' ' + data.msg : data.msg);
+    if (resp.msg != null && resp.msg != '') {
+        msgs.push(resp.sta ? resp.sta + ' ' + resp.msg : resp.msg);
     }
 
-    if (data.err) {
-        if (args.forward && data.url) {
-            msgs.push('放弃操作，请 <a href="' + data.url + '">点击这里</a>');
+    if (resp.err) {
+        if (args.forward && resp.url) {
+            msgs.push('放弃操作，请 <a href="' + resp.url + '">点击这里</a>');
         }
 
         easyDialog.open({
@@ -167,14 +178,14 @@ L.method.respond = function(opts, data)
             }
         });
     } else {
-        if (args.forward || data.url) {
-            if (data.url == '') {
+        if (args.forward || resp.url) {
+            if (resp.url == '') {
                 msgs.push('继续操作，请 <a href="javascript:location.reload()">刷新当前页</a> 或 <a href="javascript:history.go(-1)">返回上一页</a>');
             } else {
-                setTimeout(function(){location.href = data.url;}, (data.tms || 3)*1000);
+                setTimeout(function(){location.href = resp.url;}, (resp.tms || 3)*1000);
             }
         } else {
-            setTimeout(function(){easyDialog.close()}, (data.tms || 3)*1000);
+            setTimeout(function(){easyDialog.close()}, (resp.tms || 3)*1000);
         }
 
         easyDialog.open({
@@ -189,16 +200,16 @@ L.method.respond = function(opts, data)
 L.method.failure = function(opts)
 {
     return function(xhr, err) {
-        var data = {err: 1, msg: '', sta: 0}
+        var resp = {err: 1, msg: '', sta: 0, dat: {}}
 
         if (err == "error" || err == "parsererror") {
-            data = $.parseJSON(xhr.responseText) || {err: 1, msg: xhr.statusText, sta: xhr.status};
+            resp = $.parseJSON(xhr.responseText) || {err: 1, msg: xhr.statusText, sta: xhr.status};
         } else if (err == "timeout") {
-            data['sta'] = 504;
-            data['msg'] = L.string.TIMEOUT;
+            resp['sta'] = 504;
+            resp['msg'] = L.string.TIMEOUT;
         }
 
-        L.method.respond(opts, data);
+        L.method.respond(opts, resp);
     };
 }
 

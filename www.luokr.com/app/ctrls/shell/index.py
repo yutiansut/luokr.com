@@ -8,7 +8,7 @@ class Shell_IndexCtrl(ShellCtrl):
         pager = {}
         pager['qnty'] = 5
         pager['page'] = max(int(self.input('page', 1)), 1)
-        pager['list'] = 0;
+        pager['lgth'] = 0;
 
         user = self.model('admin').get_user_by_name(self.dbase('users'), name)
         if not user:
@@ -20,7 +20,7 @@ class Shell_IndexCtrl(ShellCtrl):
         posts = cur_posts.fetchall()
 
         if posts:
-            pager['list'] = len(posts)
+            pager['lgth'] = len(posts)
 
         if self.input('_pjax', None) == '#shell-index-posts':
             self.render('shell/index/posts.html', user = user, pager = pager, posts = posts)

@@ -8,7 +8,7 @@ class Admin_TermsCtrl(AdminCtrl):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
         pager['page'] = max(int(self.input('page', 1)), 1)
-        pager['list'] = 0;
+        pager['lgth'] = 0;
 
         cur = self.dbase('terms').cursor()
         cur.execute('select * from terms order by term_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
@@ -16,7 +16,7 @@ class Admin_TermsCtrl(AdminCtrl):
         cur.close()
 
         if terms:
-            pager['list'] = len(terms)
+            pager['lgth'] = len(terms)
 
         self.render('admin/terms.html', terms = terms, pager = pager)
 

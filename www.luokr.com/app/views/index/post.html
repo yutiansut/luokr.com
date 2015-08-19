@@ -1,4 +1,4 @@
-{% extends "_base.html" %}
+{% extends "../_base.html" %}
 
 {% block title %}{{ post['post_title'] }} - {{ handler.get_runtime_conf('title') }}{% end %}
 {% block descp %}{{ post['post_descp'] and post['post_descp'] or post['post_title'] }}{% end %}
@@ -15,7 +15,7 @@
         text-align: left;
     }
 
-    #list-talk table td {padding-bottom: 20px;}
+    #rows-talk td {padding-bottom: 20px;}
     .talk-time {display: block; font-size: .8em; color: grey;}
     .talk-cont {word-wrap: break-word; word-break: break-all;};
 
@@ -63,19 +63,28 @@
 
         <div id="list-talk">
             <fieldset>
-                <legend>文章评论</legend>
-                {% if talks %}
-                <table class="table table-hover table-striped table-bordered">
+                <legend>
+                    文章评论
+                </legend>
+                <table id="rows-talk" class="table table-hover table-striped table-bordered" style="{% if not talks %}display:none{% end %}">
                     <tbody>
+                    {% if talks %}
                     {% for talk in talks %}
                     <tr id="r{{ talk['talk_id'] }}">
                         <td class="talk-user span2"><i class="icon-user"></i> {% if talk['user_id'] %}<a href="/@{{ talk['user_name'] }}" target="_blank">{{ talk['user_name'] }}</a>{% else %}{{ talk['user_name'] }}{% end %}<span class="talk-time">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
                         <td class="talk-cont">{% raw handler.get_escaper().xhtml_escape(talk['talk_text']).replace('\n','\n<br>') %}</td>
                     </tr>
                     {% end %}
+                    {% end %}
                     </tbody>
+                    <tfoot id="load-talk">
+                        <tr>
+                            <td colspan="2" style="text-align:center;padding:0">
+                                <a href="javascript:;" title="加载更多评论" class="load-more" style="display:block;width:100%;height:100%;">···</a>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
-                {% end %}
             </fieldset>
         </div>
 
@@ -126,7 +135,7 @@
         </form>
     </div>
 
-    {% include "_side.html" %}
+    {% include "../_side.html" %}
 </div>
 {% end %}
 
@@ -190,6 +199,70 @@
 
             return false;
         });
+
+        {% if not talks %}
+        var talks = {
+            more: 0,
+            page: { qnty: 10, page: 1, lgth: 0 }
+        };
+
+        talks.list = function(opts, resp) {
+            if (!resp.err && resp.dat && resp.dat.talks && resp.dat.talks.length) {
+                for (i in resp.dat.talks) {
+                    var talk = resp.dat.talks[i];
+                    var html = '';
+                    html += '<tr id="r' + talk['talk_id'] + '">';
+                    html += '<td class="talk-user span2"><i class="icon-user"></i> ';
+                    if (talk['user_id']) {
+                        html += '<a href="/@' + talk['user_name'] + '" target="_blank">' + talk['user_name'] + '</a>';
+                    } else {
+                        html += talk['user_name'];
+                    }
+                    html += '<span class="talk-time">' + L.method.date('Y-m-d H:i', talk['talk_ctms'] * 1000) + '</span>';
+                    html += '</td>';
+                    html += '<td class="talk-cont">' + L.method.nl2br(L.method.shtml(talk['talk_text']), "\n<br>") + '</td>';
+                    html += '</tr>';
+
+                    $('#rows-talk tbody').append(html);
+                }
+
+                $('#rows-talk').show();
+            }
+        };
+
+        talks.load = function(page, qnty) {
+            L.method.request({
+                _action: "/talks.json?ptid={{ post['post_id'] }}&page=" + page + "&qnty=" + qnty,
+                prepare: function() {talks.more = 0;},
+                failure: function() {talks.more = 1;},
+                success: function(opts, resp) {
+                    talks.list(opts, resp);
+
+                    if (!resp.err && resp.dat && resp.dat.pager) {
+                        talks.page.page = parseInt(resp.dat.pager['page']);
+                        talks.page.qnty = parseInt(resp.dat.pager['qnty']);
+                        talks.page.lgth = parseInt(resp.dat.pager['lgth']);
+                    }
+
+                    if (talks.page.lgth < talks.page.qnty) {
+                        $('#load-talk').remove();
+                    } else {
+                        $('#load-talk').show();
+                    }
+
+                    talks.more = 1;
+                }
+            });
+        };
+
+        $('#rows-talk .load-more').click(function() {
+            if (talks.more && talks.page.lgth >= talks.page.qnty) {
+                talks.load(talks.page.page + 1, talks.page.qnty);
+            }
+        });
+
+        talks.load(talks.page.page, talks.page.qnty);
+        {% end %}
     });
 </script>
 {% end %}

@@ -5,9 +5,10 @@ from ctrls.error import ErrorCtrl
 from ctrls.about import AboutCtrl
 from ctrls.apply import ApplyCtrl
 from ctrls.email import EmailCtrl
-from ctrls.score import ScoreCtrl
-from ctrls.voice import VoiceCtrl
 from ctrls.links import LinksCtrl
+from ctrls.score import ScoreCtrl
+from ctrls.talks import TalksCtrl
+from ctrls.voice import VoiceCtrl
 from ctrls.posts import PostsCtrl, PostCtrl
 
 from ctrls.login import LoginCtrl
@@ -46,6 +47,7 @@ url = [
     (r'/links', LinksCtrl),
     (r'/score', ScoreCtrl),
     (r'/voice', VoiceCtrl),
+    (r'/talks(\.json)?', TalksCtrl),
 
     (r'/login', LoginCtrl),
     (r'/leave', LeaveCtrl),

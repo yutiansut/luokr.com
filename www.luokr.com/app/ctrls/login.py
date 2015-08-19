@@ -42,8 +42,10 @@ class LoginCtrl(BasicCtrl):
                     auth = self.model('admin').generate_authword(user['user_atms'], user['user_salt'])
                     self.set_secure_cookie("_auth", auth, expires_days=remember, httponly = True)
 
+                    self.current_user = user
+
                     self.flash(1, {'url': redirect})
-                    self.model('alogs').add(self.dbase('alogs'), '登录', user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                    self.ualog('登陆')
                 except:
                     self.flash(0, {'msg': '请稍后再试'})
                 return

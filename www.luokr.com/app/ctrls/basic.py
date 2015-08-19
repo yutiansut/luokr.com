@@ -119,6 +119,12 @@ class BasicCtrl(tornado.web.RequestHandler):
     def stime(self):
         return int(time.time())
 
+    def ualog(self, text, data = ''):
+        if self.current_user:
+            self.model('alogs').add(self.dbase('alogs'), text, alog_data = data, user_ip = self.request.remote_ip, user_id = self.current_user['user_id'], user_name = self.current_user['user_name'])
+        else:
+            self.model('alogs').add(self.dbase('alogs'), text, alog_data = data, user_ip = self.request.remote_ip)
+
     def tourl(self, args, base = None):
         if base == None:
             base = self.request.path
@@ -132,27 +138,27 @@ class BasicCtrl(tornado.web.RequestHandler):
         if conf and 'smtp_able' in conf and conf['smtp_able']:
             threading.Thread(target=Mailx(conf).send, args = args, kwargs = kwargs).start()
 
-    def flash(self, isok, exts = {}):
+    def flash(self, isok, resp = {}, _ext = ''):
         if isok:
-            exts['err'] = 0
+            resp['err'] = 0
         else:
-            exts['err'] = 1
+            resp['err'] = 1
 
-        if 'sta' in exts:
-            self.set_status(exts['sta'])
+        if 'sta' in resp:
+            self.set_status(resp['sta'])
         else:
-            exts['sta'] = self.get_status()
+            resp['sta'] = self.get_status()
 
-        if 'msg' not in exts:
-            exts['msg'] = self._reason
+        if 'msg' not in resp:
+            resp['msg'] = self._reason
 
-        if 'url' not in exts: exts['url'] = ''
-        if 'ext' not in exts: exts['ext'] = {}
+        if 'url' not in resp: resp['url'] = ''
+        if 'dat' not in resp: resp['dat'] = {}
 
-        if ('Accept' in self.request.headers) and (self.request.headers['Accept'].find('json') >= 0):
-            self.write(self.get_escaper().json_encode(exts))
+        if _ext == '.json' or (('Accept' in self.request.headers) and (self.request.headers['Accept'].find('json') >= 0)):
+            self.write(self.get_escaper().json_encode(resp))
         else:
-            self.render('flash.html', flash = exts)
+            self.render('flash.html', flash = resp)
 
     def dbase(self, name):
         if name not in self._storage['dbase']:

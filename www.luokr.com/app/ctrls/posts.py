@@ -7,7 +7,7 @@ class PostsCtrl(BasicCtrl):
         pager = {}
         pager['qnty'] = 5
         pager['page'] = max(int(self.input('page', 1)), 1)
-        pager['list'] = 0;
+        pager['lgth'] = 0;
 
         stime = self.stime()
         track = ''
@@ -46,7 +46,7 @@ class PostsCtrl(BasicCtrl):
         ptags = {}
         psers = {}
         if posts:
-            pager['list'] = len(posts)
+            pager['lgth'] = len(posts)
 
             cur_posts.execute('select post_id,term_id from post_terms where post_id in (' + ','.join(str(i['post_id']) for i in posts) + ')')
             ptids = cur_posts.fetchall()
@@ -159,8 +159,9 @@ class PostCtrl(BasicCtrl):
         cur_talks.execute('select * from talks where talk_rank>=? order by talk_id desc limit 9', (self.get_runtime_conf('posts_talks_min_rank'), ))
         talks_new = cur_talks.fetchall()
 
-        cur_talks.execute('select * from talks where post_id=? and talk_rank>=? order by talk_id asc', (post['post_id'], self.get_runtime_conf('posts_talks_min_rank')))
-        talks = cur_talks.fetchall()
+        talks = []
+        # cur_talks.execute('select * from talks where post_id=? and talk_rank>=? order by talk_id asc', (post['post_id'], self.get_runtime_conf('posts_talks_min_rank')))
+        # talks = cur_talks.fetchall()
 
         cur_talks.close()
 
@@ -168,7 +169,7 @@ class PostCtrl(BasicCtrl):
 
         links_top = None
 
-        self.render('post.html', post = post, psers = psers, ptids = ptids, ptags = ptags, talks = talks
+        self.render('index/post.html', post = post, psers = psers, ptids = ptids, ptags = ptags, talks = talks
                 , post_prev = post_prev, post_next = post_next
                 , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new
                 , slabs_top = slabs_top, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)

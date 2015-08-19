@@ -7,14 +7,17 @@ class Admin_FilesCtrl(AdminCtrl):
     @admin
     def get(self):
         pager = {}
-        pager['qnty'] = min(int(self.input('qnty', 10)), 50)
+        pager['qnty'] = min(max(int(self.input('qnty', 10)), 1), 100)
         pager['page'] = max(int(self.input('page', 1)), 1)
-        pager['list'] = 0;
+        pager['lgth'] = 0;
 
         cur = self.dbase('files').cursor()
         cur.execute('select * from files order by file_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
         files = cur.fetchall()
         cur.close()
+
+        if files:
+            pager['lgth'] = len(files)
 
         self.render('admin/files.html', pager = pager, files = files)
 
@@ -113,7 +116,7 @@ class Admin_FileDeleteCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.model('alogs').add(self.dbase('alogs'), '删除文件：' + str(fid), user_ip = self.request.remote_ip, user_id = self.current_user['user_id'], user_name = self.current_user['user_name'])
+                self.ualog('删除文件：' + str(fid))
                 self.flash(1)
                 return
         except:

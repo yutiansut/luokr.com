@@ -2,6 +2,7 @@
 
 import re
 import hashlib
+from collections import OrderedDict
 
 class Utils:
     @staticmethod
@@ -26,6 +27,10 @@ class Utils:
         for val in ary:
             ret.append(val[key])
         return ret
+
+    @staticmethod
+    def sqlite_rows(cur):
+        return [OrderedDict((cur.description[i][0], v) for i, v in enumerate(row)) for row in cur.fetchall()]
 
     @staticmethod
     def build_links(val, opt = ' target="_blank"'):

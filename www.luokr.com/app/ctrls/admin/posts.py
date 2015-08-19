@@ -8,7 +8,7 @@ class Admin_PostsCtrl(AdminCtrl):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
         pager['page'] = max(int(self.input('page', 1)), 1)
-        pager['list'] = 0;
+        pager['lgth'] = 0;
 
         cur_posts = self.dbase('posts').cursor()
         cur_users = self.dbase('users').cursor()
@@ -18,7 +18,7 @@ class Admin_PostsCtrl(AdminCtrl):
 
         psers = {}
         if posts:
-            pager['list'] = len(posts)
+            pager['lgth'] = len(posts)
 
             cur_users.execute('select * from users where user_id in (' + ','.join(str(i['user_id']) for i in posts) + ')')
             psers = self.utils().array_keyto(cur_users.fetchall(), 'user_id')
@@ -58,8 +58,6 @@ class Admin_PostCreateCtrl(AdminCtrl):
     @admin
     def post(self):
         try:
-            user = self.current_user
-
             post_type    = self.input('post_type', 'blog')
             post_title   = self.input('post_title')
             post_descp   = self.input('post_descp')
@@ -106,7 +104,7 @@ class Admin_PostCreateCtrl(AdminCtrl):
                     term_imap[term_id] = term_name
 
             cur_posts.execute('insert into posts (user_id, post_type, post_title, post_descp, post_author, post_source, post_summary, post_content,post_stat, post_rank, post_ptms, post_ctms, post_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', \
-                    (user['user_id'], post_type, post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_ctms, post_utms ,))
+                    (self.current_user['user_id'], post_type, post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_ctms, post_utms ,))
             post_id = cur_posts.lastrowid
 
             if term_imap:
@@ -122,7 +120,7 @@ class Admin_PostCreateCtrl(AdminCtrl):
             con_terms.commit()
             con_terms.close()
 
-            self.model('alogs').add(self.dbase('alogs'), '新增文章：' + str(post_id), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+            self.ualog('新增文章：' + str(post_id))
             self.flash(1, {'url': '/admin/post?post_id=' + str(post_id)})
         except:
             self.flash(0)
@@ -170,8 +168,6 @@ class Admin_PostCtrl(AdminCtrl):
     @admin
     def post(self):
         try:
-            user = self.current_user
-
             post_id      = self.input('post_id')
             post_title   = self.input('post_title')
             post_descp   = self.input('post_descp')
@@ -228,7 +224,7 @@ class Admin_PostCtrl(AdminCtrl):
             post_tids = cur_posts.fetchall()
 
             cur_posts.execute('update posts set user_id=?,post_title=?,post_descp=?,post_author=?,post_source=?,post_summary=?,post_content=?,post_stat=?,post_rank=?,post_ptms=?,post_utms=? where post_id=?', \
-                    (user['user_id'], post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_utms, post_id,))
+                    (self.current_user['user_id'], post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_utms, post_id,))
             cur_posts.execute('delete from post_terms where post_id = ?', (post_id,))
 
             if term_imap:
@@ -246,7 +242,7 @@ class Admin_PostCtrl(AdminCtrl):
             con_terms.commit()
             cur_terms.close()
 
-            self.model('alogs').add(self.dbase('alogs'), '更新文章：' + str(post_id), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+            self.ualog('更新文章：' + str(post_id))
             self.flash(1)
         except:
             self.flash(0)

@@ -8,7 +8,7 @@ class Admin_LinksCtrl(AdminCtrl):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
         pager['page'] = max(int(self.input('page', 1)), 1)
-        pager['list'] = 0;
+        pager['lgth'] = 0;
 
         cur = self.dbase('links').cursor()
         cur.execute('select * from links order by link_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
@@ -16,7 +16,7 @@ class Admin_LinksCtrl(AdminCtrl):
         cur.close()
 
         if links: 
-            pager['list'] = len(links)
+            pager['lgth'] = len(links)
 
         self.render('admin/links.html', pager = pager, links = links)
 
@@ -33,8 +33,6 @@ class Admin_LinkCtrl(AdminCtrl):
     @admin
     def post(self):
         try:
-            user = self.current_user
-
             link_id   = self.input('link_id')
             link_name = self.input('link_name')
             link_href = self.input('link_href')
@@ -49,7 +47,7 @@ class Admin_LinkCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.model('alogs').add(self.dbase('alogs'), '更新链接：' + str(link_id), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.ualog('更新链接：' + str(link_id))
                 self.flash(1)
                 return
         except:
@@ -64,8 +62,6 @@ class Admin_LinkCreateCtrl(AdminCtrl):
     @admin
     def post(self):
         try:
-            user = self.current_user
-
             link_name = self.input('link_name')
             link_href = self.input('link_href')
             link_desp = self.input('link_desp')
@@ -80,7 +76,7 @@ class Admin_LinkCreateCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.lastrowid:
-                self.model('alogs').add(self.dbase('alogs'), "新增链接：" + str(cur.lastrowid), alog_data = link_href, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.ualog("新增链接：" + str(cur.lastrowid), link_href)
                 self.flash(1)
                 return
         except:
@@ -91,8 +87,6 @@ class Admin_LinkDeleteCtrl(AdminCtrl):
     @admin
     def post(self):
         try:
-            user = self.current_user
-
             link_id   = self.input('link_id')
             link_utms = self.input('link_utms')
 
@@ -102,7 +96,7 @@ class Admin_LinkDeleteCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.model('alogs').add(self.dbase('alogs'), '删除链接：' + str(link_id), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.ualog('删除链接：' + str(link_id))
                 self.flash(1)
                 return
         except:

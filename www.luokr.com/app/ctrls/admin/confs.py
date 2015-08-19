@@ -8,7 +8,7 @@ class Admin_ConfsCtrl(AdminCtrl):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
         pager['page'] = max(int(self.input('page', 1)), 1)
-        pager['list'] = 0;
+        pager['lgth'] = 0;
 
         cur = self.dbase('confs').cursor()
         cur.execute('select * from confs order by conf_ctms desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
@@ -16,7 +16,7 @@ class Admin_ConfsCtrl(AdminCtrl):
         cur.close()
 
         if confs:
-            pager['list'] = len(confs)
+            pager['lgth'] = len(confs)
 
         self.render('admin/confs.html', pager = pager, confs = confs)
 
@@ -40,9 +40,7 @@ class Admin_ConfCtrl(AdminCtrl):
 
             self.set_runtime_conf(conf_name, conf_vals)
 
-            user = self.current_user
-            self.model('alogs').add(self.dbase('alogs'), "更新配置：" + conf_name, alog_data = conf_vals, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
-
+            self.ualog("更新配置：" + conf_name, conf_vals)
             self.flash(1, {'msg': '更新配置成功'})
         except:
             self.flash(0)
@@ -68,9 +66,7 @@ class Admin_ConfCreateCtrl(AdminCtrl):
 
             self.set_runtime_conf(conf_name, conf_vals)
 
-            user = self.current_user
-            self.model('alogs').add(self.dbase('alogs'), "新增配置：" + conf_name, alog_data = conf_vals, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
-
+            self.ualog("新增配置：" + conf_name, conf_vals)
             self.flash(1, {'msg': '新增配置成功'})
         except:
             self.flash(0)
@@ -84,9 +80,7 @@ class Admin_ConfDeleteCtrl(AdminCtrl):
 
             self.del_runtime_conf(conf_name)
 
-            user = self.current_user
-            self.model('alogs').add(self.dbase('alogs'), "删除配置：" + conf_name, alog_data = conf_vals, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
-
+            self.ualog("删除配置：" + conf_name, conf_vals)
             self.flash(1, {'msg': '删除配置成功'})
         except:
             self.flash(0)

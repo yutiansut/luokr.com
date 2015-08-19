@@ -8,7 +8,7 @@ class Admin_MailsCtrl(AdminCtrl):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
         pager['page'] = max(int(self.input('page', 1)), 1)
-        pager['list'] = 0;
+        pager['lgth'] = 0;
 
         cur = self.dbase('mails').cursor()
         cur.execute('select * from mails order by mail_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
@@ -16,7 +16,7 @@ class Admin_MailsCtrl(AdminCtrl):
         cur.close()
 
         if mails:
-            pager['list'] = len(mails)
+            pager['lgth'] = len(mails)
 
         self.render('admin/mails.html', pager = pager, mails = mails)
 
@@ -42,8 +42,6 @@ class Admin_MailDeleteCtrl(AdminCtrl):
     @admin
     def post(self):
         try:
-            user = self.current_user
-
             mail_id   = self.input('mail_id')
             mail_utms = self.input('mail_utms')
 
@@ -53,7 +51,7 @@ class Admin_MailDeleteCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.model('alogs').add(self.dbase('alogs'), '删除留言：' + str(mail_id), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.ualog('删除留言：' + str(mail_id))
                 self.flash(1)
                 return
         except:

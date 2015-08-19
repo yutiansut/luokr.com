@@ -6,8 +6,7 @@ from shell import shell, ShellCtrl
 class Shell_PanelCtrl(ShellCtrl):
     @shell
     def get(self, *args):
-        user = self.current_user
-        self.render('shell/panel.html', user = user)
+        self.render('shell/panel.html', user = self.current_user)
 
     @shell
     def post(self, *args):
@@ -90,7 +89,7 @@ class Shell_PanelCtrl(ShellCtrl):
 
             cur.close()
             if (cur.rowcount):
-                self.model('alogs').add(self.dbase('alogs'), '更新账号信息', user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.ualog('更新账号信息')
                 self.flash(1, {'msg': '更新成功'})
                 return
         except:

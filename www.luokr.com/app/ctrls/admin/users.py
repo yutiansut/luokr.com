@@ -8,7 +8,7 @@ class Admin_UsersCtrl(AdminCtrl):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
         pager['page'] = max(int(self.input('page', 1)), 1)
-        pager['list'] = 0;
+        pager['lgth'] = 0;
 
         cur = self.dbase('users').cursor()
         cur.execute('select * from users order by user_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
@@ -16,7 +16,7 @@ class Admin_UsersCtrl(AdminCtrl):
         cur.close()
 
         if users:
-            pager['list'] = len(users)
+            pager['lgth'] = len(users)
 
         self.render('admin/users.html', users = users, pager = pager)
 
@@ -73,7 +73,7 @@ class Admin_UserCtrl(AdminCtrl):
                         (user_mail, user_sign, user_logo, user_meta, user_perm, self.stime(), user['user_id'], ))
                 con.commit()
             if cur.rowcount:
-                self.model('alogs').add(self.dbase('alogs'), "更新用户：" + str(user['user_id']), alog_data = user['user_name'], user_ip = self.request.remote_ip, user_id = self.current_user['user_id'], user_name = self.current_user['user_name'])
+                self.ualog("更新用户：" + str(user['user_id']), user['user_name'])
                 self.flash(1)
                 return
         except:
@@ -87,8 +87,6 @@ class Admin_UserCreateCtrl(AdminCtrl):
 
     @admin
     def post(self):
-        user = self.current_user
-
         try:
             user_name = self.input('user_name')
             user_mail = self.input('user_mail')
@@ -126,7 +124,7 @@ class Admin_UserCreateCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.lastrowid:
-                self.model('alogs').add(self.dbase('alogs'), "新增用户：" + str(cur.lastrowid), alog_data = user_name, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.ualog("新增用户：" + str(cur.lastrowid), user_name)
                 self.flash(1)
                 return
         except:

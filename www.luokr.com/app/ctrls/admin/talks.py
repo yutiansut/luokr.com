@@ -8,7 +8,7 @@ class Admin_TalksCtrl(AdminCtrl):
         pager = {}
         pager['qnty'] = min(int(self.input('qnty', 10)), 50)
         pager['page'] = max(int(self.input('page', 1)), 1)
-        pager['list'] = 0;
+        pager['lgth'] = 0;
 
         cur = self.dbase('talks').cursor()
         cur.execute('select * from talks order by talk_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
@@ -16,7 +16,7 @@ class Admin_TalksCtrl(AdminCtrl):
         cur.close()
 
         if talks:
-            pager['list'] = len(talks)
+            pager['lgth'] = len(talks)
 
         self.render('admin/talks.html', pager = pager, talks = talks)
 
@@ -35,8 +35,6 @@ class Admin_TalkCtrl(AdminCtrl):
     @admin
     def post(self):
         try:
-            user = self.current_user
-
             talk_id   = self.input('talk_id')
             talk_rank = self.input('talk_rank')
             talk_text = self.input('talk_text')
@@ -49,7 +47,7 @@ class Admin_TalkCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.model('alogs').add(self.dbase('alogs'), '更新评论：' + str(talk_id), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.ualog('更新评论：' + str(talk_id))
                 self.flash(1)
                 return
         except:
@@ -78,8 +76,6 @@ class Admin_TalkDeleteCtrl(AdminCtrl):
     @admin
     def post(self):
         try:
-            user = self.current_user
-
             talk_id   = self.input('talk_id')
             talk_ctms = self.input('talk_ctms')
 
@@ -89,7 +85,7 @@ class Admin_TalkDeleteCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.model('alogs').add(self.dbase('alogs'), '删除评论：' + str(talk_id), user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+                self.ualog('删除评论：' + str(talk_id))
                 self.flash(1)
                 return
         except:
