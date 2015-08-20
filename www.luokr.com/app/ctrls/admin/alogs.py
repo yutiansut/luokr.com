@@ -6,7 +6,7 @@ class Admin_AlogsCtrl(AdminCtrl):
     @admin
     def get(self, *args):
         pager = {}
-        pager['qnty'] = min(int(self.input('qnty', 10)), 50)
+        pager['qnty'] = min(max(int(self.input('qnty', 10)), 1), 100)
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
