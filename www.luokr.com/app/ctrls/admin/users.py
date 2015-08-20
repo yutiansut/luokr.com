@@ -54,14 +54,22 @@ class Admin_UserCtrl(AdminCtrl):
             user_pswd = self.input('user_pswd', '')
             user_rpwd = self.input('user_rpwd', '')
             user_perm = int(user_perm) & 0x7FFFFFFF
+
+            if user_pswd and (len(user_pswd) < 6 or (user_pswd != user_rpwd)):
+                self.flash(0, {'msg': '无效的用户密码'})
+                return
+
+            if len(user_mail) < 3 or not self.model('admin').chk_is_user_mail(user_mail):
+                self.flash(0, {'msg': '无效的用户邮箱'})
+                return
+
+            if user_mail != user['user_mail'] and self.model('admin').get_user_by_mail(self.dbase('users'), user_mail):
+                self.flash(0, {'msg': '用户邮箱已存在'})
+                return
             
             con = self.dbase('users')
             cur = con.cursor()
             if user_pswd:
-                if len(user_pswd) < 6 or (user_pswd != user_rpwd):
-                    self.flash(0, {'msg': '无效的用户密码'})
-                    return
-
                 user_auid = self.model('admin').generate_randauid()
                 user_salt = self.model('admin').generate_randsalt()
                 user_pswd = self.model('admin').generate_password(user_pswd, user_salt)
@@ -100,12 +108,24 @@ class Admin_UserCreateCtrl(AdminCtrl):
             user_utms = user_ctms
             user_atms = user_ctms
 
-            if len(user_name) < 1:
+            if len(user_name) < 3 or not self.model('admin').chk_is_user_name(user_name):
                 self.flash(0, {'msg': '无效的用户帐号'})
                 return
             
             if len(user_pswd) < 6 or (user_pswd != user_rpwd):
                 self.flash(0, {'msg': '无效的用户密码'})
+                return
+
+            if len(user_mail) < 3 or not self.model('admin').chk_is_user_mail(user_mail):
+                self.flash(0, {'msg': '无效的用户邮箱'})
+                return
+
+            if self.model('admin').get_user_by_name(self.dbase('users'), user_name):
+                self.flash(0, {'msg': '用户帐号已存在'})
+                return
+
+            if self.model('admin').get_user_by_mail(self.dbase('users'), user_mail):
+                self.flash(0, {'msg': '用户邮箱已存在'})
                 return
 
             user_auid = self.model('admin').generate_randauid()

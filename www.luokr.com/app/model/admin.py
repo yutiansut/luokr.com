@@ -1,5 +1,6 @@
 #coding=utf-8
 
+import re
 import random, hashlib
 
 class AdminModel:
@@ -43,6 +44,28 @@ class AdminModel:
         user = cur.fetchone()
         cur.close()
         return user
+
+    @staticmethod
+    def get_user_by_mail(dbase, mail):
+        cur = dbase.cursor()
+        cur.execute('select * from users where user_mail = ?', (mail,))
+        user = cur.fetchone()
+        cur.close()
+        return user
+
+    @staticmethod
+    def chk_is_user_name(name):
+        if re.match(r'^[A-Za-z][-_A-Za-z0-9]{2,}$', name):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def chk_is_user_mail(mail):
+        if re.match(r'^[^@\.]+(?:\.[^@\.]+)*@[^@\.]+(?:\.[^@\.]+)+$', mail):
+            return True
+        else:
+            return False
 
     @staticmethod
     def chk_user_if_perm(user, perm):

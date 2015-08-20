@@ -12,6 +12,7 @@ CREATE TABLE users (
     user_perm INT( 10 )       NOT NULL
                               DEFAULT ( 0 ),
     user_mail VARCHAR( 64 )   NOT NULL
+                              UNIQUE
                               COLLATE 'NOCASE',
     user_sign VARCHAR( 128 )  NOT NULL
                               DEFAULT ( '' ),

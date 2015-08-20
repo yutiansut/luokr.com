@@ -24,6 +24,14 @@ class Shell_PanelCtrl(ShellCtrl):
                 self.flash(0)
                 return
 
+            if len(user_mail) < 3 or not self.model('admin').chk_is_user_mail(user_mail):
+                self.flash(0, {'msg': '无效的用户邮箱'})
+                return
+
+            if user_mail != user['user_mail'] and self.model('admin').get_user_by_mail(self.dbase('users'), user_mail):
+                self.flash(0, {'msg': '用户邮箱已存在'})
+                return
+
             user_logo = user['user_logo']
             if 'logo' in self.request.files and len(self.request.files['logo']) > 0:
                 res = self.request.files['logo'][0]
