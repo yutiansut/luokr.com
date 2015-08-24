@@ -47,7 +47,7 @@ url = [
     (r'/links', LinksCtrl),
     (r'/score', ScoreCtrl),
     (r'/voice', VoiceCtrl),
-    (r'/talks(\.json)?', TalksCtrl),
+    (r'/talks(\.json)', TalksCtrl),
 
     (r'/login', LoginCtrl),
     (r'/leave', LeaveCtrl),

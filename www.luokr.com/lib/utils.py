@@ -29,6 +29,10 @@ class Utils:
         return ret
 
     @staticmethod
+    def sqlite_dict(cur, row):
+        return OrderedDict((cur.description[i][0], v) for i, v in enumerate(row))
+
+    @staticmethod
     def sqlite_rows(cur):
         return [OrderedDict((cur.description[i][0], v) for i, v in enumerate(row)) for row in cur.fetchall()]
 
