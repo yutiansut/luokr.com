@@ -30,11 +30,11 @@ class Utils:
 
     @staticmethod
     def sqlite_dict(cur, row):
-        return OrderedDict((cur.description[i][0], v) for i, v in enumerate(row))
+        return OrderedDict((v[0], row[i]) for i, v in enumerate(cur.description))
 
     @staticmethod
     def sqlite_rows(cur):
-        return [OrderedDict((cur.description[i][0], v) for i, v in enumerate(row)) for row in cur.fetchall()]
+        return [OrderedDict((v[0], row[i if i in row else v[0]]) for i, v in enumerate(cur.description)) for row in cur.fetchall()]
 
     @staticmethod
     def build_links(val, opt = ' target="_blank"'):

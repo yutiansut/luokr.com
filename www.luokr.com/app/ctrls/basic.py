@@ -163,8 +163,8 @@ class BasicCtrl(tornado.web.RequestHandler):
     def dbase(self, name):
         if name not in self._storage['dbase']:
             self._storage['dbase'][name] = sqlite3.connect(self.settings['dbase'][name])
-            # self._storage['dbase'][name].row_factory = self.utils().sqlite_dict
-            self._storage['dbase'][name].row_factory = sqlite3.Row
+            self._storage['dbase'][name].row_factory = self.utils().sqlite_dict
+            # self._storage['dbase'][name].row_factory = sqlite3.Row
             self._storage['dbase'][name].text_factory = str
         return self._storage['dbase'][name]
 
