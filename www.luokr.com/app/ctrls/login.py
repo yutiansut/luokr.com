@@ -4,8 +4,7 @@ from basic import BasicCtrl
 
 class LoginCtrl(BasicCtrl):
     def get(self):
-        next = self.input('next', '/shell')
-        self.render('login.html', next = next)
+        self.render('login.html', next = self.input('next', '/shell'))
 
     def post(self):
         if not self.human_valid():

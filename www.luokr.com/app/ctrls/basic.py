@@ -1,7 +1,8 @@
 #coding=utf-8
 
-import time
+import sys, time
 import functools
+import importlib
 import threading
 import tornado.web, tornado.httputil, tornado.escape
 import sqlite3
@@ -19,10 +20,6 @@ except ImportError:
 from lib.cache import Cache
 from lib.mailx import Mailx
 from lib.utils import Utils
-from app.model.admin import AdminModel
-from app.model.alogs import AlogsModel
-from app.model.confs import ConfsModel
-from app.model.posts import PostsModel
 
 class BasicCtrl(tornado.web.RequestHandler):
     def initialize(self):
@@ -161,18 +158,26 @@ class BasicCtrl(tornado.web.RequestHandler):
             self.render('flash.html', flash = resp)
 
     def dbase(self, name):
-        if name not in self._storage['dbase']:
-            self._storage['dbase'][name] = sqlite3.connect(self.settings['dbase'][name])
-            self._storage['dbase'][name].row_factory = self.utils().sqlite_dict
-            # self._storage['dbase'][name].row_factory = sqlite3.Row
-            self._storage['dbase'][name].text_factory = str
-        return self._storage['dbase'][name]
+        # base = sys._getframe().f_code.co_name
+        base = 'dbase'
+        if name not in self._storage[base]:
+            self._storage[base][name] = sqlite3.connect(self.settings[base][name])
+            self._storage[base][name].row_factory = self.utils().sqlite_dict
+            # self._storage[base][name].row_factory = sqlite3.Row
+            self._storage[base][name].text_factory = str
+        return self._storage[base][name]
 
     def model(self, name):
-        name = name.title() + 'Model'
-        if name not in self._storage['model']:
-            self._storage['model'][name] = globals()[name]()
-        return self._storage['model'][name]
+        # base = sys._getframe().f_code.co_name
+        base = 'model'
+        clsn = '_'.join([v.title() for v in name.split('.')]) + base.title()
+        if clsn not in self._storage[base]:
+            modn = 'app.' + base + '.' + name
+            if modn not in sys.modules:
+                # __import__(modn)
+                importlib.import_module(modn)
+            self._storage[base][clsn] = getattr(sys.modules[modn], clsn)()
+        return self._storage[base][clsn]
 
 def logon(method):
     """Decorate methods with this to require that the user be logged in.
