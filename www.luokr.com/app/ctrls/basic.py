@@ -4,7 +4,8 @@ import sys, time
 import functools
 import importlib
 import threading
-import tornado.web, tornado.httputil, tornado.escape
+
+import tornado
 import sqlite3
 
 try:
@@ -18,12 +19,13 @@ except ImportError:
     from urllib.parse import urlencode  # py3
 
 from lib.cache import Cache
+from lib.datum import Datum
 from lib.mailx import Mailx
 from lib.utils import Utils
 
 class BasicCtrl(tornado.web.RequestHandler):
     def initialize(self):
-        self._storage = {'model': {}, 'dbase': {}, }
+        self._storage = {'model': {}, 'dbase': {}, 'datum': {}}
     def on_finish(self):
         for dbase in self._storage['dbase']:
             self._storage['dbase'][dbase].close()
@@ -104,11 +106,11 @@ class BasicCtrl(tornado.web.RequestHandler):
                         self.utils().str_md5(self.settings['cookie_secret']) + input.lower() + str(value['time']))
         return False
 
-    def utils(self):
-        return Utils
-
     def cache(self):
         return Cache
+
+    def utils(self):
+        return Utils
 
     def timer(self):
         return time
@@ -158,13 +160,18 @@ class BasicCtrl(tornado.web.RequestHandler):
             self.render('flash.html', flash = resp)
 
     def dbase(self, name):
-        # base = sys._getframe().f_code.co_name
         base = 'dbase'
         if name not in self._storage[base]:
             self._storage[base][name] = sqlite3.connect(self.settings[base][name])
             self._storage[base][name].row_factory = self.utils().sqlite_dict
             # self._storage[base][name].row_factory = sqlite3.Row
             self._storage[base][name].text_factory = str
+        return self._storage[base][name]
+
+    def datum(self, name):
+        base = 'datum'
+        if name not in self._storage[base]:
+            self._storage[base][name] = Datum(self.dbase(name))
         return self._storage[base][name]
 
     def model(self, name):
