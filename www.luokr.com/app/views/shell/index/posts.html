@@ -5,7 +5,7 @@
     <a target="_blank" title="{{ post['post_title'] }}" href="/p/{{ post['post_id']}}">
         <h5 class="title">{{ post['post_title'] }}</h5>
     </a>
-    <small>{% raw handler.get_escaper().xhtml_escape(post['post_descp']).replace('\n','\n<br>') %}</small>
+    <small>{% raw escape(post['post_descp']).replace('\n','\n<br>') %}</small>
     <div class="pull-right">
         <small class="muted">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small>
     </div>

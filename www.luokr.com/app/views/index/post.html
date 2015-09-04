@@ -35,7 +35,7 @@
                 {% if post['post_id'] in ptids %}
                 <small>
                     {% for term in ptids[post['post_id']] %}
-                    <a href="/t/{% raw handler.get_escaper().url_escape(ptags[term['term_id']]['term_name']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
+                    <a href="/t/{% raw url_escape(ptags[term['term_id']]['term_name']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
                     {% end %}
                 </small>
                 {% else %}
@@ -72,7 +72,7 @@
                     {% for talk in talks %}
                     <tr id="r{{ talk['talk_id'] }}">
                         <td class="talk-user span2"><i class="icon-user"></i> {% if talk['user_id'] %}<a href="/@{{ talk['user_name'] }}" target="_blank">{{ talk['user_name'] }}</a>{% else %}{{ talk['user_name'] }}{% end %}<span class="talk-time">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
-                        <td class="talk-cont">{% raw handler.get_escaper().xhtml_escape(talk['talk_text']).replace('\n','\n<br>') %}</td>
+                        <td class="talk-cont">{% raw escape(talk['talk_text']).replace('\n','\n<br>') %}</td>
                     </tr>
                     {% end %}
                     {% end %}

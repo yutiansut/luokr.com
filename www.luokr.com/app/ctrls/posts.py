@@ -70,6 +70,8 @@ class PostsCtrl(BasicCtrl):
         cur_posts.execute('select post_id,post_title,post_descp from posts where post_stat>0 and post_ptms<? order by post_ptms desc, post_id desc limit 9', (stime,))
         posts_new = cur_posts.fetchall()
 
+        posts_rel = []
+
         cur_posts.close()
         cur_terms.close()
         cur_users.close()
@@ -90,7 +92,7 @@ class PostsCtrl(BasicCtrl):
         slabs_top = self.get_runtime_conf('slabs', json = True)
 
         self.render('posts.html', track = track, pager = pager, posts = posts, psers = psers, ptids = ptids, ptags = ptags
-                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new
+                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, posts_rel = posts_rel
                 , slabs_top = slabs_top, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)
 
 
@@ -113,16 +115,16 @@ class PostCtrl(BasicCtrl):
         ptids = {}
         ptags = {}
         psers = {}
-        if post:
-            cur_posts.execute('select post_id,term_id from post_terms where post_id = ?', (post_id, ))
-            ptids = cur_posts.fetchall()
-            if ptids:
-                cur_terms.execute('select * from terms where term_id in (' + ','.join(str(i['term_id']) for i in ptids) + ')')
-                ptags = self.utils().array_keyto(cur_terms.fetchall(), 'term_id')
-            ptids = self.utils().array_group(ptids, 'post_id')
 
-            cur_users.execute('select * from users where user_id=?', (post['user_id'], ))
-            psers = self.utils().array_keyto(cur_users.fetchall(), 'user_id')
+        cur_posts.execute('select post_id,term_id from post_terms where post_id = ?', (post_id, ))
+        ptids = cur_posts.fetchall()
+        if ptids:
+            cur_terms.execute('select * from terms where term_id in (' + ','.join(str(i['term_id']) for i in ptids) + ')')
+            ptags = self.utils().array_keyto(cur_terms.fetchall(), 'term_id')
+        ptids = self.utils().array_group(ptids, 'post_id')
+
+        cur_users.execute('select * from users where user_id=?', (post['user_id'], ))
+        psers = self.utils().array_keyto(cur_users.fetchall(), 'user_id')
 
         cur_posts.execute('select post_id from posts where post_stat>0 and post_ptms<? and post_id<? order by post_id desc limit 1', (stime, post_id, ))
         post_prev = cur_posts.fetchone()
@@ -147,6 +149,14 @@ class PostCtrl(BasicCtrl):
         cur_posts.execute('select post_id,post_title,post_descp from posts where post_stat>0 and post_ptms<? order by post_ptms desc, post_id desc limit 9', (stime,))
         posts_new = cur_posts.fetchall()
 
+        posts_rel = []
+        if post['post_id'] in ptids:
+            cur_posts.execute('select distinct post_id from post_terms where post_id<>? and term_id in (' + ','.join(str(i['term_id']) for i in ptids[post['post_id']]) + ') order by term_id desc limit 9', (post['post_id'],))
+            poids = cur_posts.fetchall()
+            if poids:
+                cur_posts.execute('select post_id,post_title,post_descp from posts where post_stat>0 and post_ptms<? and post_id in (' + ','.join(str(i['post_id']) for i in poids) + ') order by post_ptms desc, post_id desc limit 9', (stime,))
+                posts_rel = cur_posts.fetchall()
+
         cur_terms.execute('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
         keyws_tag = cur_terms.fetchall()
 
@@ -154,16 +164,17 @@ class PostCtrl(BasicCtrl):
         cur_terms.close()
         cur_users.close()
 
-        cur_talks = self.dbase('talks').cursor()
+        # cur_talks = self.dbase('talks').cursor()
 
-        cur_talks.execute('select * from talks where talk_rank>=? order by talk_id desc limit 9', (self.get_runtime_conf('posts_talks_min_rank'), ))
-        talks_new = cur_talks.fetchall()
+        # cur_talks.execute('select * from talks where talk_rank>=? order by talk_id desc limit 9', (self.get_runtime_conf('posts_talks_min_rank'), ))
+        # talks_new = cur_talks.fetchall()
 
-        talks = []
         # cur_talks.execute('select * from talks where post_id=? and talk_rank>=? order by talk_id asc', (post['post_id'], self.get_runtime_conf('posts_talks_min_rank')))
         # talks = cur_talks.fetchall()
 
-        cur_talks.close()
+        # cur_talks.close()
+        talks = []
+        talks_new = []
 
         slabs_top = self.get_runtime_conf('slabs', json = True)
 
@@ -171,5 +182,5 @@ class PostCtrl(BasicCtrl):
 
         self.render('index/post.html', post = post, psers = psers, ptids = ptids, ptags = ptags, talks = talks
                 , post_prev = post_prev, post_next = post_next
-                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new
+                , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, posts_rel = posts_rel
                 , slabs_top = slabs_top, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)

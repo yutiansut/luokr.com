@@ -21,7 +21,7 @@
     <ul class="inline">
         {% if keyws_tag %}
         {% for val in keyws_tag %}
-        <li><a href="/t/{{ handler.get_escaper().url_escape(val['term_name']) }}">{{ val['term_name'] }}</a></li>
+        <li><a href="/t/{{ url_escape(val['term_name']) }}">{{ val['term_name'] }}</a></li>
         {% end %}
         {% end %}
     </ul>
@@ -58,6 +58,15 @@
     <ul class="nav nav-tabs nav-stacked">
         <li class="active"><a href="javascript:;">最新文章</a></li>
         {% for val in posts_new %}
+        <li><a class="texted" title="{{ val['post_descp'] and val['post_descp'] or val['post_title'] }}" href="/p/{{ val['post_id']}}">{{ val['post_title'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+
+    {% if posts_rel %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">相关文章</a></li>
+        {% for val in posts_rel %}
         <li><a class="texted" title="{{ val['post_descp'] and val['post_descp'] or val['post_title'] }}" href="/p/{{ val['post_id']}}">{{ val['post_title'] }}</a></li>
         {% end %}
     </ul>
