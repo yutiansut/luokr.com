@@ -2,6 +2,7 @@
 
 from ctrls.hello import HelloCtrl
 from ctrls.error import ErrorCtrl
+
 from ctrls.about import AboutCtrl
 from ctrls.apply import ApplyCtrl
 from ctrls.email import EmailCtrl
@@ -11,10 +12,10 @@ from ctrls.talks import TalksCtrl
 from ctrls.voice import VoiceCtrl
 from ctrls.posts import PostsCtrl, PostCtrl
 
+from ctrls.check import CheckCtrl
+
 from ctrls.login import LoginCtrl
 from ctrls.leave import LeaveCtrl
-
-from ctrls.image import ImageRandomCtrl
 
 from ctrls.shell.index import Shell_IndexCtrl
 from ctrls.shell.panel import Shell_PanelCtrl
@@ -38,8 +39,6 @@ url = [
     (r'/t/([^/]+)', PostsCtrl),
     (r'/p/([1-9][0-9]*)', PostCtrl),
 
-    (r'/image/random', ImageRandomCtrl),
-
     (r'/hello', HelloCtrl),
     (r'/about', AboutCtrl),
     (r'/apply', ApplyCtrl),
@@ -48,6 +47,8 @@ url = [
     (r'/score', ScoreCtrl),
     (r'/voice', VoiceCtrl),
     (r'/talks(\.json)', TalksCtrl),
+
+    (r'/check(\.jpeg)', CheckCtrl),
 
     (r'/login', LoginCtrl),
     (r'/leave', LeaveCtrl),

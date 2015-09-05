@@ -268,11 +268,11 @@ L.widget.captcha.create = function()
         element.addClass('recaptcha').html(tpl);
     }
 
-    $('#recaptcha_image').html('<img class="captcha-image" src="/image/random?' + (new Date).getTime() + '">');
+    $('#recaptcha_image').html('<img class="captcha-image" src="/check.jpeg?' + (new Date).getTime() + '">');
 };
 L.widget.captcha.reload = function()
 {
-    $('#recaptcha_image').html('<img class="captcha-image" src="/image/random?' + (new Date).getTime() + '">');
+    $('#recaptcha_image').html('<img class="captcha-image" src="/check.jpeg?' + (new Date).getTime() + '">');
     $('#recaptcha_response_field').select();
 };
 
