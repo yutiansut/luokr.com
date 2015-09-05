@@ -19,13 +19,12 @@ except ImportError:
     from urllib.parse import urlencode  # py3
 
 from lib.cache import Cache
-from lib.datum import Datum
 from lib.mailx import Mailx
 from lib.utils import Utils
 
 class BasicCtrl(tornado.web.RequestHandler):
     def initialize(self):
-        self._storage = {'model': {}, 'dbase': {}, 'datum': {}}
+        self._storage = {'model': {}, 'dbase': {}}
     def on_finish(self):
         for dbase in self._storage['dbase']:
             self._storage['dbase'][dbase].close()
@@ -166,12 +165,6 @@ class BasicCtrl(tornado.web.RequestHandler):
             self._storage[base][name].row_factory = self.utils().sqlite_dict
             # self._storage[base][name].row_factory = sqlite3.Row
             self._storage[base][name].text_factory = str
-        return self._storage[base][name]
-
-    def datum(self, name):
-        base = 'datum'
-        if name not in self._storage[base]:
-            self._storage[base][name] = Datum(self.dbase(name))
         return self._storage[base][name]
 
     def model(self, name):
