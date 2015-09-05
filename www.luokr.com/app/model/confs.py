@@ -3,47 +3,49 @@ import time
 
 class ConfsModel:
     def __init__(self):
-        self.rst()
+        self.reload()
 
-    def rst(self):
-        self._s = {}
+    def reload(self, dbase = None):
+        self._cache = {}
+        if dbase is not None:
+            cur = dbase.cursor()
+            cur.execute('select conf_name, conf_vals from confs')
+            ret = cur.fetchall()
+            cur.close()
+            if ret:
+                for row in ret:
+                    self._cache[row['conf_name']] = row['conf_vals']
 
-    def get(self, dbase, name):
-        if name in self._s:
-            return self._s[name]
-
+    def obtain(self, dbase, name):
+        if name in self._cache:
+            return self._cache[name]
         cur = dbase.cursor()
         cur.execute('select conf_vals from confs where conf_name = ?', (name, ))
         ret = cur.fetchone()
         cur.close()
-
         if ret:
-            self._s[name] = ret['conf_vals']
+            self._cache[name] = ret['conf_vals']
         else:
-            self._s[name] = None
+            self._cache[name] = None
+        return self._cache[name]
 
-        return self._s[name]
-
-    def has(self, dbase, name):
+    def exists(self, dbase, name):
         cur = dbase.cursor()
         cur.execute('select 1 from confs where conf_name = ?', (name, ))
         ret = cur.fetchone()
         cur.close()
-
         return bool(ret)
 
-    def set(self, dbase, name, vals):
+    def upsert(self, dbase, name, vals):
         cur = dbase.cursor()
         cur.execute('replace into confs (conf_name, conf_vals, conf_ctms) values (?, ?, ?)', (name, vals, int(time.time()),))
         dbase.commit()
         cur.close()
-
-        self._s[name] = vals
+        self._cache[name] = vals
 
     def delete(self, dbase, name):
         cur = dbase.cursor()
         cur.execute('delete from confs where conf_name = ?', (name, ))
         dbase.commit()
         cur.close()
-
-        self._s[name] = None
+        self._cache[name] = None

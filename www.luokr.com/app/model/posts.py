@@ -1,11 +1,10 @@
 #coding=utf-8
-import time
 
 class PostsModel:
     @staticmethod
-    def get_by_pid(dbase, post_id):
+    def get_by_pid(dbase, pid):
         cur = dbase.cursor()
-        cur.execute('select * from posts where post_id = ?', (post_id, ))
-        post = cur.fetchone()
+        cur.execute('select * from posts where post_id = ?', (pid, ))
+        ret = cur.fetchone()
         cur.close()
-        return post
+        return ret

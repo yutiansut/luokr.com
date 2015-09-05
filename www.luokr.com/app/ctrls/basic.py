@@ -46,20 +46,20 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def get_runtime_conf(self, name, json = False):
         if json:
-            conf = self.model('confs').get(self.dbase('confs'), name)
+            conf = self.model('confs').obtain(self.dbase('confs'), name)
             if conf is None or conf == '':
                 return None
             return self.get_escaper().json_decode(conf)
-        return self.model('confs').get(self.dbase('confs'), name)
+        return self.model('confs').obtain(self.dbase('confs'), name)
 
     def has_runtime_conf(self, name):
-        return self.model('confs').has(self.dbase('confs'), name)
+        return self.model('confs').exists(self.dbase('confs'), name)
 
     def del_runtime_conf(self, name):
         return self.model('confs').delete(self.dbase('confs'), name)
 
     def set_runtime_conf(self, name, vals):
-        return self.model('confs').set(self.dbase('confs'), name, vals)
+        return self.model('confs').upsert(self.dbase('confs'), name, vals)
 
     def get_current_user(self):
         usid = self.get_cookie("_usid")
@@ -119,9 +119,9 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def ualog(self, text, data = ''):
         if self.current_user:
-            self.model('alogs').add(self.dbase('alogs'), text, alog_data = data, user_ip = self.request.remote_ip, user_id = self.current_user['user_id'], user_name = self.current_user['user_name'])
+            self.model('alogs').log(self.dbase('alogs'), text, alog_data = data, user_ip = self.request.remote_ip, user_id = self.current_user['user_id'], user_name = self.current_user['user_name'])
         else:
-            self.model('alogs').add(self.dbase('alogs'), text, alog_data = data, user_ip = self.request.remote_ip)
+            self.model('alogs').log(self.dbase('alogs'), text, alog_data = data, user_ip = self.request.remote_ip)
 
     def tourl(self, args, base = None):
         if base == None:

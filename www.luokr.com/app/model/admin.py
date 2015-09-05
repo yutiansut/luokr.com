@@ -6,18 +6,18 @@ import random, hashlib
 class AdminModel:
 
     @staticmethod
-    def generate_randauid(list = '-_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', size = 64):
+    def generate_randauid(strs = '-_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', size = 64):
         auid = ''
         while (size > 0):
-            auid = auid + random.choice(list)
+            auid = auid + random.choice(strs)
             size = size - 1
         return auid
 
     @staticmethod
-    def generate_randsalt(list = '0123456789abcdefghijklmnopqrstuvwxyz', size = 8):
+    def generate_randsalt(strs = '0123456789abcdefghijklmnopqrstuvwxyz', size = 8):
         salt = ''
         while (size > 0):
-            salt = salt + random.choice(list)
+            salt = salt + random.choice(strs)
             size = size - 1
         return salt
 
