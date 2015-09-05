@@ -81,7 +81,7 @@ class Admin_UserCtrl(AdminCtrl):
                         (user_mail, user_sign, user_logo, user_meta, user_perm, self.stime(), user['user_id'], ))
                 con.commit()
             if cur.rowcount:
-                self.ualog("更新用户：" + str(user['user_id']), user['user_name'])
+                self.ualog(self.current_user, "更新用户：" + str(user['user_id']), user['user_name'])
                 self.flash(1)
                 return
         except:
@@ -144,7 +144,7 @@ class Admin_UserCreateCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.lastrowid:
-                self.ualog("新增用户：" + str(cur.lastrowid), user_name)
+                self.ualog(self.current_user, "新增用户：" + str(cur.lastrowid), user_name)
                 self.flash(1)
                 return
         except:

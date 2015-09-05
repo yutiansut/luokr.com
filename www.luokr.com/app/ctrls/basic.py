@@ -70,11 +70,18 @@ class BasicCtrl(tornado.web.RequestHandler):
             if user and user['user_auid'] == auid and \
                     self.model('admin').generate_authword(user['user_atms'], user['user_salt']) == auth:
                 return user
-            self.del_current_sess()
+
+    def set_current_sess(self, user, days = 30):
+        self.set_cookie("_usid", str(user['user_id']),
+                expires_days=days)
+        self.set_secure_cookie("_auid", str(user['user_auid']),
+                expires_days=days, httponly = True)
+        self.set_secure_cookie("_auth", self.model('admin').generate_authword(user['user_atms'], user['user_salt']),
+                expires_days=days, httponly = True)
+
     def del_current_sess(self):
         self.clear_cookie("_auid")
         self.clear_cookie("_auth")
-        # self.clear_cookie("_usid")
 
     def merge_query(self, args, dels = []):
         for k in self.request.arguments.keys():
@@ -117,9 +124,9 @@ class BasicCtrl(tornado.web.RequestHandler):
     def stime(self):
         return int(time.time())
 
-    def ualog(self, text, data = ''):
-        if self.current_user:
-            self.model('alogs').log(self.dbase('alogs'), text, alog_data = data, user_ip = self.request.remote_ip, user_id = self.current_user['user_id'], user_name = self.current_user['user_name'])
+    def ualog(self, user, text, data = ''):
+        if user:
+            self.model('alogs').log(self.dbase('alogs'), text, alog_data = data, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
         else:
             self.model('alogs').log(self.dbase('alogs'), text, alog_data = data, user_ip = self.request.remote_ip)
 

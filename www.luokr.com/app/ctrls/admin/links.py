@@ -47,7 +47,7 @@ class Admin_LinkCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.ualog('更新链接：' + str(link_id))
+                self.ualog(self.current_user, '更新链接：' + str(link_id))
                 self.flash(1)
                 return
         except:
@@ -76,7 +76,7 @@ class Admin_LinkCreateCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.lastrowid:
-                self.ualog("新增链接：" + str(cur.lastrowid), link_href)
+                self.ualog(self.current_user, "新增链接：" + str(cur.lastrowid), link_href)
                 self.flash(1)
                 return
         except:
@@ -96,7 +96,7 @@ class Admin_LinkDeleteCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.ualog('删除链接：' + str(link_id))
+                self.ualog(self.current_user, '删除链接：' + str(link_id))
                 self.flash(1)
                 return
         except:

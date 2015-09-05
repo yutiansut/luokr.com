@@ -31,22 +31,10 @@ class LoginCtrl(BasicCtrl):
                     return
 
             if user and self.model('admin').generate_password(password, user['user_salt']) == user['user_pswd']:
-                try:
-                    usid = str(user['user_id'])
-                    self.set_cookie("_usid", usid, expires_days=remember)
+                self.set_current_sess(user, days = remember)
 
-                    auid = str(user['user_auid'])
-                    self.set_secure_cookie("_auid", auid, expires_days=remember, httponly = True)
-
-                    auth = self.model('admin').generate_authword(user['user_atms'], user['user_salt'])
-                    self.set_secure_cookie("_auth", auth, expires_days=remember, httponly = True)
-
-                    self.current_user = user
-
-                    self.flash(1, {'url': redirect})
-                    self.ualog('登陆')
-                except:
-                    self.flash(0, {'msg': '请稍后再试'})
+                self.ualog(user, '登陆')
+                self.flash(1, {'url': redirect})
                 return
         except:
             pass

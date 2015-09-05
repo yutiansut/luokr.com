@@ -120,7 +120,7 @@ class Admin_PostCreateCtrl(AdminCtrl):
             con_terms.commit()
             con_terms.close()
 
-            self.ualog('新增文章：' + str(post_id))
+            self.ualog(self.current_user, '新增文章：' + str(post_id))
             self.flash(1, {'url': '/admin/post?post_id=' + str(post_id)})
         except:
             self.flash(0)
@@ -242,7 +242,7 @@ class Admin_PostCtrl(AdminCtrl):
             con_terms.commit()
             cur_terms.close()
 
-            self.ualog('更新文章：' + str(post_id))
+            self.ualog(self.current_user, '更新文章：' + str(post_id))
             self.flash(1)
         except:
             self.flash(0)

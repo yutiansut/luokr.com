@@ -47,7 +47,7 @@ class Admin_TalkCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.ualog('更新评论：' + str(talk_id))
+                self.ualog(self.current_user, '更新评论：' + str(talk_id))
                 self.flash(1)
                 return
         except:
@@ -85,7 +85,7 @@ class Admin_TalkDeleteCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.ualog('删除评论：' + str(talk_id))
+                self.ualog(self.current_user, '删除评论：' + str(talk_id))
                 self.flash(1)
                 return
         except:

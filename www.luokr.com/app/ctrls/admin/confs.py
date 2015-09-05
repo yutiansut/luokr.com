@@ -40,7 +40,7 @@ class Admin_ConfCtrl(AdminCtrl):
 
             self.set_runtime_conf(conf_name, conf_vals)
 
-            self.ualog("更新配置：" + conf_name, conf_vals)
+            self.ualog(self.current_user, "更新配置：" + conf_name, conf_vals)
             self.flash(1, {'msg': '更新配置成功'})
         except:
             self.flash(0)
@@ -66,7 +66,7 @@ class Admin_ConfCreateCtrl(AdminCtrl):
 
             self.set_runtime_conf(conf_name, conf_vals)
 
-            self.ualog("新增配置：" + conf_name, conf_vals)
+            self.ualog(self.current_user, "新增配置：" + conf_name, conf_vals)
             self.flash(1, {'msg': '新增配置成功'})
         except:
             self.flash(0)
@@ -80,7 +80,7 @@ class Admin_ConfDeleteCtrl(AdminCtrl):
 
             self.del_runtime_conf(conf_name)
 
-            self.ualog("删除配置：" + conf_name, conf_vals)
+            self.ualog(self.current_user, "删除配置：" + conf_name, conf_vals)
             self.flash(1, {'msg': '删除配置成功'})
         except:
             self.flash(0)

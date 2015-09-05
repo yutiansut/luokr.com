@@ -116,7 +116,7 @@ class Admin_FileDeleteCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.ualog('删除文件：' + str(fid))
+                self.ualog(self.current_user, '删除文件：' + str(fid))
                 self.flash(1)
                 return
         except:

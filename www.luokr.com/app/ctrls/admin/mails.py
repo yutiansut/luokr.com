@@ -51,7 +51,7 @@ class Admin_MailDeleteCtrl(AdminCtrl):
             con.commit()
             cur.close()
             if cur.rowcount:
-                self.ualog('删除留言：' + str(mail_id))
+                self.ualog(self.current_user, '删除留言：' + str(mail_id))
                 self.flash(1)
                 return
         except:
