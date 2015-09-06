@@ -39,7 +39,7 @@ Requirement
 Screenshots
 -----------
 * About
-![www.luokr.com.about.png](res.luokr.com/img/20150101/www.luokr.com.about.png)
+![www.luokr.com.about.png](res.luokr.com/img/20150906/www.luokr.com.about.gif)
 
 * Login
 ![www.luokr.com.login.png](res.luokr.com/img/20150101/www.luokr.com.login.png)
