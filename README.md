@@ -39,13 +39,13 @@ Requirement
 Screenshots
 -----------
 * About
-![www.luokr.com.about.png](res.luokr.com/img/20150906/www.luokr.com.about.gif)
+![www.luokr.com.about.png](res.luokr.com/img/20150906/www.luokr.com.about.png)
 
 * Login
 ![www.luokr.com.login.png](res.luokr.com/img/20150101/www.luokr.com.login.png)
 
 * Shell
-![www.luokr.com.shell.gif](res.luokr.com/img/20150526/www.luokr.com.shell.gif)
+![www.luokr.com.shell.gif](res.luokr.com/img/20150906/www.luokr.com.shell.png)
 
 * Posts
 ![www.luokr.com.posts.png](res.luokr.com/img/20150101/www.luokr.com.posts.png)
