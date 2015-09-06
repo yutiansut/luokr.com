@@ -96,7 +96,7 @@ class Shell_PanelCtrl(ShellCtrl):
                 con.commit()
 
             cur.close()
-            if (cur.rowcount):
+            if cur.rowcount:
                 self.ualog(self.current_user, '更新账号信息')
                 self.flash(1, {'msg': '更新成功'})
                 return

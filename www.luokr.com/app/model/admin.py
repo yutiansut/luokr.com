@@ -8,7 +8,7 @@ class AdminModel:
     @staticmethod
     def generate_randauid(strs = '-_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', size = 64):
         auid = ''
-        while (size > 0):
+        while size > 0:
             auid = auid + random.choice(strs)
             size = size - 1
         return auid
@@ -16,7 +16,7 @@ class AdminModel:
     @staticmethod
     def generate_randsalt(strs = '0123456789abcdefghijklmnopqrstuvwxyz', size = 8):
         salt = ''
-        while (size > 0):
+        while size > 0:
             salt = salt + random.choice(strs)
             size = size - 1
         return salt

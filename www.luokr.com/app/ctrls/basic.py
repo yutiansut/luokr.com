@@ -156,9 +156,10 @@ class BasicCtrl(tornado.web.RequestHandler):
 
         if 'msg' not in resp:
             resp['msg'] = self._reason
-
-        if 'url' not in resp: resp['url'] = ''
-        if 'dat' not in resp: resp['dat'] = {}
+        if 'url' not in resp:
+            resp['url'] = ''
+        if 'dat' not in resp:
+            resp['dat'] = {}
 
         if _ext == '.json' or (('Accept' in self.request.headers) and (self.request.headers['Accept'].find('json') >= 0)):
             self.write(self.get_escaper().json_encode(resp))

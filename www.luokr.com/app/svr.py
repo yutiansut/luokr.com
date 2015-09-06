@@ -18,8 +18,8 @@ app = tornado.web.Application(handlers = url, **etc)
 define("port", default=8001, help="run on the given port", type=int)
 def main():
     options.parse_command_line()
-    print "Starting tornado web server on http://127.0.0.1:%s" % options.port
-    print 'Quit the server with CONTROL-C'
+    print("Starting tornado web server on http://127.0.0.1:%s" % options.port)
+    print("Quit the server with CONTROL-C")
     app.listen(options.port, xheaders=True)
     tornado.ioloop.IOLoop.instance().start()
 

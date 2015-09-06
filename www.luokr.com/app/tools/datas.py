@@ -12,13 +12,13 @@ import sqlite3
 def main():
     for name, path in etc['dbase'].items():
         if not os.path.exists(path):
-            print 'Make dbase: %s => %s' % (name, path)
+            print("Make dbase: %s => %s" % (name, path))
 
             dbn = sqlite3.connect(path)
             dbn.executescript(open(os.path.join(os.path.dirname(path), name + '.sql')).read())
             dbn.close()
         else:
-            print 'Find dbase: %s => %s' % (name, path)
+            print("Find dbase: %s => %s" % (name, path))
 
 if __name__ == "__main__":
     main()

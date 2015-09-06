@@ -21,7 +21,7 @@ class EmailCtrl(BasicCtrl):
         con.commit()
         cur.close()
 
-        if (cur.lastrowid):
+        if cur.lastrowid:
             self.flash(1)
             self.email('%s <%s>' %(name, mail), self.get_runtime_conf('admin_email', json = True),
                     'Received Feedback (%s)' % self.timer().strftime('%F %T %Z', self.timer().localtime(time)),

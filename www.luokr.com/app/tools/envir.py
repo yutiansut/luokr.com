@@ -10,10 +10,10 @@ def main():
     etcs = os.path.join(base, 'doc', 'etc.py.sample')
 
     if not os.path.exists(dest):
-        print 'Make etc.py: %s => %s' % (etcs, dest)
+        print("Make etc.py: %s => %s" % (etcs, dest))
         open(dest, 'wb').write(open(etcs, 'rb').read())
     else:
-        print 'Find etc.py: %s' % dest
+        print("Find etc.py: %s" % dest)
 
 if __name__ == "__main__":
     main()
