@@ -232,7 +232,7 @@
 
         talks.load = function(page, qnty) {
             L.method.request({
-                _action: "/talks.json?ptid={{ post['post_id'] }}&page=" + page + "&qnty=" + qnty,
+                _action: "/talks.json?tpid={{ post['post_id'] }}&page=" + page + "&qnty=" + qnty,
                 prepare: function() {talks.more = 0;},
                 failure: function() {talks.more = 1;},
                 success: function(opts, resp) {
