@@ -196,7 +196,7 @@ def logon(method):
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
         if not self.current_user:
-            if ('Accept' in self.request.headers) and (self.request.headers['Accept'].find('json') >= 0):
+            if 'Accept' in self.request.headers and self.request.headers['Accept'].find('json') >= 0:
                 self.flash(0, {'sta': 403, 'url': self.get_login_url()})
                 return
 
