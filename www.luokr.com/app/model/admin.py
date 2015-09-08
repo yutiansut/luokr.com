@@ -30,28 +30,16 @@ class AdminModel:
         return hashlib.md5('AL.auth:' + hashlib.md5(str(atms) + '$'  + str(salt)).hexdigest()).hexdigest()
 
     @staticmethod
-    def get_user_by_usid(dbase, usid):
-        cur = dbase.cursor()
-        cur.execute('select * from users where user_id = ?', (usid,))
-        user = cur.fetchone()
-        cur.close()
-        return user
+    def get_user_by_usid(datum, usid):
+        return datum.single('select * from users where user_id = ?', (usid,))
 
     @staticmethod
-    def get_user_by_name(dbase, name):
-        cur = dbase.cursor()
-        cur.execute('select * from users where user_name = ?', (name,))
-        user = cur.fetchone()
-        cur.close()
-        return user
+    def get_user_by_name(datum, name):
+        return datum.single('select * from users where user_name = ?', (name,))
 
     @staticmethod
-    def get_user_by_mail(dbase, mail):
-        cur = dbase.cursor()
-        cur.execute('select * from users where user_mail = ?', (mail,))
-        user = cur.fetchone()
-        cur.close()
-        return user
+    def get_user_by_mail(datum, mail):
+        return datum.single('select * from users where user_mail = ?', (mail,))
 
     @staticmethod
     def chk_is_user_name(name):

@@ -10,10 +10,8 @@ class Admin_AlogsCtrl(AdminCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
-        cur = self.dbase('alogs').cursor()
-        cur.execute('select * from alogs order by alog_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
-        alogs = cur.fetchall()
-        cur.close()
+        alogs = self.datum('alogs').result(
+                'select * from alogs order by alog_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
 
         if alogs:
             pager['lgth'] = len(alogs)

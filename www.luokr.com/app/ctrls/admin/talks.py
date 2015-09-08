@@ -10,11 +10,7 @@ class Admin_TalksCtrl(AdminCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
-        cur = self.dbase('talks').cursor()
-        cur.execute('select * from talks order by talk_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
-        talks = cur.fetchall()
-        cur.close()
-
+        talks = self.datum('talks').result('select * from talks order by talk_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
         if talks:
             pager['lgth'] = len(talks)
 
@@ -24,11 +20,7 @@ class Admin_TalkCtrl(AdminCtrl):
     @admin
     def get(self):
         talk_id = self.input('talk_id')
-
-        cur = self.dbase('talks').cursor()
-        cur.execute('select * from talks where talk_id = ?', (talk_id ,))
-        talk = cur.fetchone()
-        cur.close()
+        talk = self.datum('talks').single('select * from talks where talk_id = ?', (talk_id ,))
 
         self.render('admin/talk.html', talk = talk)
 
@@ -40,13 +32,9 @@ class Admin_TalkCtrl(AdminCtrl):
             talk_text = self.input('talk_text')
             talk_utms = self.stime()
 
-            con = self.dbase('talks')
-            cur = con.cursor()
-            cur.execute('update talks set talk_rank = ?, talk_text = ?, talk_utms = ? where talk_id = ?', \
-                    (talk_rank, talk_text, talk_utms, talk_id ,))
-            con.commit()
-            cur.close()
-            if cur.rowcount:
+            if self.datum('talks').affect(
+                    'update talks set talk_rank = ?, talk_text = ?, talk_utms = ? where talk_id = ?',
+                    (talk_rank, talk_text, talk_utms, talk_id ,)).rowcount:
                 self.ualog(self.current_user, '更新评论：' + str(talk_id))
                 self.flash(1)
                 return
@@ -60,12 +48,8 @@ class Admin_TalkHiddenCtrl(AdminCtrl):
         try:
             talk_id = self.input('talk_id')
 
-            con = self.dbase('talks')
-            cur = con.cursor()
-            cur.execute('update talks set talk_rank=0 where talk_id = ?', (talk_id ,))
-            con.commit()
-            cur.close()
-            if cur.rowcount:
+            if self.datum('talks').affect(
+                    'update talks set talk_rank=0 where talk_id = ?', (talk_id ,)).rowcount:
                 self.flash(1)
                 return
         except:
@@ -79,12 +63,8 @@ class Admin_TalkDeleteCtrl(AdminCtrl):
             talk_id   = self.input('talk_id')
             talk_ctms = self.input('talk_ctms')
 
-            con = self.dbase('talks')
-            cur = con.cursor()
-            cur.execute('delete from talks where talk_id = ? and talk_ctms = ?', (talk_id, talk_ctms ,))
-            con.commit()
-            cur.close()
-            if cur.rowcount:
+            if self.datum('talks').affect(
+                    'delete from talks where talk_id = ? and talk_ctms = ?', (talk_id, talk_ctms ,)).rowcount:
                 self.ualog(self.current_user, '删除评论：' + str(talk_id))
                 self.flash(1)
                 return

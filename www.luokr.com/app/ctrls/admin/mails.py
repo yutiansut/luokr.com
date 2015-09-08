@@ -10,11 +10,8 @@ class Admin_MailsCtrl(AdminCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
-        cur = self.dbase('mails').cursor()
-        cur.execute('select * from mails order by mail_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
-        mails = cur.fetchall()
-        cur.close()
-
+        mails = self.datum('mails').result(
+                'select * from mails order by mail_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
         if mails:
             pager['lgth'] = len(mails)
 
@@ -26,12 +23,8 @@ class Admin_MailAccessCtrl(AdminCtrl):
         try:
             mail_id = self.input('mail_id')
 
-            con = self.dbase('mails')
-            cur = con.cursor()
-            cur.execute('update mails set mail_stat=1, mail_utms=? where mail_id = ?', (self.stime(), mail_id,))
-            con.commit()
-            cur.close()
-            if cur.rowcount:
+            if self.datum('mails').affect(
+                    'update mails set mail_stat=1, mail_utms=? where mail_id = ?', (self.stime(), mail_id,)).rowcount:
                 self.flash(1)
                 return
         except:
@@ -45,12 +38,8 @@ class Admin_MailDeleteCtrl(AdminCtrl):
             mail_id   = self.input('mail_id')
             mail_utms = self.input('mail_utms')
 
-            con = self.dbase('mails')
-            cur = con.cursor()
-            cur.execute('delete from mails where mail_id = ? and mail_utms = ?', (mail_id, mail_utms ,))
-            con.commit()
-            cur.close()
-            if cur.rowcount:
+            if self.datum('mails').affect(
+                    'delete from mails where mail_id = ? and mail_utms = ?', (mail_id, mail_utms ,)).rowcount:
                 self.ualog(self.current_user, '删除留言：' + str(mail_id))
                 self.flash(1)
                 return

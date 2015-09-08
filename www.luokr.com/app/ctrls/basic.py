@@ -19,15 +19,13 @@ except ImportError:
     from urllib.parse import urlencode  # py3
 
 from lib.cache import Cache
+from lib.datum import Datum
 from lib.mailx import Mailx
 from lib.utils import Utils
 
 class BasicCtrl(tornado.web.RequestHandler):
     def initialize(self):
-        self._storage = {'model': {}, 'dbase': {}}
-    def on_finish(self):
-        for dbase in self._storage['dbase']:
-            self._storage['dbase'][dbase].close()
+        self._storage = {'model': {}, 'datum': {}}
 
     def set_default_headers(self):
         self.clear_header('server')
@@ -46,27 +44,27 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def get_runtime_conf(self, name, json = False):
         if json:
-            conf = self.model('confs').obtain(self.dbase('confs'), name)
+            conf = self.model('confs').obtain(self.datum('confs'), name)
             if conf is None or conf == '':
                 return None
             return self.get_escaper().json_decode(conf)
-        return self.model('confs').obtain(self.dbase('confs'), name)
+        return self.model('confs').obtain(self.datum('confs'), name)
 
     def has_runtime_conf(self, name):
-        return self.model('confs').exists(self.dbase('confs'), name)
+        return self.model('confs').exists(self.datum('confs'), name)
 
     def del_runtime_conf(self, name):
-        return self.model('confs').delete(self.dbase('confs'), name)
+        return self.model('confs').delete(self.datum('confs'), name)
 
     def set_runtime_conf(self, name, vals):
-        return self.model('confs').upsert(self.dbase('confs'), name, vals)
+        return self.model('confs').upsert(self.datum('confs'), name, vals)
 
     def get_current_user(self):
         usid = self.get_cookie("_usid")
         auid = self.get_secure_cookie('_auid')
         auth = self.get_secure_cookie('_auth')
         if usid and auth:
-            user = self.model('admin').get_user_by_usid(self.dbase('users'), usid)
+            user = self.model('admin').get_user_by_usid(self.datum('users'), usid)
             if user and user['user_auid'] == auid and \
                     self.model('admin').generate_authword(user['user_atms'], user['user_salt']) == auth:
                 return user
@@ -126,9 +124,9 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def ualog(self, user, text, data = ''):
         if user:
-            self.model('alogs').log(self.dbase('alogs'), text, alog_data = data, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+            self.model('alogs').log(self.datum('alogs'), text, alog_data = data, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
         else:
-            self.model('alogs').log(self.dbase('alogs'), text, alog_data = data, user_ip = self.request.remote_ip)
+            self.model('alogs').log(self.datum('alogs'), text, alog_data = data, user_ip = self.request.remote_ip)
 
     def tourl(self, args, base = None):
         if base == None:
@@ -166,13 +164,13 @@ class BasicCtrl(tornado.web.RequestHandler):
         else:
             self.render('flash.html', flash = resp)
 
-    def dbase(self, name):
-        base = 'dbase'
+    def datum(self, name):
+        base = 'datum'
         if name not in self._storage[base]:
-            self._storage[base][name] = sqlite3.connect(self.settings[base][name])
-            self._storage[base][name].row_factory = self.utils().sqlite_dict
-            # self._storage[base][name].row_factory = sqlite3.Row
-            self._storage[base][name].text_factory = str
+            conn = sqlite3.connect(self.settings['sqlite_dbases'][name])
+            conn.row_factory = self.utils().sqlite_dict # sqlite3.Row
+            conn.text_factory = str
+            self._storage[base][name] = Datum(conn)
         return self._storage[base][name]
 
     def model(self, name):

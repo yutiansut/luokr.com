@@ -5,14 +5,7 @@ from admin import admin, AdminCtrl
 class Admin_IndexCtrl(AdminCtrl):
     @admin
     def get(self, *args):
-        cur = self.dbase('talks').cursor()
-        cur.execute('select * from talks order by talk_id desc limit 3')
-        talks = cur.fetchall()
-        cur.close()
-
-        cur = self.dbase('mails').cursor()
-        cur.execute('select * from mails order by mail_id desc limit 3')
-        mails = cur.fetchall()
-        cur.close()
+        talks = self.datum('talks').result('select * from talks order by talk_id desc limit 3')
+        mails = self.datum('mails').result('select * from mails order by mail_id desc limit 3')
 
         self.render('admin/index.html', talks = talks, mails = mails)

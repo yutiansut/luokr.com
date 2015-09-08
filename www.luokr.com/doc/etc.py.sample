@@ -9,11 +9,11 @@ etc['error'] = False
 
 etc['root_path'] = sys.path[0]
 etc['login_url'] = '/login'
-etc['template_path'] = os.path.join(etc['root_path'], 'app', 'views')
-etc['cookie_secret'] = 'Yoursecretcookie'
 etc['xsrf_cookies'] = True
+etc['cookie_secret'] = 'Yoursecretcookie'
+etc['template_path'] = os.path.join(etc['root_path'], 'app', 'views')
 
-etc['dbase'] = {
+etc['sqlite_dbases'] = {
         'alogs': os.path.join(etc['root_path'], 'app', 'datas', 'alogs.db3'),
         'confs': os.path.join(etc['root_path'], 'app', 'datas', 'confs.db3'),
         'files': os.path.join(etc['root_path'], 'app', 'datas', 'files.db3'),

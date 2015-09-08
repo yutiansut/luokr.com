@@ -10,10 +10,8 @@ class Admin_ConfsCtrl(AdminCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
-        cur = self.dbase('confs').cursor()
-        cur.execute('select * from confs order by conf_ctms desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
-        confs = cur.fetchall()
-        cur.close()
+        confs = self.datum('confs').result(
+                'select * from confs order by conf_ctms desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
 
         if confs:
             pager['lgth'] = len(confs)
@@ -25,11 +23,7 @@ class Admin_ConfCtrl(AdminCtrl):
     def get(self):
         conf_name = self.input('conf_name')
 
-        cur = self.dbase('confs').cursor()
-        cur.execute('select * from confs where conf_name = ? limit 1', (conf_name, ))
-        conf = cur.fetchone()
-        cur.close()
-
+        entry = self.datum('confs').single('select * from confs where conf_name = ? limit 1', (conf_name, ))
         self.render('admin/conf.html', entry = conf)
 
     @admin

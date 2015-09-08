@@ -13,15 +13,9 @@ class EmailCtrl(BasicCtrl):
         text = self.input('text')
         time = self.stime()
 
-        con = self.dbase('mails')
-
-        cur = con.cursor()
-        cur.execute('insert into mails (user_ip, user_name, user_mail, mail_text, mail_ctms, mail_utms) values (?, ?, ?, ?, ?, ?)', \
-                (self.request.remote_ip, name, mail, text, time, time))
-        con.commit()
-        cur.close()
-
-        if cur.lastrowid:
+        if self.datum('mails').affect(
+                'insert into mails (user_ip, user_name, user_mail, mail_text, mail_ctms, mail_utms) values (?, ?, ?, ?, ?, ?)',
+                (self.request.remote_ip, name, mail, text, time, time)).lastrowid:
             self.flash(1)
             self.email('%s <%s>' %(name, mail), self.get_runtime_conf('admin_email', json = True),
                     'Received Feedback (%s)' % self.timer().strftime('%F %T %Z', self.timer().localtime(time)),

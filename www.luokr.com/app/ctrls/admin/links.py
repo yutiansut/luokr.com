@@ -10,11 +10,8 @@ class Admin_LinksCtrl(AdminCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
-        cur = self.dbase('links').cursor()
-        cur.execute('select * from links order by link_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
-        links = cur.fetchall()
-        cur.close()
-
+        links = self.datum('links').result(
+                'select * from links order by link_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
         if links: 
             pager['lgth'] = len(links)
 
@@ -24,9 +21,7 @@ class Admin_LinkCtrl(AdminCtrl):
     @admin
     def get(self):
         link_id = self.input('link_id')
-        cur = self.dbase('links').cursor()
-        cur.execute('select * from links where link_id = ?', (link_id,))
-        link = cur.fetchone()
+        link = self.datum('links').single('select * from links where link_id = ?', (link_id,))
 
         self.render('admin/link.html', entry = link)
 
@@ -40,13 +35,9 @@ class Admin_LinkCtrl(AdminCtrl):
             link_rank = self.input('link_rank')
             link_utms = self.stime()
 
-            con = self.dbase('links')
-            cur = con.cursor()
-            cur.execute('update links set link_name = ?, link_href = ?, link_desp = ?, link_rank = ?, link_utms = ? where link_id = ?', \
-                    (link_name, link_href, link_desp, link_rank, link_utms, link_id ,))
-            con.commit()
-            cur.close()
-            if cur.rowcount:
+            if self.datum('links').affect(
+                    'update links set link_name = ?, link_href = ?, link_desp = ?, link_rank = ?, link_utms = ? where link_id = ?',
+                    (link_name, link_href, link_desp, link_rank, link_utms, link_id ,)).rowcount:
                 self.ualog(self.current_user, '更新链接：' + str(link_id))
                 self.flash(1)
                 return
@@ -69,14 +60,11 @@ class Admin_LinkCreateCtrl(AdminCtrl):
             link_ctms = self.stime()
             link_utms = link_ctms
 
-            con = self.dbase('links')
-            cur = con.cursor()
-            cur.execute('insert into links (link_name, link_href, link_desp, link_rank, link_ctms, link_utms) values (?, ?, ?, ?, ?, ?)', \
-                    (link_name, link_href, link_desp, link_rank, link_ctms, link_utms ,))
-            con.commit()
-            cur.close()
-            if cur.lastrowid:
-                self.ualog(self.current_user, "新增链接：" + str(cur.lastrowid), link_href)
+            lastrowid = self.datum('links').affect(
+                    'insert into links (link_name, link_href, link_desp, link_rank, link_ctms, link_utms) values (?, ?, ?, ?, ?, ?)',
+                    (link_name, link_href, link_desp, link_rank, link_ctms, link_utms ,)).lastrowid
+            if lastrowid:
+                self.ualog(self.current_user, "新增链接：" + str(lastrowid), link_href)
                 self.flash(1)
                 return
         except:
@@ -90,12 +78,8 @@ class Admin_LinkDeleteCtrl(AdminCtrl):
             link_id   = self.input('link_id')
             link_utms = self.input('link_utms')
 
-            con = self.dbase('links')
-            cur = con.cursor()
-            cur.execute('delete from links where link_id = ? and link_utms = ?', (link_id, link_utms ,))
-            con.commit()
-            cur.close()
-            if cur.rowcount:
+            if self.datum('links').affect(
+                    'delete from links where link_id = ? and link_utms = ?', (link_id, link_utms ,)).rowcount:
                 self.ualog(self.current_user, '删除链接：' + str(link_id))
                 self.flash(1)
                 return

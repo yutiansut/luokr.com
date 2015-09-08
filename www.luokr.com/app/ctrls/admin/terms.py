@@ -10,11 +10,8 @@ class Admin_TermsCtrl(AdminCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
-        cur = self.dbase('terms').cursor()
-        cur.execute('select * from terms order by term_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
-        terms = cur.fetchall()
-        cur.close()
-
+        terms = self.datum('terms').result(
+                'select * from terms order by term_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
         if terms:
             pager['lgth'] = len(terms)
 
@@ -24,9 +21,7 @@ class Admin_TermCtrl(AdminCtrl):
     @admin
     def get(self):
         term_id = self.input('term_id')
-        cur = self.dbase('terms').cursor()
-        cur.execute('select * from terms where term_id = ?', (term_id,))
-        term = cur.fetchone()
+        term = self.datum('terms').single('select * from terms where term_id = ?', (term_id,))
 
         self.render('admin/term.html', entry = term)
 
@@ -36,13 +31,8 @@ class Admin_TermCtrl(AdminCtrl):
             term_id   = self.input('term_id')
             term_name = self.input('term_name')
 
-            con = self.dbase('terms')
-            cur = con.cursor()
-            cur.execute('update terms set term_name = ? where term_id = ?', \
-                    (term_name, term_id ,))
-            con.commit()
-            cur.close()
-            if cur.rowcount:
+            if self.datum('terms').affect('update terms set term_name = ? where term_id = ?',
+                    (term_name, term_id ,)).rowcount:
                 self.flash(1)
                 return
         except:
@@ -60,13 +50,7 @@ class Admin_TermCreateCtrl(AdminCtrl):
             term_name = self.input('term_name')
             term_ctms = self.stime()
 
-            con = self.dbase('terms')
-            cur = con.cursor()
-            cur.execute('insert into terms (term_name, term_ctms) values (?, ?)', \
-                    (term_name, term_ctms ,))
-            con.commit()
-            cur.close()
-            if cur.lastrowid:
+            if self.datum('terms').affect('insert into terms (term_name, term_ctms) values (?, ?)', (term_name, term_ctms ,)).lastrowid:
                 self.flash(1)
                 return
         except:

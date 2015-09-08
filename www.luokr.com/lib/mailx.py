@@ -41,6 +41,7 @@ class Mailx:
             smtp.quit()
 
             return True
-        except Exception, e:
-            print str(e)
-            return False
+        except:
+            pass
+
+        return False

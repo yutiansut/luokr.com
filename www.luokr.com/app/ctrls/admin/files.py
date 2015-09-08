@@ -11,11 +11,9 @@ class Admin_FilesCtrl(AdminCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
-        cur = self.dbase('files').cursor()
-        cur.execute('select * from files order by file_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
-        files = cur.fetchall()
-        cur.close()
-
+        files = self.datum('files').result(
+                'select * from files order by file_id desc limit ? offset ?',
+                (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
         if files:
             pager['lgth'] = len(files)
 
@@ -70,12 +68,9 @@ class Admin_FileUploadCtrl(AdminCtrl):
         fin.write(res['body'])
         fin.close()
 
-        con = self.dbase('files')
-        cur = con.cursor()
-        cur.execute('insert into files (file_hash, file_base, file_path, file_type, file_memo, file_ctms) values (?, ?, ?, ?, ?, ?)',
+        self.datum('files').affect(
+                'insert into files (file_hash, file_base, file_path, file_type, file_memo, file_ctms) values (?, ?, ?, ?, ?, ?)',
                 (key, dir, url, res['content_type'], res['filename'], self.stime()))
-        con.commit()
-        cur.close()
 
         if self.input('CKEditorFuncNum', None) is not None:
             out = '<script type="text/javascript">'
@@ -92,13 +87,8 @@ class Admin_FileDeleteCtrl(AdminCtrl):
             fid = self.input('file_id')
             ctm = self.input('file_ctms')
 
-            con = self.dbase('files')
-            cur = con.cursor()
-
-            cur.execute('select * from files where file_id = ?', (fid,))
-            res = cur.fetchone()
+            res = self.datum('files').single('select * from files where file_id = ?', (fid,))
             if not res:
-                cur.close()
                 self.flash(0)
                 return
 
@@ -112,10 +102,7 @@ class Admin_FileDeleteCtrl(AdminCtrl):
                     os.rmdir(dir)
                     dir = os.path.dirname(dir)
 
-            cur.execute('delete from files where file_id = ? and file_ctms = ?', (fid, ctm))
-            con.commit()
-            cur.close()
-            if cur.rowcount:
+            if self.datum('files').affect('delete from files where file_id = ? and file_ctms = ?', (fid, ctm)).rowcount:
                 self.ualog(self.current_user, '删除文件：' + str(fid))
                 self.flash(1)
                 return

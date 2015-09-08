@@ -10,21 +10,14 @@ class Admin_PostsCtrl(AdminCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
-        cur_posts = self.dbase('posts').cursor()
-        cur_users = self.dbase('users').cursor()
-
-        cur_posts.execute('select * from posts order by post_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
-        posts = cur_posts.fetchall()
+        posts = self.datum('posts').result('select * from posts order by post_id desc limit ? offset ?',
+                (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
 
         psers = {}
         if posts:
             pager['lgth'] = len(posts)
+            psers = self.utils().array_keyto(self.datum('users').result('select * from users where user_id in (' + ','.join(str(i['user_id']) for i in posts) + ')'), 'user_id')
 
-            cur_users.execute('select * from users where user_id in (' + ','.join(str(i['user_id']) for i in posts) + ')')
-            psers = self.utils().array_keyto(cur_users.fetchall(), 'user_id')
-
-        cur_posts.close()
-        cur_users.close()
         self.render('admin/posts.html', pager = pager, posts = posts, psers = psers)
 
 class Admin_PostHiddenCtrl(AdminCtrl):
@@ -33,11 +26,7 @@ class Admin_PostHiddenCtrl(AdminCtrl):
         try:
             post_id = self.input('post_id')
 
-            con = self.dbase('posts')
-            cur = con.cursor()
-            cur.execute('update posts set post_stat = 0 where post_id = ?', (post_id, ))
-            con.commit()
-            cur.close()
+            self.datum('posts').affect('update posts set post_stat = 0 where post_id = ?', (post_id, ))
             self.flash(1)
         except:
             self.flash(0)
@@ -45,13 +34,8 @@ class Admin_PostHiddenCtrl(AdminCtrl):
 class Admin_PostCreateCtrl(AdminCtrl):
     @admin
     def get(self):
-        cur = self.dbase('terms').cursor()
-
-        cur.execute('select * from terms order by term_id desc, term_refc desc limit 9')
-        terms = cur.fetchall()
-        cur.close()
-
         mode = self.input('mode', None)
+        terms = self.datum('terms').result('select * from terms order by term_id desc, term_refc desc limit 9')
 
         self.render('admin/post-create.html', mode = mode, terms = terms)
 
@@ -82,43 +66,30 @@ class Admin_PostCreateCtrl(AdminCtrl):
                 self.flash(0, {'msg': '标签数量限制不能超过 10 个'})
                 return
 
-            con_posts = self.dbase('posts')
-            cur_posts = con_posts.cursor()
-
-            con_terms = self.dbase('terms')
-            cur_terms = con_terms.cursor()
-
             term_imap = {}
             term_ctms = self.stime()
             for term_name in term_list:
-                cur_terms.execute('select term_id from terms where term_name = ?', (term_name ,))
-                term_id = cur_terms.fetchone()
+                term_id = self.datum('terms').single('select term_id from terms where term_name = ?', (term_name ,))
                 if term_id:
                     term_id = term_id['term_id']
                 else:
-                    cur_terms.execute('insert or ignore into terms (term_name, term_ctms) values (?, ?)', (term_name , term_ctms, ))
-                    if cur_terms.lastrowid:
-                        term_id = cur_terms.lastrowid
-
+                    term_id = self.datum('terms').invoke('insert or ignore into terms (term_name, term_ctms) values (?, ?)', (term_name , term_ctms, )).lastrowid
                 if term_id:
                     term_imap[term_id] = term_name
 
-            cur_posts.execute('insert into posts (user_id, post_type, post_title, post_descp, post_author, post_source, post_summary, post_content,post_stat, post_rank, post_ptms, post_ctms, post_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', \
-                    (self.current_user['user_id'], post_type, post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_ctms, post_utms ,))
-            post_id = cur_posts.lastrowid
+            post_id = self.datum('posts').invoke(
+                    'insert into posts (user_id, post_type, post_title, post_descp, post_author, post_source, post_summary, post_content,post_stat, post_rank, post_ptms, post_ctms, post_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    (self.current_user['user_id'], post_type, post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_ctms, post_utms ,)).lastrowid
 
             if term_imap:
                 for term_id in term_imap:
-                    cur_posts.execute('insert or ignore into post_terms (post_id, term_id) values (' + str(post_id) + ',' + str(term_id) + ')')
+                    self.datum('posts').invoke('insert or ignore into post_terms (post_id, term_id) values (' + str(post_id) + ',' + str(term_id) + ')')
 
             if term_imap:
-                cur_terms.execute('update terms set term_refc = term_refc + 1 where term_id in (' + ','.join([str(i) for i in term_imap.keys()]) + ')')
+                self.datum('terms').invoke('update terms set term_refc = term_refc + 1 where term_id in (' + ','.join([str(i) for i in term_imap.keys()]) + ')')
 
-            con_posts.commit()
-            cur_posts.close()
-
-            con_terms.commit()
-            con_terms.close()
+            self.datum('posts').commit()
+            self.datum('terms').commit()
 
             self.ualog(self.current_user, '新增文章：' + str(post_id))
             self.flash(1, {'url': '/admin/post?post_id=' + str(post_id)})
@@ -131,37 +102,20 @@ class Admin_PostCtrl(AdminCtrl):
     def get(self):
         post_id = self.input('post_id')
 
-        con_posts = self.dbase('posts')
-        cur_posts = con_posts.cursor()
-
-        cur_posts.execute('select * from posts where post_id = ?', (post_id, ))
-        post = cur_posts.fetchone()
+        post = self.model('posts').get_by_pid(self.datum('posts'), post_id)
         if not post:
-            cur_posts.close()
             return self.send_error(404)
 
         mode = self.input('mode', None)
 
-        con_terms = self.dbase('terms')
-        cur_terms = con_terms.cursor()
-
-        cur_terms.execute('select * from terms order by term_id desc, term_refc desc limit 9')
-        terms = cur_terms.fetchall()
-
-        ptids = {}
+        terms = self.datum('terms').result('select * from terms order by term_id desc, term_refc desc limit 9')
+        ptids = self.datum('posts').result('select post_id,term_id from post_terms where post_id = ?', (post_id, ))
         ptags = {}
-
-        cur_posts.execute('select post_id,term_id from post_terms where post_id = ?', (post_id, ))
-        ptids = cur_posts.fetchall()
         if ptids:
-            cur_terms.execute('select * from terms where term_id in (' + ','.join(str(i['term_id']) for i in ptids) + ')')
-            ptags = cur_terms.fetchall()
+            ptags = self.datum('terms').result('select * from terms where term_id in (' + ','.join(str(i['term_id']) for i in ptids) + ')')
             if ptags:
                 ptids = self.utils().array_group(ptids, 'post_id')
                 ptags = self.utils().array_keyto(ptags, 'term_id')
-
-        cur_posts.close()
-        cur_terms.close()
 
         self.render('admin/post.html', mode = mode, post = post, terms = terms, ptids = ptids, ptags = ptags)
 
@@ -191,56 +145,41 @@ class Admin_PostCtrl(AdminCtrl):
                 self.flash(0, {'msg': '标签数量限制不能超过 10 个'})
                 return
 
-            con_posts = self.dbase('posts')
-            cur_posts = con_posts.cursor()
-
-            con_terms = self.dbase('terms')
-            cur_terms = con_terms.cursor()
-
-            cur_posts.execute('select * from posts where post_id = ?', (post_id, ))
-            post = cur_posts.fetchone()
+            post = self.model('posts').get_by_pid(self.datum('posts'), post_id)
             if not post:
-                cur_posts.close()
-                cur_terms.close()
                 self.flash(0, '没有指定文章ID')
                 return
 
             term_imap = {}
             term_ctms = self.stime()
             for term_name in term_list:
-                cur_terms.execute('select term_id from terms where term_name = ?', (term_name ,))
-                term_id = cur_terms.fetchone()
+                term_id = self.datum('terms').single('select term_id from terms where term_name = ?', (term_name ,))
                 if term_id:
                     term_id = term_id['term_id']
                 else:
-                    cur_terms.execute('insert or ignore into terms (term_name, term_ctms) values (?, ?)', (term_name , term_ctms, ))
-                    if cur_terms.lastrowid:
-                        term_id = cur_terms.lastrowid
+                    term_id = self.datum('terms').invoke('insert or ignore into terms (term_name, term_ctms) values (?, ?)', (term_name , term_ctms, )).lastrowid
 
                 if term_id:
                     term_imap[term_id] = term_name
 
-            cur_posts.execute('select term_id from post_terms where post_id = ?', (post_id, ))
-            post_tids = cur_posts.fetchall()
+            post_tids = self.datum('posts').result('select term_id from post_terms where post_id = ?', (post_id, ))
 
-            cur_posts.execute('update posts set user_id=?,post_title=?,post_descp=?,post_author=?,post_source=?,post_summary=?,post_content=?,post_stat=?,post_rank=?,post_ptms=?,post_utms=? where post_id=?', \
+            self.datum('posts').invoke(
+                    'update posts set user_id=?,post_title=?,post_descp=?,post_author=?,post_source=?,post_summary=?,post_content=?,post_stat=?,post_rank=?,post_ptms=?,post_utms=? where post_id=?',
                     (self.current_user['user_id'], post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_utms, post_id,))
-            cur_posts.execute('delete from post_terms where post_id = ?', (post_id,))
+            self.datum('posts').invoke('delete from post_terms where post_id = ?', (post_id,))
 
             if term_imap:
                 for term_id in term_imap:
-                    cur_posts.execute('insert or ignore into post_terms (post_id, term_id) values (' + str(post_id) + ',' + str(term_id) + ')')
+                    self.datum('posts').invoke('insert or ignore into post_terms (post_id, term_id) values (' + str(post_id) + ',' + str(term_id) + ')')
 
             if post_tids:
-                cur_terms.execute('update terms set term_refc = term_refc - 1 where term_id in (' + ','.join([str(i['term_id']) for i in post_tids]) + ')')
+                self.datum('terms').invoke('update terms set term_refc = term_refc - 1 where term_id in (' + ','.join([str(i['term_id']) for i in post_tids]) + ')')
             if term_imap:
-                cur_terms.execute('update terms set term_refc = term_refc + 1 where term_id in (' + ','.join([str(i) for i in term_imap.keys()]) + ')')
+                self.datum('terms').invoke('update terms set term_refc = term_refc + 1 where term_id in (' + ','.join([str(i) for i in term_imap.keys()]) + ')')
 
-            con_posts.commit()
-            cur_posts.close()
-
-            con_terms.commit()
-            cur_terms.close()
+            self.datum('posts').commit()
+            self.datum('terms').commit()
 
             self.ualog(self.current_user, '更新文章：' + str(post_id))
             self.flash(1)

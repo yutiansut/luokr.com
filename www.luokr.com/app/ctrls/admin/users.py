@@ -10,11 +10,7 @@ class Admin_UsersCtrl(AdminCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
-        cur = self.dbase('users').cursor()
-        cur.execute('select * from users order by user_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
-        users = cur.fetchall()
-        cur.close()
-
+        users = self.datum('users').result('select * from users order by user_id desc limit ? offset ?', (pager['qnty'], (pager['page']-1)*pager['qnty'], ))
         if users:
             pager['lgth'] = len(users)
 
@@ -23,7 +19,7 @@ class Admin_UsersCtrl(AdminCtrl):
 class Admin_UserCtrl(AdminCtrl):
     @admin
     def get(self):
-        user = self.model('admin').get_user_by_usid(self.dbase('users'), self.input('user_id'))
+        user = self.model('admin').get_user_by_usid(self.datum('users'), self.input('user_id'))
         if not user:
             self.flash(0, {'sta': 404})
             return
@@ -36,7 +32,7 @@ class Admin_UserCtrl(AdminCtrl):
 
     @admin
     def post(self):
-        user = self.model('admin').get_user_by_usid(self.dbase('users'), self.input('user_id'))
+        user = self.model('admin').get_user_by_usid(self.datum('users'), self.input('user_id'))
         if not user:
             self.flash(0, {'sta': 404})
             return
@@ -63,27 +59,23 @@ class Admin_UserCtrl(AdminCtrl):
                 self.flash(0, {'msg': '无效的用户邮箱'})
                 return
 
-            if user_mail != user['user_mail'] and self.model('admin').get_user_by_mail(self.dbase('users'), user_mail):
+            if user_mail != user['user_mail'] and self.model('admin').get_user_by_mail(self.datum('users'), user_mail):
                 self.flash(0, {'msg': '用户邮箱已存在'})
                 return
             
-            con = self.dbase('users')
-            cur = con.cursor()
             if user_pswd:
                 user_auid = self.model('admin').generate_randauid()
                 user_salt = self.model('admin').generate_randsalt()
                 user_pswd = self.model('admin').generate_password(user_pswd, user_salt)
-                cur.execute('update users set user_auid = ?, user_mail = ?, user_sign = ?, user_logo = ?, user_meta, user_pswd = ?, user_salt = ?, user_perm = ?, user_atms = ?, user_utms = ? where user_id = ?',\
+                self.datum('users').affect('update users set user_auid = ?, user_mail = ?, user_sign = ?, user_logo = ?, user_meta, user_pswd = ?, user_salt = ?, user_perm = ?, user_atms = ?, user_utms = ? where user_id = ?',\
                         (user_auid, user_mail, user_sign, user_logo, user_meta, user_pswd, user_salt, user_perm, self.stime(), self.stime(), user['user_id'], ))
-                con.commit()
             else:
-                cur.execute('update users set user_mail = ?, user_sign = ?, user_logo = ?, user_meta = ?, user_perm = ?, user_utms = ? where user_id = ?',\
+                self.datum('users').affect('update users set user_mail = ?, user_sign = ?, user_logo = ?, user_meta = ?, user_perm = ?, user_utms = ? where user_id = ?',\
                         (user_mail, user_sign, user_logo, user_meta, user_perm, self.stime(), user['user_id'], ))
-                con.commit()
-            if cur.rowcount:
-                self.ualog(self.current_user, "更新用户：" + str(user['user_id']), user['user_name'])
-                self.flash(1)
-                return
+
+            self.ualog(self.current_user, "更新用户：" + str(user['user_id']), user['user_name'])
+            self.flash(1)
+            return
         except:
             pass
         self.flash(0)
@@ -120,11 +112,11 @@ class Admin_UserCreateCtrl(AdminCtrl):
                 self.flash(0, {'msg': '无效的用户邮箱'})
                 return
 
-            if self.model('admin').get_user_by_name(self.dbase('users'), user_name):
+            if self.model('admin').get_user_by_name(self.datum('users'), user_name):
                 self.flash(0, {'msg': '用户帐号已存在'})
                 return
 
-            if self.model('admin').get_user_by_mail(self.dbase('users'), user_mail):
+            if self.model('admin').get_user_by_mail(self.datum('users'), user_mail):
                 self.flash(0, {'msg': '用户邮箱已存在'})
                 return
 
@@ -133,18 +125,13 @@ class Admin_UserCreateCtrl(AdminCtrl):
             user_pswd = self.model('admin').generate_password(user_rpwd, user_salt)
             user_perm = int(user_perm) & 0x7FFFFFFF
 
-            con = self.dbase('users')
-            cur = con.cursor()
-            cur.execute('insert into users (\
+            lastrowid = self.datum('users').affect('insert into users (\
                     user_auid, user_name, user_salt, user_pswd, user_perm, \
                     user_mail, user_sign, user_logo, user_meta, user_ctms, user_utms, user_atms) \
                     values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', \
-                    (user_auid, user_name, user_salt, user_pswd, user_perm, \
-                    user_mail, user_sign, user_logo, user_meta, user_ctms, user_utms, user_atms))
-            con.commit()
-            cur.close()
-            if cur.lastrowid:
-                self.ualog(self.current_user, "新增用户：" + str(cur.lastrowid), user_name)
+                    (user_auid, user_name, user_salt, user_pswd, user_perm, user_mail, user_sign, user_logo, user_meta, user_ctms, user_utms, user_atms)).lastrowid
+            if lastrowid:
+                self.ualog(self.current_user, "新增用户：" + str(lastrowid), user_name)
                 self.flash(1)
                 return
         except:

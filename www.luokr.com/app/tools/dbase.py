@@ -10,7 +10,7 @@ from app.etc import etc
 import sqlite3
 
 def main():
-    for name, path in etc['dbase'].items():
+    for name, path in etc['sqlite_dbases'].items():
         if not os.path.exists(path):
             print("Make dbase: %s => %s" % (name, path))
 

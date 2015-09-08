@@ -28,7 +28,7 @@ class Shell_PanelCtrl(ShellCtrl):
                 self.flash(0, {'msg': '无效的用户邮箱'})
                 return
 
-            if user_mail != user['user_mail'] and self.model('admin').get_user_by_mail(self.dbase('users'), user_mail):
+            if user_mail != user['user_mail'] and self.model('admin').get_user_by_mail(self.datum('users'), user_mail):
                 self.flash(0, {'msg': '用户邮箱已存在'})
                 return
 
@@ -69,17 +69,11 @@ class Shell_PanelCtrl(ShellCtrl):
                 fin.write(res['body'])
                 fin.close()
 
-                con = self.dbase('files')
-                cur = con.cursor()
-                cur.execute('insert into files (file_hash, file_base, file_path, file_type, file_memo, file_ctms) values (?, ?, ?, ?, ?, ?)',
+                self.datum('files').affect('insert into files (file_hash, file_base, file_path, file_type, file_memo, file_ctms) values (?, ?, ?, ?, ?, ?)',
                         (key, dir, url, res['content_type'], res['filename'], self.stime()))
-                con.commit()
-                cur.close()
 
                 user_logo = url
 
-            con = self.dbase('users')
-            cur = con.cursor()
             if user_pswd:
                 if len(user_npwd) < 6 or user_npwd != user_rpwd or self.model('admin').generate_password(user_pswd, user['user_salt']) != user['user_pswd']:
                     self.flash(0, {'msg': '密码输入错误'})
@@ -87,19 +81,17 @@ class Shell_PanelCtrl(ShellCtrl):
 
                 user_auid = self.model('admin').generate_randauid()
                 user_salt = self.model('admin').generate_randsalt()
-                cur.execute('update users set user_auid = ?, user_mail = ?, user_logo = ?, user_sign = ?, user_meta = ?, user_pswd = ?, user_salt = ?, user_atms = ?, user_utms = ? where user_id = ?',\
+                self.datum('users').affect(
+                        'update users set user_auid = ?, user_mail = ?, user_logo = ?, user_sign = ?, user_meta = ?, user_pswd = ?, user_salt = ?, user_atms = ?, user_utms = ? where user_id = ?',
                         (user_auid, user_mail, user_logo, user_sign, user_meta, self.model('admin').generate_password(user_npwd, user_salt), user_salt, self.stime(), self.stime(), user['user_id'], ))
-                con.commit()
             else:
-                cur.execute('update users set user_mail = ?, user_logo = ?, user_sign = ?, user_meta = ?, user_utms = ? where user_id = ?',\
+                self.datum('users').affect(
+                        'update users set user_mail = ?, user_logo = ?, user_sign = ?, user_meta = ?, user_utms = ? where user_id = ?',
                         (user_mail, user_logo, user_sign, user_meta, self.stime(), user['user_id'], ))
-                con.commit()
 
-            cur.close()
-            if cur.rowcount:
-                self.ualog(self.current_user, '更新账号信息')
-                self.flash(1, {'msg': '更新成功'})
-                return
+            self.ualog(self.current_user, '更新账号信息')
+            self.flash(1, {'msg': '更新成功'})
+            return
         except:
             pass
         self.flash(0)

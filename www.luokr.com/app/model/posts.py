@@ -2,9 +2,5 @@
 
 class PostsModel:
     @staticmethod
-    def get_by_pid(dbase, pid):
-        cur = dbase.cursor()
-        cur.execute('select * from posts where post_id = ?', (pid, ))
-        ret = cur.fetchone()
-        cur.close()
-        return ret
+    def get_by_pid(datum, pid):
+        return datum.single('select * from posts where post_id = ?', (pid, ))

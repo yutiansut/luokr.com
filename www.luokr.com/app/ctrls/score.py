@@ -9,12 +9,5 @@ class ScoreCtrl(BasicCtrl):
             self.flash(0)
             return
 
-        con_posts = self.dbase('posts')
-        cur_posts = con_posts.cursor()
-
-        cur_posts.execute('update posts set post_rank = post_rank + 1, post_plus = post_plus + 1 where post_id = ? limit 1', (pid,))
-
-        con_posts.commit()
-        cur_posts.close()
-
+        self.datum('posts').affect('update posts set post_rank = post_rank + 1, post_plus = post_plus + 1 where post_id = ? limit 1', (pid,))
         self.flash(1)
