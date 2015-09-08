@@ -4,22 +4,27 @@ import time
 import re
 
 class Cache:
-    _s = {}
+    _ = {}
 
     @staticmethod
-    def get(key):
-        if (key in Cache._s) and ('val' in Cache._s[key]) and ('lvt' in Cache._s[key]) and (Cache._s[key]['lvt'] > int(time.time())):
-            return Cache._s[key]['val']
+    def obtain(key):
+        if key in Cache._:
+            try:
+                if 'v' in Cache._[key] and 'e' in Cache._[key] and (Cache._[key]['e'] is None or Cache._[key]['e'] > int(time.time())):
+                    return Cache._[key]['v']
+            except:
+                pass
+            Cache.delete(key)
 
     @staticmethod
-    def set(key, val, lft = 3600):
-        Cache._s[key] = {'val': val, 'lvt': int(time.time()) + int(lft)}
+    def upsert(key, val, lft = 3600):
+        Cache._[key] = {'v': val, 'e': None if lft is None else (int(time.time()) + int(lft))}
 
     @staticmethod
     def delete(key, exp = False):
         if exp:
-            for k in Cache._s:
+            for k in Cache._:
                 if re.search(key, k):
-                    Cache._s[k] = {'val': None, 'lvt': 0}
-        elif (key in Cache._s):
-            Cache._s[key] = {'val': None, 'lvt': 0}
+                    del Cache._[k]
+        elif (key in Cache._):
+            del Cache._[key]

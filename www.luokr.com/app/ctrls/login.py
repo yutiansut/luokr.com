@@ -24,8 +24,8 @@ class LoginCtrl(BasicCtrl):
 
             if user:
                 ckey = 'login:user#' + str(user['user_id'])
-                cval = self.cache().get(ckey)
-                self.cache().set(ckey, 1, 3)
+                cval = self.cache().obtain(ckey)
+                self.cache().upsert(ckey, 1, 10)
                 if cval:
                     self.flash(0, {'msg': '操作太频繁，请稍后再试'})
                     return
