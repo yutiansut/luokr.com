@@ -104,7 +104,8 @@ class Admin_PostCtrl(AdminCtrl):
 
         post = self.model('posts').get_by_pid(self.datum('posts'), post_id)
         if not post:
-            return self.send_error(404)
+            self.flash(0, {'sta': 404})
+            return
 
         mode = self.input('mode', None)
 

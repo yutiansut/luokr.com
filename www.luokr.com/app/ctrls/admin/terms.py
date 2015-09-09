@@ -22,6 +22,9 @@ class Admin_TermCtrl(AdminCtrl):
     def get(self):
         term_id = self.input('term_id')
         term = self.datum('terms').single('select * from terms where term_id = ?', (term_id,))
+        if not term:
+            self.flash(0, {'sta': 404})
+            return
 
         self.render('admin/term.html', entry = term)
 

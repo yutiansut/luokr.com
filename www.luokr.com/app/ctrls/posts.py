@@ -25,7 +25,7 @@ class PostsCtrl(BasicCtrl):
                     (_tag['term_id'], stime, pager['qnty'], (pager['page']-1)*pager['qnty'], ))
             track = '标签：' + _tag['term_name']
         elif _tnm:
-            self.send_error(404)
+            self.flash(0, {'sta': 404})
             return
         elif _qry:
             posts = self.datum('posts').result(
@@ -77,7 +77,8 @@ class PostCtrl(BasicCtrl):
 
         post = self.model('posts').get_by_pid(self.datum('posts'), post_id)
         if not post or ((not self.get_current_user()) and (not post['post_stat'] or post['post_ptms'] >= stime)):
-            return self.send_error(404)
+            self.flash(0, {'sta': 404})
+            return
 
         ptids = {}
         ptags = {}

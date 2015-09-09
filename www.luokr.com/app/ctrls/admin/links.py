@@ -22,6 +22,9 @@ class Admin_LinkCtrl(AdminCtrl):
     def get(self):
         link_id = self.input('link_id')
         link = self.datum('links').single('select * from links where link_id = ?', (link_id,))
+        if not link:
+            self.flash(0, {'sta': 404})
+            return
 
         self.render('admin/link.html', entry = link)
 
