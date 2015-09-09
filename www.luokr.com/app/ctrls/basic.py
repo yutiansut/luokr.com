@@ -28,7 +28,7 @@ class BasicCtrl(tornado.web.RequestHandler):
         self._storage = {'model': {}, 'datum': {}}
 
     def set_default_headers(self):
-        self.clear_header('server')
+        self.set_header('server', self.settings['servs'])
         self.set_header('x-frame-options', 'SAMEORIGIN')
         self.set_header('x-xss-protection', '1; mode=block')
         self.set_header('cache-control', 'no-transform')

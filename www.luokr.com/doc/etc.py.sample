@@ -1,11 +1,12 @@
 #coding=utf-8
 
-import os.path, sys
+import os.path, sys, time
 
 etc = {}
 
 etc['debug'] = True
 etc['error'] = False
+etc['servs'] = 'AL/0.9 %s' % int(time.time())
 
 etc['root_path'] = sys.path[0]
 etc['login_url'] = '/login'
