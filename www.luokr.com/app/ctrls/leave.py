@@ -1,13 +1,13 @@
 #coding=utf-8
 
-from basic import logon, BasicCtrl
+from basic import login, BasicCtrl
 
 class LeaveCtrl(BasicCtrl):
-    @logon
+    @login
     def get(self):
         self.render('leave.html')
 
-    @logon
+    @login
     def post(self):
         self.del_current_sess()
         self.redirect('/')

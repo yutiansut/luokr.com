@@ -185,7 +185,7 @@ class BasicCtrl(tornado.web.RequestHandler):
             self._storage[base][clsn] = getattr(sys.modules[modn], clsn)()
         return self._storage[base][clsn]
 
-def logon(method):
+def login(method):
     """Decorate methods with this to require that the user be logged in.
 
     If the user is not logged in, they will be redirected to the configured
@@ -218,7 +218,7 @@ def logon(method):
     return wrapper
 
 def alive(method):
-    @logon
+    @login
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
         if self.model('admin').chk_user_is_live(self.current_user):
