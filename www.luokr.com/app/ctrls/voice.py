@@ -28,13 +28,18 @@ class VoiceCtrl(BasicCtrl):
         text = self.input('text')
         time = self.stime()
 
-        self.datum('talks').affect(
-                'insert into talks (post_id, user_ip, user_id, user_name, user_mail, talk_text, talk_rank, talk_ctms, talk_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                (post['post_id'], self.request.remote_ip, usid, name, mail, text, rank, time, time))
+        try:
+            self.datum('talks').invoke(
+                    'insert into talks (post_id, user_ip, user_id, user_name, user_mail, talk_text, talk_rank, talk_ctms, talk_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    (post['post_id'], self.request.remote_ip, usid, name, mail, text, rank, time, time))
 
-        self.datum('posts').affect('update posts set post_refc = post_refc + 1 where post_id = ?', (post['post_id'],))
+            self.datum('posts').invoke('update posts set post_refc = post_refc + 1 where post_id = ?', (post['post_id'],))
 
-        if float(rank) > 0:
-            self.flash(1, {'msg': '评论发表成功'})
-        else:
-            self.flash(1, {'msg': '当前评论内容暂不公开'})
+            if float(rank) > 0:
+                self.flash(1, {'msg': '评论发表成功'})
+            else:
+                self.flash(1, {'msg': '当前评论内容暂不公开'})
+        except:
+            self.datum('talks').revert()
+            self.datum('posts').revert()
+            self.flash(0)

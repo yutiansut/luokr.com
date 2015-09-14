@@ -12,9 +12,9 @@ class Cache:
             try:
                 if 'v' in Cache._[key] and 'e' in Cache._[key] and (Cache._[key]['e'] is None or Cache._[key]['e'] > int(time.time())):
                     return Cache._[key]['v']
+                Cache.delete(key)
             except:
                 pass
-            Cache.delete(key)
 
     @staticmethod
     def upsert(key, val, lft = 3600):
@@ -22,9 +22,12 @@ class Cache:
 
     @staticmethod
     def delete(key, exp = False):
-        if exp:
-            for k in Cache._:
-                if re.search(key, k):
-                    del Cache._[k]
-        elif (key in Cache._):
-            del Cache._[key]
+        try:
+            if exp:
+                for k in Cache._:
+                    if re.search(key, k):
+                        del Cache._[k]
+            elif (key in Cache._):
+                del Cache._[key]
+        except:
+            pass

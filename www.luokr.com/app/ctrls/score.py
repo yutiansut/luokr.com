@@ -9,5 +9,9 @@ class ScoreCtrl(BasicCtrl):
             self.flash(0)
             return
 
-        self.datum('posts').affect('update posts set post_rank = post_rank + 1, post_plus = post_plus + 1 where post_id = ? limit 1', (pid,))
-        self.flash(1)
+        try:
+            self.datum('posts').affect(
+                    'update posts set post_rank = post_rank + 1, post_plus = post_plus + 1 where post_id = ? limit 1', (pid,))
+            self.flash(1)
+        except:
+            self.flash(0)

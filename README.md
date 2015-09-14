@@ -19,8 +19,8 @@ Below is the main directory structure:
     -------- tools/     # some tools, run `python tools/dbase.py` to make DBs, etc.
     -------- views/     # templates
     ---- doc/           # documents
-    ---- lib/           # library files
-    ---- www/           # static files
+    ---- lib/           # libraries
+    ---- www/           # web root, static files
 
 
 
