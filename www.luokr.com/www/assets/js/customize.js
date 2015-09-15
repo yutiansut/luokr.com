@@ -36,7 +36,7 @@ L.method.date = function(a, s)
         case 'h' : return ('0' + ((s = d.getHours() || 12) > 12 ? s - 12 : s)).slice(-2);  
         case 'H' : return ('0' + d.getHours()).slice(-2);  
         case 'i' : return ('0' + d.getMinutes()).slice(-2);  
-        case 'I' : return (function(){d.setDate(1); d.setMonth(0); s = [d.getTimezoneOffset()]; d.setMonth(6); s[1] = d.getTimezoneOffset(); d.setTime(f); return s[0] == s[1] ? 0 : 1;})();  
+        case 'I' : return (function() {d.setDate(1); d.setMonth(0); s = [d.getTimezoneOffset()]; d.setMonth(6); s[1] = d.getTimezoneOffset(); d.setTime(f); return s[0] == s[1] ? 0 : 1;})();  
         case 'j' : return d.getDate();  
         case 'l' : return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDay()];  
         case 'L' : return (s = d.getFullYear()) % 4 == 0 && (s % 100 != 0 || s % 400 == 0) ? 1 : 0;  
@@ -45,13 +45,13 @@ L.method.date = function(a, s)
         case 'n' : return d.getMonth() + 1;  
         case 's' : return ('0' + d.getSeconds()).slice(-2);  
         case 'S' : return ['th', 'st', 'nd', 'rd'][(s = d.getDate()) < 4 ? s : 0];  
-        case 't' : return (function(){d.setDate(32); s = 32 - d.getDate(); d.setTime(f); return s;})();  
+        case 't' : return (function() {d.setDate(32); s = 32 - d.getDate(); d.setTime(f); return s;})();  
         case 'T' : return 'UTC';  
         case 'U' : return ('' + f).slice(0, -3);  
         case 'w' : return d.getDay();  
         case 'y' : return ('' + d.getFullYear()).slice(-2);  
         case 'Y' : return d.getFullYear();  
-        case 'z' : return (function(){d.setMonth(0); return d.setTime(f - d.setDate(1)) / 86400000;})();  
+        case 'z' : return (function() {d.setMonth(0); return d.setTime(f - d.setDate(1)) / 86400000;})();  
         default  : return -d.getTimezoneOffset() * 60;  
         };  
     });  
@@ -107,10 +107,10 @@ L.method.request = function(options)
                 type      : setting._method || 'get',
                 data      : setting._params || '',
                 dataType  : setting._format || 'json',
-                beforeSend: function(){
+                beforeSend: function() {
                     setting.prepare(setting);
                 },
-                success   : function(respond){
+                success   : function(respond) {
                     setting.success(setting, respond);
                 },
                 error     : setting.failure(setting)
@@ -127,12 +127,12 @@ L.method.request = function(options)
 
         form.ajaxSubmit({
             dataType  : 'json',
-            beforeSend: function(){
+            beforeSend: function() {
                 setting.prepare(setting);
             },
-            success   : function(respond){
+            success   : function(respond) {
                 setting.success(setting, respond);
-                L.widget.captcha.reload();
+                L.widget.captcha.reload(form.find('.captcha'));
             },
             error     : setting.failure(setting)
         });
@@ -143,10 +143,10 @@ L.method.request = function(options)
             url       : link.attr('href') || link.data('href'),
             type      : 'get',
             dataType  : 'json',
-            beforeSend: function(){
+            beforeSend: function() {
                 setting.prepare(setting);
             },
-            success   : function(respond){
+            success   : function(respond) {
                 setting.success(setting, respond);
             },
             error     : setting.failure(setting)
@@ -182,10 +182,10 @@ L.method.respond = function(opts, resp)
             if (resp.url == '') {
                 msgs.push('继续操作，请 <a href="javascript:location.reload()">刷新当前页</a> 或 <a href="javascript:history.go(-1)">返回上一页</a>');
             } else {
-                setTimeout(function(){location.href = resp.url;}, (resp.tms || 3)*1000);
+                setTimeout(function() {location.href = resp.url;}, (resp.tms || 3)*1000);
             }
         } else {
-            setTimeout(function(){easyDialog.close()}, (resp.tms || 3)*1000);
+            setTimeout(function() {easyDialog.close()}, (resp.tms || 3)*1000);
         }
 
         easyDialog.open({
@@ -241,42 +241,39 @@ L.method.ajaxLink = function(link, stay)
 
 
 L.widget.captcha = {};
-L.widget.captcha.create = function()
+L.widget.captcha.create = function(form)
 {
-    element = $('#recaptcha');
-    if (element.html() == '') {
-        var tpl = '' +
-        '<div id="recaptcha_widget" class="recaptcha-widget recaptcha_isnot_showing_audio">' +
-        '    <div id="recaptcha_image"></div>' +
-        '    <div class="recaptcha-main">' +
-        '        <div class="recaptcha-buttons">' +
-        '            <a id="recaptcha_reload_btn" href="javascript:L.widget.captcha.reload(' + "'" + element.selector + "'" + ');" title="获取新的验证"><span>&nbsp;</span></a>' +
-        '            <a id="recaptcha_whatsthis_btn" href="javascript:;" title="输入验证码有助于我们识别当前是否机器操作"><span>&nbsp;</span></a>' +
-        '        </div>' +
-        '        <label>' +
-        '            <strong>' +
-        '                <span id="recaptcha_instructions_image" class="recaptcha_only_if_image">' +
-        '                    输入验证码：' +
-        '                </span>' +
-        '            </strong>' +
-        '            <input type="text" id="recaptcha_response_field" name="_code" autocomplete="off">' +
-        '        </label>' +
+    form = $(form);
+    if (form.hasClass('captcha') && !form.find('.captcha-form').length) {
+        var html = '' +
+        '<div class="captcha-form">' +
+        '    <div class="captcha-btns">' +
+        '        <a class="captcha-btns-reload" href="javascript:;" onclick="L.widget.captcha.reload(this);" title="获取新的验证"><span>&nbsp;</span></a>' +
+        '        <a class="captcha-btns-whatis" href="javascript:;" title="输入验证码有助于我们识别当前是否机器操作"><span>&nbsp;</span></a>' +
+        '    </div>' +
+        '    <div class="captcha-show">' +
+        '        <a href="javascript:;" onclick="L.widget.captcha.reload(this);" title="获取新的验证"><img src="/check.jpeg?form=' + (form.data('form') || '') + '&time=' + (new Date).getTime() + '"></a>' +
+        '    </div>' +
+        '    <div class="captcha-main">' +
+        '        <input type="text" class="captcha-code" name="_code" autocomplete="off" placeholder="输入验证码">' +
+        '        <input type="hidden" name="_form" value="' + (form.data('form') || '') + '">' +
         '    </div>' +
         '</div>' +
         '';
         
-        element.addClass('recaptcha').html(tpl);
+        form.html(html);
     }
-
-    $('#recaptcha_image').html('<img class="captcha-image" src="/check.jpeg?' + (new Date).getTime() + '">');
 };
-L.widget.captcha.reload = function()
+L.widget.captcha.reload = function(form)
 {
-    $('#recaptcha_image').html('<img class="captcha-image" src="/check.jpeg?' + (new Date).getTime() + '">');
-    $('#recaptcha_response_field').select();
+    form = $(form).closest('.captcha');
+    if (form.length) {
+        form.find('.captcha-show img').attr('src', '/check.jpeg?form=' + (form.data('form') || '') + '&time=' + (new Date).getTime());
+        form.find('.captcha-code').focus().select();
+    }
 };
 
-$(function(){
+$(function() {
     if ($('body').data('exts-scrollup'))
     {
         $.scrollUp({
@@ -291,11 +288,11 @@ $(function(){
         });
     }
 
-    $('.require-confirm').on('click', function(){
+    $('.require-confirm').on('click', function() {
         return L.method.confirm();
     });
 
-    $('.request-ajax-link-with-confirm').on('click', function(){
+    $('.request-ajax-link-with-confirm').on('click', function() {
         if (L.method.confirm())
         {
             L.method.ajaxLink($(this));
@@ -303,12 +300,12 @@ $(function(){
         return false;
     });
 
-    $('.request-ajax-link').on('click', function(){
+    $('.request-ajax-link').on('click', function() {
         L.method.ajaxLink($(this));
         return false;
     });
 
-    $('.request-ajax-form-with-confirm').on('submit', function(){
+    $('.request-ajax-form-with-confirm').on('submit', function() {
         if (L.method.confirm())
         {
             L.method.ajaxForm($(this));
@@ -316,7 +313,7 @@ $(function(){
         return false;
     });
 
-    $('.request-ajax-form').on('submit', function(){
+    $('.request-ajax-form').on('submit', function() {
         L.method.ajaxForm($(this));
         return false;
     });

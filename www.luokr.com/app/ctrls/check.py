@@ -12,5 +12,7 @@ class CheckCtrl(BasicCtrl):
                 , expires_days = None)
 
         self.set_header('Cache-Control', 'no-cache')
+        self.add_header('Cache-Control', 'no-store')
+
         self.set_header('Content-Type', 'image/jpeg')
         self.write(gen_captcha(text, 'jpeg'))

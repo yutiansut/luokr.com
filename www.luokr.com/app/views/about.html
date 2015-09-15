@@ -43,7 +43,7 @@
                     </div>
                     <div class="control-group">
                         <div class="controls">
-                            <div id="recaptcha"></div>
+                            <div class="captcha"></div>
                         </div>
                     </div>
 
@@ -67,7 +67,7 @@
             var f = $(this);
             f.find('button[type=submit]').attr('disabled', 'disabled');
 
-            if (f.data('recaptcha-loaded'))
+            if (f.data('captcha-loaded'))
             {
                 var p = f.find('.control-group:has(button[type=submit])');
                 var t = p.find('.help-inline').hide();
@@ -85,14 +85,14 @@
                         t.html('<strong>发送成功！</strong><a href="/">点击这里返回首页</a>').fadeIn();
                     }
 
-                    L.widget.captcha.reload();
+                    L.widget.captcha.reload(f.find('.captcha'));
                     f.find('button[type=submit]').removeAttr('disabled');
                 }, 'json');
             }
             else
             {
-                f.data('recaptcha-loaded', true);
-                L.widget.captcha.create('#recaptcha');
+                f.data('captcha-loaded', true);
+                L.widget.captcha.create(f.find('.captcha'));
 
                 f.find('button[type=submit]').removeAttr('disabled');
             }

@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="control-group">
-                    <div id="recaptcha"></div>
+                    <div class="captcha"></div>
                 </div>
 
                 <div class="control-group">
@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                <a rel="nofollow" href="/apply?entry=login" target="_blank" class="pull-right">没有帐号？</a>
+                <a rel="nofollow" href="/apply?form=login" target="_blank" class="pull-right">没有帐号？</a>
                 <label class="checkbox"><input type="checkbox" name="remember" value="30">保持登录状态</label>
             </form>
         </div>
@@ -47,14 +47,14 @@
             var f = $(this);
             f.find('button[type=submit]').attr('disabled', 'disabled');
 
-            if (f.data('recaptcha-loaded'))
+            if (f.data('captcha-loaded'))
             {
                 $.post(f.attr('action'), f.serializeArray(), function(r)
                 {
                     if (r.err)
                     {
                         alert('登录失败！' + r.msg);
-                        L.widget.captcha.reload();
+                        L.widget.captcha.reload(f.find('.captcha'));
                         f.find('button[type=submit]').removeAttr('disabled');
                     }
                     else
@@ -65,8 +65,8 @@
             }
             else
             {
-                f.data('recaptcha-loaded', true);
-                L.widget.captcha.create('#recaptcha');
+                f.data('captcha-loaded', true);
+                L.widget.captcha.create(f.find('.captcha'));
 
                 f.find('button[type=submit]').removeAttr('disabled');
             }

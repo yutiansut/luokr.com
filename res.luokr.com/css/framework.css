@@ -288,9 +288,6 @@ img.avatar {
 .card-main .card-form input {
     text-align: center;
 }
-.card-main .card-form .recaptcha-widget .recaptcha-main input[type="text"] {
-    width: 80%;
-}
 .card-main .card-logo {
     text-align: center;
 }
