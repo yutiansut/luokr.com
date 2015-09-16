@@ -18,7 +18,7 @@
 <div class="row">
     <div class="span10">
         <div class="row">
-            <div class="span3 offset1 pull-right">
+            <div class="span3 offset1 pull-right" style="padding-bottom:10px">
                 <img class="avatar" id="form-avatar-file-view" alt="{% if handler.current_user and handler.current_user['user_logo'] %}{{ handler.current_user['user_logo'] }}{% else %}{{ handler.get_runtime_conf('sites_asset') }}img/b.gif{% end %}" src="{% if handler.current_user and handler.current_user['user_logo'] %}{{ handler.current_user['user_logo'] }}{% else %}{{ handler.get_runtime_conf('sites_asset') }}img/b.gif{% end %}">
                 <button type="button" class="btn" onclick="document.getElementById('form-avatar-file').click();">选择头像</button>
             </div>
@@ -74,8 +74,8 @@
 
                     <div class="control-group">
                         <div class="controls">
-                            <button type="submit" class="btn btn-success">提交更新</button>
-                            <button type="reset" class="btn" onclick="document.getElementById('form-avatar-file-view').src=document.getElementById('form-avatar-file-view').alt;">重置</button>
+                            <button type="submit" class="btn btn-success span3" style="margin-left:0">提交更新</button>
+                            <!-- <button type="reset" class="btn span3" style="margin-left:0; margin-top:10px;" onclick="document.getElementById('form-avatar-file-view').src=document.getElementById('form-avatar-file-view').alt;">重置</button> -->
                         </div>
                     </div>
                 </form>
