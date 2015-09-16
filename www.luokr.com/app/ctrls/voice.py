@@ -35,6 +35,9 @@ class VoiceCtrl(BasicCtrl):
 
             self.datum('posts').invoke('update posts set post_refc = post_refc + 1 where post_id = ?', (post['post_id'],))
 
+            self.datum('talks').commit()
+            self.datum('posts').commit()
+
             if float(rank) > 0:
                 self.flash(1, {'msg': '评论发表成功'})
             else:
