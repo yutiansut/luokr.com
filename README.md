@@ -39,7 +39,7 @@ Requirement
 Screenshots
 -----------
 * About
-![www.luokr.com.about.png](res.luokr.com/img/20150906/www.luokr.com.about.png)
+![www.luokr.com.about.png](res.luokr.com/img/20150921/www.luokr.com.about.png)
 
 * Login
 ![www.luokr.com.login.png](res.luokr.com/img/20150101/www.luokr.com.login.png)
@@ -54,5 +54,5 @@ Screenshots
 ![www.luokr.com.admin.png](res.luokr.com/img/20141231/www.luokr.com.admin.png)
 
 * Admin (Edit Post)
-![www.luokr.com.admin.post.update.png](res.luokr.com/img/20141231/www.luokr.com.admin.post.update.png)
+![www.luokr.com.admin.post.update.png](res.luokr.com/img/20150921/www.luokr.com.admin.post.update.gif)
 
