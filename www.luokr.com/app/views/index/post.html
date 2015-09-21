@@ -17,7 +17,7 @@
 
     #rows-talk td {padding-bottom: 20px;}
     .talk-time {display: block; font-size: .8em; color: grey;}
-    .talk-cont {word-wrap: break-word; word-break: break-all;};
+    article a, .talk-cont {word-wrap: break-word; word-break: break-all;};
 
     @media print {
         #list-talk, #form-talk {display: none}
@@ -88,7 +88,7 @@
             </fieldset>
         </div>
 
-        <form id="form-talk" class="form-horizontal" method="post" action="/voice?p={{ post['post_id'] }}">
+        <form id="form-talk" class="form-horizontal" method="post" action="/voice?poid={{ post['post_id'] }}">
             {% raw xsrf_form_html() %}
             <fieldset>
 
@@ -142,12 +142,12 @@
 {% block foot_js %}
 <script src="{{ handler.get_runtime_conf('sites_asset') }}gcp/src/run_prettify.js?skin=solarized-dark" type="text/javascript"></script>
 <script>
-    $(function(){
-        $('.pager .ilike').click(function(){
+    $(function() {
+        $('.pager .ilike').click(function() {
             var i = $(this);
             if (i.attr('disabled') != 'disabled') {
                 i.attr('disabled', 'disabled').parent().addClass('disabled');
-                $.post('/score?p=' + i.data('post-id'), {'_xsrf': '{{ handler.xsrf_token }}'}, function(){
+                $.post('/score?poid=' + i.data('post-id'), {'_xsrf': '{{ handler.xsrf_token }}'}, function() {
                     i.text(i.data('plus-ts'));
                 }, 'json');
             }
@@ -163,16 +163,15 @@
             }
         });
 
-        $('#form-talk').submit(function(){
+        $('#form-talk').submit(function() {
             var f = $(this);
             f.find('button[type=submit]').attr('disabled', 'disabled');
 
-            if (f.data('captcha-loaded'))
-            {
+            if (f.data('captcha-loaded')) {
                 var p = f.find('.control-group:has(button[type=submit])');
                 var t = p.find('.help-inline').hide();
 
-                $.post(f.attr('action'), f.serializeArray(), function(r){
+                $.post(f.attr('action'), f.serializeArray(), function(r) {
                     if (r.err)
                     {
                         p.removeClass('success').addClass('error')
@@ -185,12 +184,10 @@
                     {
                         p.removeClass('error').addClass('success')
                         t.html('<strong>发送成功！</strong>' + r.msg).fadeIn();
-                        setTimeout(function(){location.reload();}, 3000);
+                        setTimeout(function() {location.reload();}, 3000);
                     }
                 }, 'json');
-            }
-            else
-            {
+            } else {
                 f.data('captcha-loaded', true);
                 L.widget.captcha.create(f.find('.captcha'));
 
@@ -232,7 +229,7 @@
 
         talks.load = function(page, qnty) {
             L.method.request({
-                _action: "/talks.json?tpid={{ post['post_id'] }}&page=" + page + "&qnty=" + qnty,
+                _action: "/talks.json?poid={{ post['post_id'] }}&page=" + page + "&qnty=" + qnty,
                 prepare: function() {talks.more = 0;},
                 failure: function() {talks.more = 1;},
                 success: function(opts, resp) {

@@ -108,7 +108,7 @@
             <div class="control-group">
                 <label class="control-label" for="input_post_ptms">发布时间</label>
                 <div class="controls">
-                    <input type="text" id="input_post_ptms" name="post_ptms" value="{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(handler.stime())) }}" required>
+                    <input type="text" id="input_post_ptms" name="post_ptms" value="{{ handler.timer().strftime('%Y-%m-%d %H:%M:%S', handler.timer().localtime(handler.stime())) }}" placeholder="1970-01-01 00:00:00" required>
                 </div>
             </div>
 

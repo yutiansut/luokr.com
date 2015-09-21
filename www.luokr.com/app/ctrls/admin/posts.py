@@ -50,8 +50,8 @@ class Admin_PostCreateCtrl(AdminCtrl):
             post_summary = self.input('post_summary')
             post_content = self.input('post_content')
 
-            post_rank = self.input('post_rank')
-            post_stat = self.input('post_stat', 0)
+            post_rank = int(self.input('post_rank'))
+            post_stat = int(self.input('post_stat', 0))
             post_ptms = int(self.timer().mktime(self.timer().strptime(self.input('post_ptms'), '%Y-%m-%d %H:%M:%S')))
             post_ctms = self.stime()
             post_utms = post_ctms
@@ -131,8 +131,8 @@ class Admin_PostCtrl(AdminCtrl):
             post_summary = self.input('post_summary')
             post_content = self.input('post_content')
 
-            post_rank = self.input('post_rank')
-            post_stat = self.input('post_stat', 0)
+            post_rank = int(self.input('post_rank'))
+            post_stat = int(self.input('post_stat', 0))
             post_ptms = int(self.timer().mktime(self.timer().strptime(self.input('post_ptms'), '%Y-%m-%d %H:%M:%S')))
             post_utms = self.stime()
 
@@ -166,7 +166,7 @@ class Admin_PostCtrl(AdminCtrl):
             post_tids = self.datum('posts').result('select term_id from post_terms where post_id = ?', (post_id, ))
 
             self.datum('posts').invoke(
-                    'update posts set user_id=?,post_title=?,post_descp=?,post_author=?,post_source=?,post_summary=?,post_content=?,post_stat=?,post_rank=?,post_ptms=?,post_utms=? where post_id=?',
+                    'update posts set user_id=?,post_title=?,post_descp=?,post_author=?,post_source=?,post_summary=?,post_content=?,post_stat=?,post_rank=?+post_plus-post_mins,post_ptms=?,post_utms=? where post_id=?',
                     (self.current_user['user_id'], post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_utms, post_id,))
             self.datum('posts').invoke('delete from post_terms where post_id = ?', (post_id,))
 
