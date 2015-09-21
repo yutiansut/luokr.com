@@ -22,7 +22,6 @@
             <thead>
                 <tr>
                     <th style="width: 60px">#</th>
-                    <th style="width: 60px">文章类型</th>
                     <th style="width: 60px">文章状态</th>
                     <th style="width: 80px">文章编辑</th>
                     <th>文章标题</th>
@@ -36,7 +35,6 @@
                 {% for post in posts %}
                 <tr>
                     <td>{{ post['post_id'] }}</td>
-                    <td>{{ post['post_type'] }}</td>
                     <td>{% if post['post_stat'] %}{% if post['post_ptms']<handler.stime() %}<span style="color:green">已发布</span>{% else %}<span>待发布</span>{% end %}{% else %}<span style="color:red">草稿</span>{% end %}</td>
                     <td>{% if post['user_id'] in psers %}{{ psers[post['user_id']]['user_name'] }}{% end %}</td>
                     <td>{{ post['post_title'] }}</td>
@@ -50,7 +48,7 @@
                 {% end %}
                 {% else %}
                 <tr>
-                    <td colspan="8" style="text-align:center">没有发现内容</td>
+                    <td colspan="7" style="text-align:center">没有发现内容</td>
                 </tr>
                 {% end %}
             </tbody>

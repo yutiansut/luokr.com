@@ -42,7 +42,6 @@ class Admin_PostCreateCtrl(AdminCtrl):
     @admin
     def post(self):
         try:
-            post_type    = self.input('post_type', 'blog')
             post_title   = self.input('post_title')
             post_descp   = self.input('post_descp')
             post_author  = self.input('post_author')
@@ -78,8 +77,8 @@ class Admin_PostCreateCtrl(AdminCtrl):
                     term_imap[term_id] = term_name
 
             post_id = self.datum('posts').invoke(
-                    'insert into posts (user_id, post_type, post_title, post_descp, post_author, post_source, post_summary, post_content,post_stat, post_rank, post_ptms, post_ctms, post_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                    (self.current_user['user_id'], post_type, post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_ctms, post_utms ,)).lastrowid
+                    'insert into posts (user_id, post_title, post_descp, post_author, post_source, post_summary, post_content,post_stat, post_rank, post_ptms, post_ctms, post_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                    (self.current_user['user_id'], post_title, post_descp, post_author, post_source, post_summary, post_content, post_stat, post_rank, post_ptms, post_ctms, post_utms ,)).lastrowid
 
             if term_imap:
                 for term_id in term_imap:
