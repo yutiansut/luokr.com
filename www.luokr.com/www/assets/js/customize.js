@@ -244,15 +244,15 @@ L.widget.captcha = {};
 L.widget.captcha.create = function(form)
 {
     form = $(form);
-    if (form.hasClass('captcha') && !form.find('.captcha-form').length) {
+    if (form.hasClass('captcha') && !form.find('.captcha-form').size()) {
         var html = '' +
         '<div class="captcha-form">' +
         '    <div class="captcha-btns">' +
-        '        <a class="captcha-btns-reload" href="javascript:;" onclick="L.widget.captcha.reload(this);" title="获取新的验证"><span>&nbsp;</span></a>' +
-        '        <a class="captcha-btns-whatis" href="javascript:;" title="输入验证码有助于我们识别当前是否机器操作"><span>&nbsp;</span></a>' +
+        '        <a href="javascript:;" class="captcha-btns-reload" title="获取新的验证" onclick="L.widget.captcha.reload(this);"></a>' +
+        '        <a href="javascript:;" class="captcha-btns-whatis" title="输入验证码有助于我们识别当前是否机器操作"></a>' +
         '    </div>' +
         '    <div class="captcha-show">' +
-        '        <a href="javascript:;" onclick="L.widget.captcha.reload(this);" title="获取新的验证"><img src="/check.jpeg?form=' + (form.data('form') || '') + '&time=' + (new Date).getTime() + '"></a>' +
+        '        <a href="javascript:;" onclick="L.widget.captcha.reload(this);" title="获取新的验证"><img onload="L.widget.captcha.onload(this);" src="/check.jpeg?form=' + (form.data('form') || '') + '&time=' + (new Date).getTime() + '"></a>' +
         '    </div>' +
         '    <div class="captcha-main">' +
         '        <input type="text" class="captcha-code" name="_code" autocomplete="off" placeholder="输入验证码">' +
@@ -264,12 +264,20 @@ L.widget.captcha.create = function(form)
         form.html(html);
     }
 };
+L.widget.captcha.onload = function(form)
+{
+    form = $(form).closest('.captcha');
+    if (form.size()) {
+        form.find('.captcha-code').focus().select();
+        form.find('.captcha-form').removeClass('captcha-proc-reload');
+    }
+}
 L.widget.captcha.reload = function(form)
 {
     form = $(form).closest('.captcha');
-    if (form.length) {
+    if (form.size()) {
+        form.find('.captcha-form').addClass('captcha-proc-reload');
         form.find('.captcha-show img').attr('src', '/check.jpeg?form=' + (form.data('form') || '') + '&time=' + (new Date).getTime());
-        form.find('.captcha-code').focus().select();
     }
 };
 

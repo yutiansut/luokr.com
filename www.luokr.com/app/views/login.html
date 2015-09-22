@@ -45,7 +45,7 @@
         $('#form-auth').submit(function()
         {
             var f = $(this);
-            f.find('button[type=submit]').attr('disabled', 'disabled');
+            f.find('button[type=submit]').prop('disabled', true);
 
             if (f.data('captcha-loaded'))
             {
@@ -68,7 +68,7 @@
                 f.data('captcha-loaded', true);
                 L.widget.captcha.create(f.find('.captcha'));
 
-                f.find('button[type=submit]').removeAttr('disabled');
+                f.find('button[type=submit]').prop('disabled', false);
             }
 
             return false;
