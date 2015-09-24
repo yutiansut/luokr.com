@@ -18,6 +18,16 @@ try:
 except ImportError:
     from urllib.parse import urlencode  # py3
 
+try:
+    from httplib import responses  # py2
+except ImportError:
+    from http.client import responses  # py3
+
+try:
+    responses[429]
+except KeyError:
+    responses[429] = 'Too Many Requests'
+
 from lib.cache import Cache
 from lib.datum import Datum
 from lib.mailx import Mailx
@@ -141,13 +151,20 @@ class BasicCtrl(tornado.web.RequestHandler):
         if conf and 'smtp_able' in conf and conf['smtp_able']:
             threading.Thread(target=Mailx(conf).send, args = args, kwargs = kwargs).start()
 
+    def entry(self, sign, size = 1, life = 10, swap = False):
+        sign = 'entry@' + sign
+        data = self.cache().obtain(sign)
+        if swap or not data:
+            self.cache().upsert(sign, size, life)
+        return data
+
     def flash(self, isok, resp = {}, _ext = ''):
         if isok:
             resp['err'] = 0
         else:
             resp['err'] = 1
 
-        if 'sta' in resp:
+        if 'sta' in resp and resp['sta']:
             self.set_status(resp['sta'])
         else:
             resp['sta'] = self.get_status()

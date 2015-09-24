@@ -90,10 +90,10 @@ L.method.request = function(options)
 {
     var setting = {
         element: null,
-        forward: true,
 
         prepare: L.method.prepare,
-        success: L.method.respond,
+        respond: L.method.respond,
+        success: L.method.success,
         failure: L.method.failure
     };
 
@@ -106,8 +106,10 @@ L.method.request = function(options)
                 type      : setting._method || 'get',
                 data      : setting._params || '',
                 dataType  : setting._format || 'json',
-                beforeSend: function() {
-                    setting.prepare(setting);
+                beforeSend: function(xhr) {
+                    if (setting.prepare(setting) === false) {
+                        xhr.abort();
+                    }
                 },
                 success   : function(response) {
                     setting.success(setting, response);
@@ -128,8 +130,10 @@ L.method.request = function(options)
 
         form.ajaxSubmit({
             dataType  : 'json',
-            beforeSend: function() {
-                setting.prepare(setting);
+            beforeSend: function(xhr) {
+                if (setting.prepare(setting) === false) {
+                    xhr.abort();
+                }
             },
             success   : function(response) {
                 setting.success(setting, response);
@@ -148,8 +152,10 @@ L.method.request = function(options)
             url       : link.attr('href') || link.data('href'),
             type      : 'get',
             dataType  : 'json',
-            beforeSend: function() {
-                setting.prepare(setting);
+            beforeSend: function(xhr) {
+                if (setting.prepare(setting) === false) {
+                    xhr.abort();
+                }
             },
             success   : function(response) {
                 setting.success(setting, response);
@@ -162,6 +168,16 @@ L.method.request = function(options)
 
     return false;
 };
+
+L.method.success = function(opts, resp)
+{
+    var args = {
+        respond: L.method.respond,
+    };
+    $.extend(args, opts || {});
+
+    args.respond(opts, resp);
+}
 
 L.method.respond = function(opts, resp)
 {
@@ -186,14 +202,12 @@ L.method.respond = function(opts, resp)
             body: '<div style="color:red">' + (msgs.length ? msgs.join('<br/>') : L.string.FAILURE) + '</div>'
         });
     } else {
-        if (args.forward || resp.url) {
-            if (resp.url == '') {
-                msgs.push('继续操作，请 <a href="javascript:location.reload()">刷新当前页</a> 或 <a href="javascript:history.go(-1)">返回上一页</a>');
-            } else {
+        if (args.forward) {
+            if (resp.url) {
                 msgs.push('继续操作，请 <a href="' + resp.url + '">点击这里</a>');
+            } else {
+                msgs.push('继续操作，请 <a href="javascript:location.reload()">刷新当前页</a> 或 <a href="javascript:history.go(-1)">返回上一页</a>');
             }
-        } else {
-            args.display.remove({stay: 3000});
         }
 
         args.display.render({
@@ -205,16 +219,27 @@ L.method.respond = function(opts, resp)
 
 L.method.failure = function(opts, xhr, err)
 {
-    var resp = {err: 1, msg: '', sta: 0, dat: {}}
+    var args = {
+        respond: L.method.respond,
+    };
+    $.extend(args, opts || {});
+
+    var resp = {err: 1, sta: 0, msg: '', url: '', dat: {}};
 
     if (err == "error" || err == "parsererror") {
-        resp = $.parseJSON(xhr.responseText) || {err: 1, msg: xhr.statusText, sta: xhr.status};
+        var json = $.parseJSON(xhr.responseText);
+        if (json) {
+            resp = json;
+        } else {
+            resp['sta'] = xhr.status;
+            resp['msg'] = xhr.statusText;
+        }
     } else if (err == "timeout") {
         resp['sta'] = 504;
         resp['msg'] = L.string.TIMEOUT;
     }
 
-    L.method.respond(opts, resp);
+    args.respond(opts, resp);
 };
 
 L.method.operate = function(method, action, params, format)

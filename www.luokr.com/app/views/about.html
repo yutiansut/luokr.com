@@ -63,39 +63,36 @@
 {% block foot_js %}
 <script>
     $(function(){
-        $('#form-email').submit(function(){
-            var f = $(this);
-            f.find('button[type=submit]').attr('disabled', 'disabled');
+        $('#form-email').submit(function() {
+            L.method.request({
+                element: $(this),
+                prepare: function(opts) {
+                    if (!opts.element.data('captcha-loaded')) {
+                        opts.element.data('captcha-loaded', true);
+                        L.widget.captcha.create(opts.element.find('.captcha'));
 
-            if (f.data('captcha-loaded'))
-            {
-                var p = f.find('.control-group:has(button[type=submit])');
-                var t = p.find('.help-inline').hide();
+                        return false;
+                    }
 
-                $.post(f.attr('action'), f.serializeArray(), function(r)
-                {
-                    if (r.err)
-                    {
+                    opts.element.find('button[type=submit]').prop('disabled', true);
+                    opts.element.find('.control-group:has(button[type=submit]) .help-inline').hide();
+                },
+                respond: function(opts, resp) {
+                    var p = opts.element.find('.control-group:has(button[type=submit])');
+                    var t = p.find('.help-inline');
+
+                    if (resp.err) {
                         p.removeClass('success').addClass('error')
                         t.html('<strong>操作失败！</strong>请重试或尝试用邮件跟我们联系').fadeIn();
-                    }
-                    else
-                    {
+                    } else {
                         p.removeClass('error').addClass('success')
-                        t.html('<strong>发送成功！</strong><a href="/">点击这里返回首页</a>').fadeIn();
+                        t.html('<strong>发送成功！</strong>').fadeIn();
                     }
 
-                    L.widget.captcha.reload(f.find('.captcha'));
-                    f.find('button[type=submit]').removeAttr('disabled');
-                }, 'json');
-            }
-            else
-            {
-                f.data('captcha-loaded', true);
-                L.widget.captcha.create(f.find('.captcha'));
-
-                f.find('button[type=submit]').removeAttr('disabled');
-            }
+                    L.widget.captcha.reload(opts.element.find('.captcha'));
+                    opts.element.find('button[type=submit]').prop('disabled', false);
+                }
+            });
 
             return false;
         });

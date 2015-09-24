@@ -12,6 +12,9 @@ class Shell_PanelCtrl(ShellCtrl):
     def post(self, *args):
         try:
             user = self.current_user
+            if self.entry('panel:user#' + str(user['user_id'])):
+                self.flash(0, {'msg': '操作太频繁，请稍后再试', 'sta': 429})
+                return
 
             user_mail = self.input('mail')
             user_sign = self.input('sign', '')

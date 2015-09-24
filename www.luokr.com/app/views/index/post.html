@@ -164,35 +164,36 @@
         });
 
         $('#form-talk').submit(function() {
-            var f = $(this);
-            f.find('button[type=submit]').attr('disabled', 'disabled');
+            L.method.request({
+                element: $(this),
+                prepare: function(opts) {
+                    if (!opts.element.data('captcha-loaded')) {
+                        opts.element.data('captcha-loaded', true);
+                        L.widget.captcha.create(opts.element.find('.captcha'));
 
-            if (f.data('captcha-loaded')) {
-                var p = f.find('.control-group:has(button[type=submit])');
-                var t = p.find('.help-inline').hide();
-
-                $.post(f.attr('action'), f.serializeArray(), function(r) {
-                    if (r.err)
-                    {
-                        p.removeClass('success').addClass('error')
-                        t.html('<strong>操作失败！</strong>' + r.msg).fadeIn();
-
-                        L.widget.captcha.reload(f.find('.captcha'));
-                        f.find('button[type=submit]').removeAttr('disabled');
+                        return false;
                     }
-                    else
-                    {
+
+                    opts.element.find('button[type=submit]').prop('disabled', true);
+                    opts.element.find('.control-group:has(button[type=submit]) .help-inline').hide();
+                },
+                respond: function(opts, resp) {
+                    var p = opts.element.find('.control-group:has(button[type=submit])');
+                    var t = p.find('.help-inline');
+
+                    if (resp.err) {
+                        p.removeClass('success').addClass('error')
+                        t.html('<strong>操作失败！</strong>' + resp.msg).fadeIn();
+
+                        L.widget.captcha.reload(opts.element.find('.captcha'));
+                        opts.element.find('button[type=submit]').prop('disabled', false);
+                    } else {
                         p.removeClass('error').addClass('success')
-                        t.html('<strong>发送成功！</strong>' + r.msg).fadeIn();
+                        t.html('<strong>发送成功！</strong>' + resp.msg).fadeIn();
                         setTimeout(function() {location.reload();}, 3000);
                     }
-                }, 'json');
-            } else {
-                f.data('captcha-loaded', true);
-                L.widget.captcha.create(f.find('.captcha'));
-
-                f.find('button[type=submit]').removeAttr('disabled');
-            }
+                }
+            });
 
             return false;
         });

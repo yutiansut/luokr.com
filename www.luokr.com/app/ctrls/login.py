@@ -22,13 +22,9 @@ class LoginCtrl(BasicCtrl):
 
             user = self.model('admin').get_user_by_name(self.datum('users'), username)
 
-            if user:
-                ckey = 'login:user#' + str(user['user_id'])
-                cval = self.cache().obtain(ckey)
-                self.cache().upsert(ckey, 1, 10)
-                if cval:
-                    self.flash(0, {'msg': '操作太频繁，请稍后再试'})
-                    return
+            if user and self.entry('login:user#' + str(user['user_id'])):
+                self.flash(0, {'msg': '操作太频繁，请稍后再试', 'sta': 429})
+                return
 
             if user and self.model('admin').generate_password(password, user['user_salt']) == user['user_pswd']:
                 self.set_current_sess(user, days = remember)

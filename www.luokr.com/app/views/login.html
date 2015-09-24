@@ -42,34 +42,29 @@
 {% block foot_js %}
 <script>
     $(function(){
-        $('#form-auth').submit(function()
-        {
-            var f = $(this);
-            f.find('button[type=submit]').prop('disabled', true);
+        $('#form-auth').submit(function() {
+            L.method.request({
+                element: $(this),
+                prepare: function(opts) {
+                    if (!opts.element.data('captcha-loaded')) {
+                        opts.element.data('captcha-loaded', true);
+                        L.widget.captcha.create(opts.element.find('.captcha'));
 
-            if (f.data('captcha-loaded'))
-            {
-                $.post(f.attr('action'), f.serializeArray(), function(r)
-                {
-                    if (r.err)
-                    {
-                        alert('登录失败！' + r.msg);
-                        L.widget.captcha.reload(f.find('.captcha'));
-                        f.find('button[type=submit]').removeAttr('disabled');
+                        return false;
                     }
-                    else
-                    {
-                        location.href = r.url;
-                    }
-                }, 'json');
-            }
-            else
-            {
-                f.data('captcha-loaded', true);
-                L.widget.captcha.create(f.find('.captcha'));
 
-                f.find('button[type=submit]').prop('disabled', false);
-            }
+                    opts.element.find('button[type=submit]').prop('disabled', true);
+                },
+                respond: function(opts, resp) {
+                    if (resp.err) {
+                        alert('登录失败！' + resp.msg);
+                        L.widget.captcha.reload(opts.element.find('.captcha'));
+                        opts.element.find('button[type=submit]').prop('disabled', false);
+                    } else {
+                        location.href = resp.url || '/';
+                    }
+                }
+            });
 
             return false;
         });
