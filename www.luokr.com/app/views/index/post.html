@@ -211,13 +211,13 @@
                     html += '<tr id="r' + talk['talk_id'] + '">';
                     html += '<td class="talk-user span2"><i class="icon-user"></i> ';
                     if (talk['user_id']) {
-                        html += '<a href="/@' + L.method.shtml(talk['user_name']) + '" target="_blank">' + L.method.shtml(talk['user_name']) + '</a>';
+                        html += '<a href="/@' + L.method.htext(talk['user_name']) + '" target="_blank">' + L.method.htext(talk['user_name']) + '</a>';
                     } else {
-                        html += L.method.shtml(talk['user_name']);
+                        html += L.method.htext(talk['user_name']);
                     }
                     html += '<span class="talk-time">' + L.method.date('Y-m-d H:i', talk['talk_ctms'] * 1000) + '</span>';
                     html += '</td>';
-                    html += '<td class="talk-cont">' + L.method.nl2br(L.method.shtml(talk['talk_text']), "\n<br>") + '</td>';
+                    html += '<td class="talk-cont">' + L.method.nl2br(L.method.htext(talk['talk_text']), "\n<br>") + '</td>';
                     html += '</tr>';
 
                     $('#rows-talk tbody').append(html);

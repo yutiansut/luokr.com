@@ -12,10 +12,10 @@
 
 {% block head_css_mid %}{% end %}
 
-<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css?f45eaf43571aee55bc3034fe8443399a">
+<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css?2d5da17eb5ce8d53812986a6489ecc9e">
 <link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework-responsive.min.css?86b57899315a31074e71a6122acf256f">
 
-<link rel="stylesheet" href="/assets/css/customize.css?91a95206d4af9321687c237b8196ee03">
+<link rel="stylesheet" href="/assets/css/customize.css?0bf6e26fd86d17d6956cb690b14b8d77">
 <link rel="stylesheet" href="/assets/css/customize-responsive.css?1905abbfdcc8c75e08744b8d6fcc2ec7">
 
 {% block head_css %}{% end %}
@@ -24,7 +24,7 @@
 <!--[if lt IE 9]><script src="{{ handler.get_runtime_conf('sites_asset') }}js/html5shiv.min.js"></script><![endif]-->
 </head>
 
-<body data-exts-scrollup="1" data-exts-autofixbar="1" data-spy="scroll">
+<body data-exts-scrollup="1" data-spy="scroll">
 <header class="header topfix">
     <nav class="navbar navbar-fixed-top">
         <div class="navbar-inner">
@@ -74,10 +74,10 @@
 </footer>
 
 <script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery-1.10.1.min.js"></script>
-<script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.form.min.js"></script>
-<script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.scrollUp.min.js"></script>
-<script src="{{ handler.get_runtime_conf('sites_asset') }}js/bootstrap.min.js"></script>
-<script src="/assets/js/customize.js"></script>
+<script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.form.min.js?54e26c42b4a494b3a077cb80ee64b6c4"></script>
+<script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.scrollUp.min.js?601e5f98556786d12fee325deafb611a"></script>
+<script src="{{ handler.get_runtime_conf('sites_asset') }}js/bootstrap.min.js?d700a93337122b390b90bbfe21e64f71"></script>
+<script src="/assets/js/customize.js?99591eb5ee85560e1c1e810e3faa4906"></script>
 {% block foot_js %}{% end %}
 
 {% block stats %}{% raw handler.get_runtime_conf('stats') %}{% end %}

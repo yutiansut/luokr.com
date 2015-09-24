@@ -43,7 +43,7 @@
                     <td class="actor-block">
                         <a href="/p/{{ talk['post_id'] }}#r{{ talk['talk_id'] }}" target="_blank">查看</a>
                         <a href="/admin/talk?talk_id={{ talk['talk_id'] }}">编辑</a>
-                        <a href="javascript:;" onclick="L.method.confirm() && L.method.ajaxSend('post', '/admin/talk/delete?talk_id={{ talk['talk_id'] }}&talk_ctms={{ talk['talk_ctms'] }}', '{{ handler.fetch_xsrfs() }}')">删除</a>
+                        <a href="javascript:;" onclick="L.method.confirm() && L.method.operate('post', '/admin/talk/delete?talk_id={{ talk['talk_id'] }}&talk_ctms={{ talk['talk_ctms'] }}', '{{ handler.fetch_xsrfs() }}')">删除</a>
                     </td>
                 </tr>
                 {% end %}

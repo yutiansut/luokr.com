@@ -124,6 +124,13 @@ kbd {
     padding-top: 81px;
 }
 
+.modal button.close {
+    margin-right: 6px;
+}
+.modal.fade.in {
+    top: 20%;
+}
+
 .block {
     display: block;
     margin: 20px 0;

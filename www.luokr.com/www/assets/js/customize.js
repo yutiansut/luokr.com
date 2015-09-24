@@ -1,10 +1,8 @@
 // global namespace
 window.L = window.L || {};
 
-L.module = L.module || {};
 L.config = L.config || {};
 L.method = L.method || {};
-L.source = L.source || {};
 L.string = L.string || {};
 L.widget = L.widget || {};
 
@@ -17,10 +15,10 @@ L.string.POSTING = '发送中，请稍侯...';
 L.string.CONFIRM = '确认执行该操作吗？';
 
 /**
-* Format date time
-* @param string a Format
-* @param int    s Timestamp
-*/
+ * Format date time
+ * @param string a Format
+ * @param int    s Timestamp
+ */
 L.method.date = function(a, s)
 {
     var d = s ? new Date(s) : new Date(), f = d.getTime();
@@ -60,9 +58,9 @@ L.method.date = function(a, s)
 L.method.nl2br = function(t, b)
 {
     return t.replace(/\r\n/g, "\n").replace(/[\r\n]/g, typeof(b) == "undefined" ? '<br>' : b);
-}
+};
 
-L.method.shtml = function(html)
+L.method.htext = function(html)
 {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(html));
@@ -72,20 +70,21 @@ L.method.shtml = function(html)
 L.method.confirm = function(message)
 {
     return confirm(typeof(message) == "undefined" ? L.string.CONFIRM : message);
-}
+};
 
 L.method.prepare = function(options)
 {
     var setting = {
+        display: L.widget.display,
         message: L.string.WAITING
     };
     $.extend(setting, options || {});
 
-    easyDialog.open({
-        container : {content: '<div class="ajax-form-loading"></div><p class="text-center">' + setting.message + '</p>'},
-        drag : false
+    setting.display.render({
+        hold: true,
+        body: '<div class="display-load"></div><p class="text-center">' + setting.message + '</p>'
     });
-}
+};
 
 L.method.request = function(options)
 {
@@ -110,10 +109,12 @@ L.method.request = function(options)
                 beforeSend: function() {
                     setting.prepare(setting);
                 },
-                success   : function(respond) {
-                    setting.success(setting, respond);
+                success   : function(response) {
+                    setting.success(setting, response);
                 },
-                error     : setting.failure(setting)
+                error     : function(xhr, err) {
+                    setting.failure(setting, xhr, err);
+                }
             });
         }
 
@@ -130,11 +131,15 @@ L.method.request = function(options)
             beforeSend: function() {
                 setting.prepare(setting);
             },
-            success   : function(respond) {
-                setting.success(setting, respond);
+            success   : function(response) {
+                setting.success(setting, response);
+
+                // Auto reload captcha form
                 L.widget.captcha.reload(form.find('.captcha'));
             },
-            error     : setting.failure(setting)
+            error     : function(xhr, err) {
+                setting.failure(setting, xhr, err);
+            }
         });
     } else {
         var link = setting.element;
@@ -146,19 +151,24 @@ L.method.request = function(options)
             beforeSend: function() {
                 setting.prepare(setting);
             },
-            success   : function(respond) {
-                setting.success(setting, respond);
+            success   : function(response) {
+                setting.success(setting, response);
             },
-            error     : setting.failure(setting)
+            error     : function(xhr, err) {
+                setting.failure(setting, xhr, err);
+            }
         });
     }
 
     return false;
-}
+};
 
 L.method.respond = function(opts, resp)
 {
-    var args = {forward: true};
+    var args = {
+        display: L.widget.display,
+        forward: true
+    };
     $.extend(args, opts || {});
 
     var msgs = [];
@@ -171,74 +181,124 @@ L.method.respond = function(opts, resp)
             msgs.push('放弃操作，请 <a href="' + resp.url + '">点击这里</a>');
         }
 
-        easyDialog.open({
-            container : {
-                header : L.string.FAILURE,
-                content : '<div style="color:red">' + (msgs.length ? msgs.join('<br/>') : L.string.FAILURE) + '</div>'
-            }
+        args.display.render({
+            head: L.string.FAILURE,
+            body: '<div style="color:red">' + (msgs.length ? msgs.join('<br/>') : L.string.FAILURE) + '</div>'
         });
     } else {
         if (args.forward || resp.url) {
             if (resp.url == '') {
                 msgs.push('继续操作，请 <a href="javascript:location.reload()">刷新当前页</a> 或 <a href="javascript:history.go(-1)">返回上一页</a>');
             } else {
-                setTimeout(function() {location.href = resp.url;}, (resp.tms || 3)*1000);
+                msgs.push('继续操作，请 <a href="' + resp.url + '">点击这里</a>');
             }
         } else {
-            setTimeout(function() {easyDialog.close()}, (resp.tms || 3)*1000);
+            args.display.remove({stay: 3000});
         }
 
-        easyDialog.open({
-            container : {
-                header: L.string.SUCCESS,
-                content : ('<div>' + (msgs.length ? msgs.join('<br/>') : L.string.SUCCESS) + '</div>')
-            }
+        args.display.render({
+            head: L.string.SUCCESS,
+            body: '<div>' + (msgs.length ? msgs.join('<br/>') : L.string.SUCCESS) + '</div>'
         });
     }
-}
+};
 
-L.method.failure = function(opts)
+L.method.failure = function(opts, xhr, err)
 {
-    return function(xhr, err) {
-        var resp = {err: 1, msg: '', sta: 0, dat: {}}
+    var resp = {err: 1, msg: '', sta: 0, dat: {}}
 
-        if (err == "error" || err == "parsererror") {
-            resp = $.parseJSON(xhr.responseText) || {err: 1, msg: xhr.statusText, sta: xhr.status};
-        } else if (err == "timeout") {
-            resp['sta'] = 504;
-            resp['msg'] = L.string.TIMEOUT;
-        }
+    if (err == "error" || err == "parsererror") {
+        resp = $.parseJSON(xhr.responseText) || {err: 1, msg: xhr.statusText, sta: xhr.status};
+    } else if (err == "timeout") {
+        resp['sta'] = 504;
+        resp['msg'] = L.string.TIMEOUT;
+    }
 
-        L.method.respond(opts, resp);
-    };
-}
+    L.method.respond(opts, resp);
+};
 
-L.method.ajaxSend = function(method, action, params, format)
+L.method.operate = function(method, action, params, format)
 {
     L.method.request({_method: method, _action: action, _params: params, _format: format});
     return false;
 };
 
-L.method.ajaxForm = function(form, stay)
+
+/**
+ * Widgets
+ */
+L.widget.display = {};
+L.widget.display.upsert = function(opts)
 {
-    if (window.CKEDITOR)
-    {
-        for (instance in CKEDITOR.instances)
-        {
-            CKEDITOR.instances[instance].updateElement();
-        }
+    var args = {
+        head: '',
+        body: '',
+        foot: '',
+        
+        hold: false
+    };
+    $.extend(args, opts || {});
+
+    var uqid = 'div[data-id="dial"]';
+    if (!$(uqid).size()) {
+        var html = ''
+        + '<div data-id="dial" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">'
+        + '    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
+        + '    <div class="modal-header dial-head"></div>'
+        + '    <div class="modal-body dial-body"></div>'
+        + '    <div class="modal-footer dial-foot"></div>'
+        + '</div>'
+        + '';
+
+        $('body').append(html);
     }
 
-    L.method.request({element: form, forward: !stay});
-    return false;
-};
+    var dial = $(uqid);
 
-L.method.ajaxLink = function(link, stay)
+    if (!dial.data('bind')) {
+        dial.data('bind', true);
+        dial.on('hide', function() {
+            return !$(this).data('hold');
+        });
+    }
+
+    dial.find('.dial-head').html(args.head);
+    args.head == '' ? dial.find('.dial-head').hide() : dial.find('.dial-head').show();
+
+    dial.find('.dial-body').html(args.body);
+    args.body == '' ? dial.find('.dial-body').hide() : dial.find('.dial-body').show();
+
+    dial.find('.dial-foot').html(args.foot);
+    args.foot == '' ? dial.find('.dial-foot').hide() : dial.find('.dial-foot').show();
+
+    dial.data('hold', args.hold ? true : false);
+    args.hold ? dial.find('.close').hide() : dial.find('.close').show();
+
+    return dial;
+}
+L.widget.display.render = function(opts)
 {
-    L.method.request({element: link, forward: !stay});
-    return false;
+    var dial = L.widget.display.upsert(opts);
+    if (dial.is(':hidden')) {
+        dial.modal('show');
+    }
 };
+L.widget.display.remove = function(opts)
+{
+    var args = {
+        stay: 0
+    };
+    $.extend(args, opts || {});
 
+    var dial = L.widget.display.upsert(opts);
+    if (!dial.is(':hidden')) {
+        if (args.stay > 0) {
+            setTimeout(function() {dial.modal('hide')}, args.stay);
+        } else {
+            dial.modal('hide');
+        }
+    }
+};
 
 L.widget.captcha = {};
 L.widget.captcha.create = function(form)
@@ -271,7 +331,7 @@ L.widget.captcha.onload = function(form)
         form.find('.captcha-code').focus().select();
         form.find('.captcha-form').removeClass('captcha-proc-reload');
     }
-}
+};
 L.widget.captcha.reload = function(form)
 {
     form = $(form).closest('.captcha');
@@ -300,29 +360,25 @@ $(function() {
         return L.method.confirm();
     });
 
-    $('.request-ajax-link-with-confirm').on('click', function() {
-        if (L.method.confirm())
-        {
-            L.method.ajaxLink($(this));
+    $('.request-ajax-link, .request-ajax-link-with-confirm').on('click', function() {
+        if (!$(this).hasClass('request-ajax-link-with-confirm') || L.method.confirm()) {
+            L.method.request({element: this});
         }
+
         return false;
     });
 
-    $('.request-ajax-link').on('click', function() {
-        L.method.ajaxLink($(this));
-        return false;
-    });
+    $('.request-ajax-form, .request-ajax-form-with-confirm').on('submit', function() {
+        if (!$(this).hasClass('request-ajax-form-with-confirm') || L.method.confirm()) {
+            if (window.CKEDITOR) {
+                for (instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+            }
 
-    $('.request-ajax-form-with-confirm').on('submit', function() {
-        if (L.method.confirm())
-        {
-            L.method.ajaxForm($(this));
+            L.method.request({element: this});
         }
-        return false;
-    });
 
-    $('.request-ajax-form').on('submit', function() {
-        L.method.ajaxForm($(this));
         return false;
     });
 });
