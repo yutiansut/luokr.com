@@ -61,8 +61,7 @@
 .captcha-form {
     background: #fff;
     border: 1px solid #e5e5e5;
-    min-width: 190px;
-    max-width: 268px;
+    min-width: 168px;
     position: relative;
 }
 .captcha-form .captcha-show {
