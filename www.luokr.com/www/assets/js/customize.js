@@ -82,7 +82,8 @@ L.method.prepare = function(options)
 
     setting.display.render({
         hold: true,
-        body: '<div class="display-load"></div><p class="text-center">' + setting.message + '</p>'
+        mode: 'wait',
+        body: setting.message
     });
 };
 
@@ -198,8 +199,9 @@ L.method.respond = function(opts, resp)
         }
 
         args.display.render({
+            mode: 'warn',
             head: L.string.FAILURE,
-            body: '<div style="color:red">' + (msgs.length ? msgs.join('<br/>') : L.string.FAILURE) + '</div>'
+            body: msgs.length ? msgs.join('<br/>') : L.string.FAILURE
         });
     } else {
         if (args.forward) {
@@ -212,7 +214,7 @@ L.method.respond = function(opts, resp)
 
         args.display.render({
             head: L.string.SUCCESS,
-            body: '<div>' + (msgs.length ? msgs.join('<br/>') : L.string.SUCCESS) + '</div>'
+            body: msgs.length ? msgs.join('<br/>') : L.string.SUCCESS
         });
     }
 };
@@ -256,6 +258,7 @@ L.widget.display = {};
 L.widget.display.upsert = function(opts)
 {
     var args = {
+        mode: '',
         head: '',
         body: '',
         foot: '',
@@ -264,10 +267,10 @@ L.widget.display.upsert = function(opts)
     };
     $.extend(args, opts || {});
 
-    var uqid = 'div[data-id="dial"]';
+    var uqid = '.dial[data-id="dial"]';
     if (!$(uqid).size()) {
         var html = ''
-        + '<div data-id="dial" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">'
+        + '<div data-id="dial" class="modal hide fade dial" tabindex="-1" role="dialog" aria-hidden="true">'
         + '    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
         + '    <div class="modal-header dial-head"></div>'
         + '    <div class="modal-body dial-body"></div>'
@@ -287,6 +290,18 @@ L.widget.display.upsert = function(opts)
         });
     }
 
+    if (dial.data('mode')) {
+        dial.removeClass('dial-mode-' + dial.data('mode'));
+        dial.data('mode', '');
+    }
+    if (args.mode) {
+        dial.data('mode', args.mode);
+        dial.addClass('dial-mode-' + dial.data('mode'));
+    }
+
+    dial.data('hold', args.hold ? true : false);
+    args.hold ? dial.find('.close').hide() : dial.find('.close').show();
+
     dial.find('.dial-head').html(args.head);
     args.head == '' ? dial.find('.dial-head').hide() : dial.find('.dial-head').show();
 
@@ -295,9 +310,6 @@ L.widget.display.upsert = function(opts)
 
     dial.find('.dial-foot').html(args.foot);
     args.foot == '' ? dial.find('.dial-foot').hide() : dial.find('.dial-foot').show();
-
-    dial.data('hold', args.hold ? true : false);
-    args.hold ? dial.find('.close').hide() : dial.find('.close').show();
 
     return dial;
 }

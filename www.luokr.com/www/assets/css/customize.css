@@ -23,11 +23,18 @@
     margin-bottom: 20px;
 }
 
-.display-load {
-    width:32px;
-    height:32px;
-    background:url(../img/loading.gif) no-repeat;
-    margin:8px auto;
+.dial-mode-wait .dial-body {
+    text-align: center;
+}
+.dial-mode-wait .dial-body:before {
+    content: url(../img/loading.gif);
+    display: block;
+    width: 32px;
+    height: 32px;
+    margin: 8px auto;
+}
+.dial-mode-warn .dial-body {
+    color: red;
 }
 
 @-webkit-keyframes captcha-acts-rotate {
