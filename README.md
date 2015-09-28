@@ -32,27 +32,27 @@ Requirement
 
 (Python >= 2.7)
 
-* tornado (>= 3.1.1)
+* tornado (>= 4.2.1)
 * pil or pillow
 
 
 Screenshots
 -----------
 * About
-![www.luokr.com.about.png](res.luokr.com/img/20150906/www.luokr.com.about.png)
+![www.luokr.com.about](res.luokr.com/img/20150928/www.luokr.com.about.jpg)
 
 * Login
-![www.luokr.com.login.png](res.luokr.com/img/20150101/www.luokr.com.login.png)
+![www.luokr.com.login](res.luokr.com/img/20150101/www.luokr.com.login.png)
 
 * Shell
-![www.luokr.com.shell.gif](res.luokr.com/img/20150921/www.luokr.com.shell.png)
+![www.luokr.com.shell](res.luokr.com/img/20150928/www.luokr.com.shell.jpg)
 
 * Posts
-![www.luokr.com.posts.png](res.luokr.com/img/20150101/www.luokr.com.posts.png)
+![www.luokr.com.posts](res.luokr.com/img/20150101/www.luokr.com.posts.png)
 
 * Admin
-![www.luokr.com.admin.png](res.luokr.com/img/20141231/www.luokr.com.admin.png)
+![www.luokr.com.admin](res.luokr.com/img/20141231/www.luokr.com.admin.png)
 
 * Admin (Edit Post)
-![www.luokr.com.admin.post.update.png](res.luokr.com/img/20150921/www.luokr.com.admin.post.update.gif)
+![www.luokr.com.admin.post.update](res.luokr.com/img/20150928/www.luokr.com.admin.post.update.jpg)
 
