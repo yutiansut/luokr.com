@@ -9,12 +9,12 @@ from tornado.http1connection import HTTP1Connection
 from tornado.httpserver import HTTPServer
 from tornado.httputil import HTTPHeaders, HTTPMessageDelegate, HTTPServerConnectionDelegate, ResponseStartLine
 from tornado.iostream import IOStream
-from tornado.log import gen_log, app_log
+from tornado.log import gen_log
 from tornado.netutil import ssl_options_to_context
 from tornado.simple_httpclient import SimpleAsyncHTTPClient
 from tornado.testing import AsyncHTTPTestCase, AsyncHTTPSTestCase, AsyncTestCase, ExpectLog, gen_test
 from tornado.test.util import unittest, skipOnTravis
-from tornado.util import u, bytes_type
+from tornado.util import u
 from tornado.web import Application, RequestHandler, asynchronous, stream_request_body
 from contextlib import closing
 import datetime
@@ -25,17 +25,14 @@ import socket
 import ssl
 import sys
 import tempfile
-
-try:
-    from io import BytesIO  # python 3
-except ImportError:
-    from cStringIO import StringIO as BytesIO  # python 2
+from io import BytesIO
 
 
 def read_stream_body(stream, callback):
     """Reads an HTTP response from `stream` and runs callback with its
     headers and body."""
     chunks = []
+
     class Delegate(HTTPMessageDelegate):
         def headers_received(self, start_line, headers):
             self.headers = headers
@@ -165,19 +162,22 @@ class BadSSLOptionsTest(unittest.TestCase):
         application = Application()
         module_dir = os.path.dirname(__file__)
         existing_certificate = os.path.join(module_dir, 'test.crt')
+        existing_key = os.path.join(module_dir, 'test.key')
 
-        self.assertRaises(ValueError, HTTPServer, application, ssl_options={
-                          "certfile": "/__mising__.crt",
+        self.assertRaises((ValueError, IOError),
+                          HTTPServer, application, ssl_options={
+                              "certfile": "/__mising__.crt",
                           })
-        self.assertRaises(ValueError, HTTPServer, application, ssl_options={
-                          "certfile": existing_certificate,
-                          "keyfile": "/__missing__.key"
+        self.assertRaises((ValueError, IOError),
+                          HTTPServer, application, ssl_options={
+                              "certfile": existing_certificate,
+                              "keyfile": "/__missing__.key"
                           })
 
         # This actually works because both files exist
         HTTPServer(application, ssl_options={
                    "certfile": existing_certificate,
-                   "keyfile": existing_certificate
+                   "keyfile": existing_key,
                    })
 
 
@@ -199,14 +199,14 @@ class HTTPConnectionTest(AsyncHTTPTestCase):
     def get_app(self):
         return Application(self.get_handlers())
 
-    def raw_fetch(self, headers, body):
+    def raw_fetch(self, headers, body, newline=b"\r\n"):
         with closing(IOStream(socket.socket())) as stream:
             stream.connect(('127.0.0.1', self.get_http_port()), self.stop)
             self.wait()
             stream.write(
-                b"\r\n".join(headers +
-                             [utf8("Content-Length: %d\r\n" % len(body))]) +
-                b"\r\n" + body)
+                newline.join(headers +
+                             [utf8("Content-Length: %d" % len(body))]) +
+                newline + newline + body)
             read_stream_body(stream, self.stop)
             headers, body = self.wait()
             return body
@@ -236,12 +236,19 @@ class HTTPConnectionTest(AsyncHTTPTestCase):
         self.assertEqual(u("\u00f3"), data["filename"])
         self.assertEqual(u("\u00fa"), data["filebody"])
 
+    def test_newlines(self):
+        # We support both CRLF and bare LF as line separators.
+        for newline in (b"\r\n", b"\n"):
+            response = self.raw_fetch([b"GET /hello HTTP/1.0"], b"",
+                                      newline=newline)
+            self.assertEqual(response, b'Hello world')
+
     def test_100_continue(self):
         # Run through a 100-continue interaction by hand:
         # When given Expect: 100-continue, we get a 100 response after the
         # headers, and then the real response after the body.
         stream = IOStream(socket.socket(), io_loop=self.io_loop)
-        stream.connect(("localhost", self.get_http_port()), callback=self.stop)
+        stream.connect(("127.0.0.1", self.get_http_port()), callback=self.stop)
         self.wait()
         stream.write(b"\r\n".join([b"POST /hello HTTP/1.1",
                                    b"Content-Length: 1024",
@@ -297,10 +304,10 @@ class TypeCheckHandler(RequestHandler):
         # secure cookies
 
         self.check_type('arg_key', list(self.request.arguments.keys())[0], str)
-        self.check_type('arg_value', list(self.request.arguments.values())[0][0], bytes_type)
+        self.check_type('arg_value', list(self.request.arguments.values())[0][0], bytes)
 
     def post(self):
-        self.check_type('body', self.request.body, bytes_type)
+        self.check_type('body', self.request.body, bytes)
         self.write(self.errors)
 
     def get(self):
@@ -358,7 +365,7 @@ class HTTPServerTest(AsyncHTTPTestCase):
         # if the data is not utf8.  On python 2 parse_qs will work,
         # but then the recursive_unicode call in EchoHandler will
         # fail.
-        if str is bytes_type:
+        if str is bytes:
             return
         with ExpectLog(gen_log, 'Invalid x-www-form-urlencoded body'):
             response = self.fetch(
@@ -378,7 +385,7 @@ class HTTPServerRawTest(AsyncHTTPTestCase):
     def setUp(self):
         super(HTTPServerRawTest, self).setUp()
         self.stream = IOStream(socket.socket())
-        self.stream.connect(('localhost', self.get_http_port()), self.stop)
+        self.stream.connect(('127.0.0.1', self.get_http_port()), self.stop)
         self.wait()
 
     def tearDown(self):
@@ -559,7 +566,7 @@ class UnixSocketTest(AsyncTestCase):
         self.stream.write(b"GET /hello HTTP/1.0\r\n\r\n")
         self.stream.read_until(b"\r\n", self.stop)
         response = self.wait()
-        self.assertEqual(response, b"HTTP/1.0 200 OK\r\n")
+        self.assertEqual(response, b"HTTP/1.1 200 OK\r\n")
         self.stream.read_until(b"\r\n\r\n", self.stop)
         headers = HTTPHeaders.parse(self.wait().decode('latin1'))
         self.stream.read_bytes(int(headers["Content-Length"]), self.stop)
@@ -585,6 +592,9 @@ class KeepAliveTest(AsyncHTTPTestCase):
     def get_app(self):
         class HelloHandler(RequestHandler):
             def get(self):
+                self.finish('Hello world')
+
+            def post(self):
                 self.finish('Hello world')
 
         class LargeHandler(RequestHandler):
@@ -625,13 +635,13 @@ class KeepAliveTest(AsyncHTTPTestCase):
     # The next few methods are a crude manual http client
     def connect(self):
         self.stream = IOStream(socket.socket(), io_loop=self.io_loop)
-        self.stream.connect(('localhost', self.get_http_port()), self.stop)
+        self.stream.connect(('127.0.0.1', self.get_http_port()), self.stop)
         self.wait()
 
     def read_headers(self):
         self.stream.read_until(b'\r\n', self.stop)
         first_line = self.wait()
-        self.assertTrue(first_line.startswith(self.http_version + b' 200'), first_line)
+        self.assertTrue(first_line.startswith(b'HTTP/1.1 200'), first_line)
         self.stream.read_until(b'\r\n\r\n', self.stop)
         header_bytes = self.wait()
         headers = HTTPHeaders.parse(header_bytes.decode('latin1'))
@@ -687,6 +697,17 @@ class KeepAliveTest(AsyncHTTPTestCase):
         self.assertEqual(self.headers['Connection'], 'Keep-Alive')
         self.close()
 
+    def test_http10_keepalive_extra_crlf(self):
+        self.http_version = b'HTTP/1.0'
+        self.connect()
+        self.stream.write(b'GET / HTTP/1.0\r\nConnection: keep-alive\r\n\r\n\r\n')
+        self.read_response()
+        self.assertEqual(self.headers['Connection'], 'Keep-Alive')
+        self.stream.write(b'GET / HTTP/1.0\r\nConnection: keep-alive\r\n\r\n')
+        self.read_response()
+        self.assertEqual(self.headers['Connection'], 'Keep-Alive')
+        self.close()
+
     def test_pipelined_requests(self):
         self.connect()
         self.stream.write(b'GET / HTTP/1.1\r\n\r\nGET / HTTP/1.1\r\n\r\n')
@@ -713,6 +734,19 @@ class KeepAliveTest(AsyncHTTPTestCase):
         self.connect()
         self.stream.write(b'GET /finish_on_close HTTP/1.1\r\n\r\n')
         self.read_headers()
+        self.close()
+
+    def test_keepalive_chunked(self):
+        self.http_version = b'HTTP/1.0'
+        self.connect()
+        self.stream.write(b'POST / HTTP/1.0\r\nConnection: keep-alive\r\n'
+                          b'Transfer-Encoding: chunked\r\n'
+                          b'\r\n0\r\n')
+        self.read_response()
+        self.assertEqual(self.headers['Connection'], 'Keep-Alive')
+        self.stream.write(b'GET / HTTP/1.0\r\nConnection: keep-alive\r\n\r\n')
+        self.read_response()
+        self.assertEqual(self.headers['Connection'], 'Keep-Alive')
         self.close()
 
 
@@ -786,8 +820,8 @@ class StreamingChunkSizeTest(AsyncHTTPTestCase):
 
     def get_app(self):
         class App(HTTPServerConnectionDelegate):
-            def start_request(self, connection):
-                return StreamingChunkSizeTest.MessageDelegate(connection)
+            def start_request(self, server_conn, request_conn):
+                return StreamingChunkSizeTest.MessageDelegate(request_conn)
         return App()
 
     def fetch_chunk_sizes(self, **kwargs):
@@ -834,6 +868,7 @@ class StreamingChunkSizeTest(AsyncHTTPTestCase):
     def test_chunked_compressed(self):
         compressed = self.compress(self.BODY)
         self.assertGreater(len(compressed), 20)
+
         def body_producer(write):
             write(compressed[:20])
             write(compressed[20:])
@@ -878,7 +913,7 @@ class IdleTimeoutTest(AsyncHTTPTestCase):
 
     def connect(self):
         stream = IOStream(socket.socket())
-        stream.connect(('localhost', self.get_http_port()), self.stop)
+        stream.connect(('127.0.0.1', self.get_http_port()), self.stop)
         self.wait()
         self.streams.append(stream)
         return stream
@@ -1023,6 +1058,15 @@ class LegacyInterfaceTest(AsyncHTTPTestCase):
         # delegate interface, and writes its response via request.write
         # instead of request.connection.write_headers.
         def handle_request(request):
+            self.http1 = request.version.startswith("HTTP/1.")
+            if not self.http1:
+                # This test will be skipped if we're using HTTP/2,
+                # so just close it out cleanly using the modern interface.
+                request.connection.write_headers(
+                    ResponseStartLine('', 200, 'OK'),
+                    HTTPHeaders())
+                request.connection.finish()
+                return
             message = b"Hello world"
             request.write(utf8("HTTP/1.1 200 OK\r\n"
                                "Content-Length: %d\r\n\r\n" % len(message)))
@@ -1032,4 +1076,6 @@ class LegacyInterfaceTest(AsyncHTTPTestCase):
 
     def test_legacy_interface(self):
         response = self.fetch('/')
+        if not self.http1:
+            self.skipTest("requires HTTP/1.x")
         self.assertEqual(response.body, b"Hello world")

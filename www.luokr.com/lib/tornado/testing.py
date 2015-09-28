@@ -19,6 +19,7 @@ try:
     from tornado.simple_httpclient import SimpleAsyncHTTPClient
     from tornado.ioloop import IOLoop, TimeoutError
     from tornado import netutil
+    from tornado.process import Subprocess
 except ImportError:
     # These modules are not importable on app engine.  Parts of this module
     # won't work, but e.g. LogTrapTestCase and main() will.
@@ -28,7 +29,8 @@ except ImportError:
     IOLoop = None
     netutil = None
     SimpleAsyncHTTPClient = None
-from tornado.log import gen_log
+    Subprocess = None
+from tornado.log import gen_log, app_log
 from tornado.stack_context import ExceptionStackContext
 from tornado.util import raise_exc_info, basestring_type
 import functools
@@ -214,6 +216,8 @@ class AsyncTestCase(unittest.TestCase):
         self.io_loop.make_current()
 
     def tearDown(self):
+        # Clean up Subprocess, so it can be used again with a new ioloop.
+        Subprocess.uninitialize()
         self.io_loop.clear_current()
         if (not IOLoop.initialized() or
                 self.io_loop is not IOLoop.instance()):
@@ -237,7 +241,11 @@ class AsyncTestCase(unittest.TestCase):
         return IOLoop()
 
     def _handle_exception(self, typ, value, tb):
-        self.__failure = (typ, value, tb)
+        if self.__failure is None:
+            self.__failure = (typ, value, tb)
+        else:
+            app_log.error("multiple unhandled exceptions in test",
+                          exc_info=(typ, value, tb))
         self.stop()
         return True
 
@@ -395,7 +403,8 @@ class AsyncHTTPTestCase(AsyncTestCase):
 
     def tearDown(self):
         self.http_server.stop()
-        self.io_loop.run_sync(self.http_server.close_all_connections)
+        self.io_loop.run_sync(self.http_server.close_all_connections,
+                              timeout=get_async_test_timeout())
         if (not IOLoop.initialized() or
                 self.http_client.io_loop is not IOLoop.instance()):
             self.http_client.close()
@@ -408,10 +417,8 @@ class AsyncHTTPSTestCase(AsyncHTTPTestCase):
     Interface is generally the same as `AsyncHTTPTestCase`.
     """
     def get_http_client(self):
-        # Some versions of libcurl have deadlock bugs with ssl,
-        # so always run these tests with SimpleAsyncHTTPClient.
-        return SimpleAsyncHTTPClient(io_loop=self.io_loop, force_instance=True,
-                                     defaults=dict(validate_cert=False))
+        return AsyncHTTPClient(io_loop=self.io_loop, force_instance=True,
+                               defaults=dict(validate_cert=False))
 
     def get_httpserver_options(self):
         return dict(ssl_options=self.get_ssl_options())
@@ -534,6 +541,9 @@ class LogTrapTestCase(unittest.TestCase):
     `logging.basicConfig` and the "pretty logging" configured by
     `tornado.options`.  It is not compatible with other log buffering
     mechanisms, such as those provided by some test runners.
+
+    .. deprecated:: 4.1
+       Use the unittest module's ``--buffer`` option instead, or `.ExpectLog`.
     """
     def run(self, result=None):
         logger = logging.getLogger()
