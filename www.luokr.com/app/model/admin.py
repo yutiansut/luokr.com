@@ -43,17 +43,11 @@ class AdminModel:
 
     @staticmethod
     def chk_is_user_name(name):
-        if re.match(r'^[A-Za-z][-_A-Za-z0-9]{2,}$', name):
-            return True
-        else:
-            return False
+        return len(name) < 32 and re.match(r'^[A-Za-z0-9](?:[-_]?[A-Za-z0-9]+)+$', name)
 
     @staticmethod
     def chk_is_user_mail(mail):
-        if re.match(r'^[^@\.]+(?:\.[^@\.]+)*@[^@\.]+(?:\.[^@\.]+)+$', mail):
-            return True
-        else:
-            return False
+        return len(mail) < 64 and re.match(r'^[^@\.]+(?:\.[^@\.]+)*@[^@\.]+(?:\.[^@\.]+)+$', mail)
 
     @staticmethod
     def chk_user_if_perm(user, perm):
