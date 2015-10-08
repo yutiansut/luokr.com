@@ -255,7 +255,31 @@ L.method.operate = function(method, action, params, format)
  * Widgets
  */
 L.widget.display = {};
-L.widget.display.upsert = function(opts)
+L.widget.display.locate = function(opts)
+{
+    var args = {
+        uqid: ''
+    };
+    $.extend(args, opts || {});
+
+    var dial = $('.dial[data-id="dial' + args.uqid + '"]');
+    if (!dial.size()) {
+        var html = ''
+        + '<div data-id="dial' + args.uqid + '" class="modal hide fade dial" tabindex="-1" role="dialog" aria-hidden="true">'
+        + '    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
+        + '    <div class="modal-header dial-head"></div>'
+        + '    <div class="modal-body dial-body"></div>'
+        + '    <div class="modal-footer dial-foot"></div>'
+        + '</div>'
+        + '';
+
+        $('body').append(html);
+        dial = $(dial.selector);
+    }
+
+    return dial;
+}
+L.widget.display.render = function(opts)
 {
     var args = {
         mode: '',
@@ -267,21 +291,7 @@ L.widget.display.upsert = function(opts)
     };
     $.extend(args, opts || {});
 
-    var uqid = '.dial[data-id="dial"]';
-    if (!$(uqid).size()) {
-        var html = ''
-        + '<div data-id="dial" class="modal hide fade dial" tabindex="-1" role="dialog" aria-hidden="true">'
-        + '    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
-        + '    <div class="modal-header dial-head"></div>'
-        + '    <div class="modal-body dial-body"></div>'
-        + '    <div class="modal-footer dial-foot"></div>'
-        + '</div>'
-        + '';
-
-        $('body').append(html);
-    }
-
-    var dial = $(uqid);
+    var dial = L.widget.display.locate(opts);
 
     if (!dial.data('bind')) {
         dial.data('bind', true);
@@ -311,11 +321,6 @@ L.widget.display.upsert = function(opts)
     dial.find('.dial-foot').html(args.foot);
     args.foot == '' ? dial.find('.dial-foot').hide() : dial.find('.dial-foot').show();
 
-    return dial;
-}
-L.widget.display.render = function(opts)
-{
-    var dial = L.widget.display.upsert(opts);
     if (dial.is(':hidden')) {
         dial.modal('show');
     }
@@ -327,8 +332,9 @@ L.widget.display.remove = function(opts)
     };
     $.extend(args, opts || {});
 
-    var dial = L.widget.display.upsert(opts);
-    if (!dial.is(':hidden')) {
+    var dial = L.widget.display.locate(opts);
+
+    if (dial.size() && !dial.is(':hidden')) {
         if (args.stay > 0) {
             setTimeout(function() {dial.modal('hide')}, args.stay);
         } else {
@@ -379,8 +385,7 @@ L.widget.captcha.reload = function(form)
 };
 
 $(function() {
-    if ($('body').data('exts-scrollup'))
-    {
+    if ($('body').data('exts-scrollup')) {
         $.scrollUp({
             scrollName: 'scrollUp', // Element ID
             topDistance: '300', // Distance from top before showing element (px)
