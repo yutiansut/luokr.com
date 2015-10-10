@@ -1,5 +1,7 @@
 #coding=utf-8
 
+import os
+
 import sys, time
 import functools
 import importlib
@@ -179,12 +181,12 @@ class BasicCtrl(tornado.web.RequestHandler):
         if _ext == '.json' or (('Accept' in self.request.headers) and (self.request.headers['Accept'].find('json') >= 0)):
             self.write(self.get_escaper().json_encode(resp))
         else:
-            self.render('flash.html', flash = resp)
+            self.render('flash.html', resp = resp)
 
     def datum(self, name):
         base = 'datum'
         if name not in self._storage[base]:
-            conn = sqlite3.connect(self.settings['sqlite_dbases'][name])
+            conn = sqlite3.connect(os.path.join(self.settings['database_path'], name + '.db3'))
             conn.row_factory = self.utils().sqlite_dict # sqlite3.Row
             conn.text_factory = str
             self._storage[base][name] = Datum(conn)

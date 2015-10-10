@@ -6,21 +6,11 @@ etc = {}
 
 etc['debug'] = True
 etc['error'] = False
-etc['servs'] = 'AL/0.9 %s' % int(time.time())
+etc['servs'] = 'AL/1.0.%s' % int(time.time())
 
 etc['root_path'] = sys.path[0]
 etc['login_url'] = '/login'
 etc['xsrf_cookies'] = True
 etc['cookie_secret'] = 'Yoursecretcookie'
 etc['template_path'] = os.path.join(etc['root_path'], 'app', 'views')
-
-etc['sqlite_dbases'] = {
-        'alogs': os.path.join(etc['root_path'], 'app', 'datas', 'alogs.db3'),
-        'confs': os.path.join(etc['root_path'], 'app', 'datas', 'confs.db3'),
-        'files': os.path.join(etc['root_path'], 'app', 'datas', 'files.db3'),
-        'links': os.path.join(etc['root_path'], 'app', 'datas', 'links.db3'),
-        'mails': os.path.join(etc['root_path'], 'app', 'datas', 'mails.db3'),
-        'posts': os.path.join(etc['root_path'], 'app', 'datas', 'posts.db3'),
-        'talks': os.path.join(etc['root_path'], 'app', 'datas', 'talks.db3'),
-        'terms': os.path.join(etc['root_path'], 'app', 'datas', 'terms.db3'),
-        'users': os.path.join(etc['root_path'], 'app', 'datas', 'users.db3')}
+etc['database_path'] = os.path.join(etc['root_path'], 'app', 'datas')
