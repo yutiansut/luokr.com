@@ -7,20 +7,19 @@ try:
 except ImportError:
     import StringIO
 
+# font = ImageFont.load_default()
+font = ImageFont.truetype(os.path.dirname(__file__) + "/captcha.ttf", 32)
+
 def gen_randoms():
     return ''.join(random.sample("abcdefghjkmnpqrstuvwzyzACDEFGHJKMNPQRSTUVWZY345679", 6))
 
 def gen_captcha(text, form = 'jpeg'):
-    # font = ImageFont.load_default()
-    font = ImageFont.truetype(os.path.dirname(__file__) + "/captcha.ttf", 32)
-    size = font.getsize(text)
-
-    im = Image.new("RGB", (32*len(text), max(size[1], 48)), 0xffffff)
+    im = Image.new("RGB", (32*len(text), max(font.getsize(text)[1], 48)), 0xffffff)
 
     draw = ImageDraw.Draw(im)
     posx = 0
     for char in text:
-        draw.text((posx, 0), char, font=font, fill=0x333333)
+        draw.text((posx, 0), char, font = font, fill = 0x333333)
         posx = posx + font.getsize(char)[0] - 8
 
     im = im.transform(im.size, Image.PERSPECTIVE, [
