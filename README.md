@@ -14,12 +14,14 @@ Below is the main directory structure:
     -------- svr.py     # to start the app, run `python svr.py`
     -------- url.py     # url mapping
     -------- ctrls/     # controllers, see Tornado's RequestHandler
-    -------- datas/     # data files
+    -------- datum/     # datum class files
     -------- model/     # model class files
-    -------- tools/     # some tools, run `python tools/dbase.py` to make DBs, etc.
+    -------- tools/     # some tools, run `python tools/dbase.py` to make databases.
     -------- views/     # templates
     ---- doc/           # documents
     ---- lib/           # libraries
+    ---- var/           # variables
+    -------- datas/     # databases
     ---- www/           # web root, static files
 
 

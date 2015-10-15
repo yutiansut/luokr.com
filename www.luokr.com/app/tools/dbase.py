@@ -13,7 +13,7 @@ import sqlite3
 
 def main():
     for sql in glob.glob(os.path.join(etc['database_path'], '*.sql')):
-        dat = sql[:-3] + 'db3'
+        dat = sql[:-3] + 'dat'
         if os.path.exists(dat):
             print("Find dbase: %s" % dat)
         else:

@@ -75,7 +75,7 @@ class PostCtrl(BasicCtrl):
     def get(self, post_id):
         stime = self.stime()
 
-        post = self.model('posts').get_by_pid(self.datum('posts'), post_id)
+        post = self.datum('posts').get_post_by_id(post_id)
         if not post or ((not self.get_current_user()) and (not post['post_stat'] or post['post_ptms'] >= stime)):
             self.flash(0, {'sta': 404})
             return

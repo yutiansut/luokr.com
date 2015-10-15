@@ -1,9 +1,20 @@
 #coding=utf-8
 
-class Datum:
-    def __init__(self, source):
-        # Sqlite3 Object
-        self.source = source
+import os, re
+import sqlite3
+from collections import OrderedDict
+
+class Datum(object):
+    def __init__(self, config):
+        self.config = config
+        # super(self.__class__, self).__init__(config)
+
+        self.source = sqlite3.connect(self.locate())
+        self.source.row_factory = self.__class__.sqlite_dict # sqlite3.Row
+        self.source.text_factory = str
+
+    def locate(self):
+        return self.config['path'] + os.path.join(*re.sub(r'Datum$', '', self.__class__.__name__).lower().split('_')) + '.dat'
 
     def cursor(self, *args, **kwargs):
         return self.source.cursor(*args, **kwargs)
@@ -36,3 +47,12 @@ class Datum:
         cur = con.execute(*args, **kwargs)
         con.commit()
         return cur
+
+    @staticmethod
+    def sqlite_dict(cur, row):
+        return OrderedDict((v[0], row[i]) for i, v in enumerate(cur.description))
+
+    @staticmethod
+    def sqlite_rows(cur):
+        return [OrderedDict((v[0], row[i if i in row else v[0]]) for i, v in enumerate(cur.description)) for row in cur.fetchall()]
+

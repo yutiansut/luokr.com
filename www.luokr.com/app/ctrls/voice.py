@@ -8,7 +8,7 @@ class VoiceCtrl(BasicCtrl):
             self.flash(0, {'msg': '验证码错误'})
             return
 
-        post = self.model('posts').get_by_pid(self.datum('posts'), self.input('poid'))
+        post = self.datum('posts').get_post_by_id(self.input('poid'))
         if not post:
             self.flash(0, {'msg': '文章不存在'})
             return

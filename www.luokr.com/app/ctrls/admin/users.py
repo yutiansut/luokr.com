@@ -19,7 +19,7 @@ class Admin_UsersCtrl(AdminCtrl):
 class Admin_UserCtrl(AdminCtrl):
     @admin
     def get(self):
-        user = self.model('admin').get_user_by_usid(self.datum('users'), self.input('user_id'))
+        user = self.datum('users').get_user_by_id(self.input('user_id'))
         if not user:
             self.flash(0, {'sta': 404})
             return
@@ -32,7 +32,7 @@ class Admin_UserCtrl(AdminCtrl):
 
     @admin
     def post(self):
-        user = self.model('admin').get_user_by_usid(self.datum('users'), self.input('user_id'))
+        user = self.datum('users').get_user_by_id(self.input('user_id'))
         if not user:
             self.flash(0, {'sta': 404})
             return
@@ -59,7 +59,7 @@ class Admin_UserCtrl(AdminCtrl):
                 self.flash(0, {'msg': '无效的用户邮箱'})
                 return
 
-            if user_mail != user['user_mail'] and self.model('admin').get_user_by_mail(self.datum('users'), user_mail):
+            if user_mail != user['user_mail'] and self.datum('users').get_user_by_mail(user_mail):
                 self.flash(0, {'msg': '用户邮箱已存在'})
                 return
             
@@ -112,11 +112,11 @@ class Admin_UserCreateCtrl(AdminCtrl):
                 self.flash(0, {'msg': '无效的用户邮箱'})
                 return
 
-            if self.model('admin').get_user_by_name(self.datum('users'), user_name):
+            if self.datum('users').get_user_by_name(user_name):
                 self.flash(0, {'msg': '用户帐号已存在'})
                 return
 
-            if self.model('admin').get_user_by_mail(self.datum('users'), user_mail):
+            if self.datum('users').get_user_by_mail(user_mail):
                 self.flash(0, {'msg': '用户邮箱已存在'})
                 return
 

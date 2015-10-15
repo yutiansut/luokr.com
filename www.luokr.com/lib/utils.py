@@ -2,7 +2,6 @@
 
 import re
 import hashlib
-from collections import OrderedDict
 
 class Utils:
     @staticmethod
@@ -29,14 +28,6 @@ class Utils:
         return ret
 
     @staticmethod
-    def sqlite_dict(cur, row):
-        return OrderedDict((v[0], row[i]) for i, v in enumerate(cur.description))
-
-    @staticmethod
-    def sqlite_rows(cur):
-        return [OrderedDict((v[0], row[i if i in row else v[0]]) for i, v in enumerate(cur.description)) for row in cur.fetchall()]
-
-    @staticmethod
     def build_links(val, opt = ' target="_blank"'):
         exp = re.compile(
                 r'('
@@ -48,5 +39,5 @@ class Utils:
         return exp.sub(r'<a href="\1"' + opt + r'>\1</a>', val)
 
     @staticmethod
-    def str_md5(val):
+    def str_md5_hex(val):
         return hashlib.md5(val).hexdigest()

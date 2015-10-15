@@ -31,7 +31,7 @@ class Shell_PanelCtrl(ShellCtrl):
                 self.flash(0, {'msg': '无效的用户邮箱'})
                 return
 
-            if user_mail != user['user_mail'] and self.model('admin').get_user_by_mail(self.datum('users'), user_mail):
+            if user_mail != user['user_mail'] and self.datum('users').get_user_by_mail(user_mail):
                 self.flash(0, {'msg': '用户邮箱已存在'})
                 return
 

@@ -20,7 +20,7 @@ class LoginCtrl(BasicCtrl):
             if remember:
                 remember = int(remember)
 
-            user = self.model('admin').get_user_by_name(self.datum('users'), username)
+            user = self.datum('users').get_user_by_name(username)
 
             if user and self.entry('login:user#' + str(user['user_id'])):
                 self.flash(0, {'msg': '操作太频繁，请稍后再试', 'sta': 429})

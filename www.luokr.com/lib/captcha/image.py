@@ -8,7 +8,7 @@ except ImportError:
     import StringIO
 
 # font = ImageFont.load_default()
-font = ImageFont.truetype(os.path.dirname(__file__) + "/captcha.ttf", 32)
+font = ImageFont.truetype(os.path.join(os.path.dirname(__file__), "captcha.ttf"), 32)
 
 def gen_randoms():
     return ''.join(random.sample("abcdefghjkmnpqrstuvwzyzACDEFGHJKMNPQRSTUVWZY345679", 6))

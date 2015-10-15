@@ -101,7 +101,7 @@ class Admin_PostCtrl(AdminCtrl):
     def get(self):
         post_id = self.input('post_id')
 
-        post = self.model('posts').get_by_pid(self.datum('posts'), post_id)
+        post = self.datum('posts').get_post_by_id(post_id)
         if not post:
             self.flash(0, {'sta': 404})
             return
@@ -145,7 +145,7 @@ class Admin_PostCtrl(AdminCtrl):
                 self.flash(0, {'msg': '标签数量限制不能超过 10 个'})
                 return
 
-            post = self.model('posts').get_by_pid(self.datum('posts'), post_id)
+            post = self.datum('posts').get_post_by_id(post_id)
             if not post:
                 self.flash(0, '没有指定文章ID')
                 return

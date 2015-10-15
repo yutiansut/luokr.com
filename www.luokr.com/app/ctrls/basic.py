@@ -8,7 +8,6 @@ import importlib
 import threading
 
 import tornado
-import sqlite3
 
 try:
     import urlparse  # py2
@@ -31,7 +30,6 @@ except KeyError:
     responses[429] = 'Too Many Requests'
 
 from lib.cache import Cache
-from lib.datum import Datum
 from lib.mailx import Mailx
 from lib.utils import Utils
 
@@ -56,27 +54,27 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def get_runtime_conf(self, name, json = False):
         if json:
-            conf = self.model('confs').obtain(self.datum('confs'), name)
+            conf = self.datum('confs').obtain(name)
             if conf is None or conf == '':
                 return None
             return self.get_escaper().json_decode(conf)
-        return self.model('confs').obtain(self.datum('confs'), name)
+        return self.datum('confs').obtain(name)
 
     def has_runtime_conf(self, name):
-        return self.model('confs').exists(self.datum('confs'), name)
+        return self.datum('confs').exists(name)
 
     def del_runtime_conf(self, name):
-        return self.model('confs').delete(self.datum('confs'), name)
+        return self.datum('confs').delete(name)
 
     def set_runtime_conf(self, name, vals):
-        return self.model('confs').upsert(self.datum('confs'), name, vals)
+        return self.datum('confs').upsert(name, vals)
 
     def get_current_user(self):
         usid = self.get_cookie("_usid")
         auid = self.get_secure_cookie('_auid')
         auth = self.get_secure_cookie('_auth')
         if usid and auth:
-            user = self.model('admin').get_user_by_usid(self.datum('users'), usid)
+            user = self.datum('users').get_user_by_id(usid)
             if user and user['user_auid'] == auid and \
                     self.model('admin').generate_authword(user['user_atms'], user['user_salt']) == auth:
                 return user
@@ -118,8 +116,8 @@ class BasicCtrl(tornado.web.RequestHandler):
                 value = self.get_escaper().json_decode(value)
                 return 'time' in value and 'code' in value\
                         and 0 < self.stime() - value['time'] < 60\
-                        and value['code'] == self.utils().str_md5(\
-                        self.utils().str_md5(self.settings['cookie_secret']) + input.lower() + str(value['time']))
+                        and value['code'] == self.utils().str_md5_hex(\
+                        self.utils().str_md5_hex(self.settings['cookie_secret']) + input.lower() + str(value['time']))
         return False
 
     def cache(self):
@@ -136,9 +134,9 @@ class BasicCtrl(tornado.web.RequestHandler):
 
     def ualog(self, user, text, data = ''):
         if user:
-            self.model('alogs').log(self.datum('alogs'), text, alog_data = data, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
+            self.datum('alogs').log(text, alog_data = data, user_ip = self.request.remote_ip, user_id = user['user_id'], user_name = user['user_name'])
         else:
-            self.model('alogs').log(self.datum('alogs'), text, alog_data = data, user_ip = self.request.remote_ip)
+            self.datum('alogs').log(text, alog_data = data, user_ip = self.request.remote_ip)
 
     def tourl(self, args, base = None):
         if base == None:
@@ -184,13 +182,16 @@ class BasicCtrl(tornado.web.RequestHandler):
             self.render('flash.html', resp = resp)
 
     def datum(self, name):
+        # base = sys._getframe().f_code.co_name
         base = 'datum'
-        if name not in self._storage[base]:
-            conn = sqlite3.connect(os.path.join(self.settings['database_path'], name + '.db3'))
-            conn.row_factory = self.utils().sqlite_dict # sqlite3.Row
-            conn.text_factory = str
-            self._storage[base][name] = Datum(conn)
-        return self._storage[base][name]
+        clsn = '_'.join([v.title() for v in name.split('.')]) + base.title()
+        if clsn not in self._storage[base]:
+            modn = 'app.' + base + '.' + name
+            if modn not in sys.modules:
+                # __import__(modn)
+                importlib.import_module(modn)
+            self._storage[base][clsn] = getattr(sys.modules[modn], clsn)({'path': self.settings['database_path']})
+        return self._storage[base][clsn]
 
     def model(self, name):
         # base = sys._getframe().f_code.co_name

@@ -12,5 +12,5 @@ etc['root_path'] = sys.path[0]
 etc['login_url'] = '/login'
 etc['xsrf_cookies'] = True
 etc['cookie_secret'] = 'Yoursecretcookie'
-etc['template_path'] = os.path.join(etc['root_path'], 'app', 'views')
-etc['database_path'] = os.path.join(etc['root_path'], 'app', 'datas')
+etc['template_path'] = os.path.join(etc['root_path'], 'app', 'views', '')
+etc['database_path'] = os.path.join(etc['root_path'], 'var', 'datas', '')

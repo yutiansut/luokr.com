@@ -10,7 +10,7 @@ class Shell_IndexCtrl(ShellCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
-        user = self.model('admin').get_user_by_name(self.datum('users'), name)
+        user = self.datum('users').get_user_by_name(name)
         if not user:
             self.flash(0, {'sta': 404})
             return
