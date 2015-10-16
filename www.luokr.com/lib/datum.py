@@ -13,7 +13,7 @@ class Datum(object):
         # super(self.__class__, self).__init__(config)
 
         init = ''
-        dest = self.locate('.dat')
+        dest = self.locate('.sdb')
         if self.config['init'] and not os.path.exists(dest):
             init = self.locate('.sql')
             init = '' if not os.path.exists(init) else open(init).read()

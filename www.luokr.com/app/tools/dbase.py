@@ -13,13 +13,13 @@ import sqlite3
 
 def main():
     for sql in glob.glob(os.path.join(etc['database_path'], '*.sql')):
-        dat = sql[:-3] + 'dat'
-        if os.path.exists(dat):
-            print("Find dbase: %s" % dat)
+        sdb = sql[:-3] + 'sdb'
+        if os.path.exists(sdb):
+            print("Find dbase: %s" % sdb)
         else:
-            print("Make dbase: %s" % dat)
+            print("Make dbase: %s" % sdb)
 
-            con = sqlite3.connect(dat)
+            con = sqlite3.connect(sdb)
             con.executescript(open(sql).read())
             con.close()
 
