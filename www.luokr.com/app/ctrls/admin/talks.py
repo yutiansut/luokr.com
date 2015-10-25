@@ -31,13 +31,15 @@ class Admin_TalkCtrl(AdminCtrl):
     def post(self):
         try:
             talk_id   = self.input('talk_id')
+            user_name = self.input('user_name')
+            user_mail = self.input('user_mail')
             talk_rank = self.input('talk_rank')
             talk_text = self.input('talk_text')
             talk_utms = self.stime()
 
             if self.datum('talks').affect(
-                    'update talks set talk_rank = ?+talk_plus-talk_mins, talk_text = ?, talk_utms = ? where talk_id = ?',
-                    (talk_rank, talk_text, talk_utms, talk_id ,)).rowcount:
+                    'update talks set user_name = ?, user_mail = ?, talk_rank = ?+talk_plus-talk_mins, talk_text = ?, talk_utms = ? where talk_id = ?',
+                    (user_name, user_mail, talk_rank, talk_text, talk_utms, talk_id ,)).rowcount:
                 self.ualog(self.current_user, '更新评论：' + str(talk_id))
                 self.flash(1)
                 return
