@@ -132,7 +132,7 @@
 
 {% block foot_js  %}
 {% if not mode %}
-<script type="text/javascript" src="/assets/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="{{ handler.asset('cke/ckeditor.js') }}"></script>
 <script type="text/javascript">
     CKEDITOR.replace('input_post_content', {
         height: 270,

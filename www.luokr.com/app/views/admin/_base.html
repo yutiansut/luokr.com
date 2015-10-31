@@ -7,18 +7,18 @@
 <meta name="keywords" content="{% block keyws %}{{ handler.get_runtime_conf('keyws') }}{% end %}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/bootstrap.min.css?5ecf828dc1ce521d238f94a67176a09a">
-<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/googstyle.min.css?f2bbb338525ecf19d271dcb259adae90">
+<link rel="stylesheet" href="{{ handler.asset('css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ handler.asset('css/googstyle.min.css') }}">
 
 {% block head_css_mid %}{% end %}
 
-<link rel="stylesheet" href="{{ handler.get_runtime_conf('sites_asset') }}css/framework.min.css?5668d079271d3f8b0b6a36ec14cb3869">
-<link rel="stylesheet" href="/assets/css/customize.css?7300648a4062a4519d04b71b84a049e1">
+<link rel="stylesheet" href="{{ handler.asset('css/framework.min.css') }}">
+<link rel="stylesheet" href="{{ handler.asset('css/customize.min.css') }}">
 
 {% block head_css %}{% end %}
 {% block head_js %}{% end %}
 
-<!--[if lt IE 9]><script src="{{ handler.get_runtime_conf('sites_asset') }}js/html5shiv.min.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="{{ handler.asset('js/html5shiv.min.js') }}"></script><![endif]-->
 </head>
 
 <body data-exts-scrollup="1" data-spy="scroll">
@@ -59,11 +59,11 @@
     </div>
 </footer>
 
-<script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery-1.10.1.min.js"></script>
-<script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.form.min.js?54e26c42b4a494b3a077cb80ee64b6c4"></script>
-<script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.scrollUp.min.js?601e5f98556786d12fee325deafb611a"></script>
-<script src="{{ handler.get_runtime_conf('sites_asset') }}js/bootstrap.min.js?d700a93337122b390b90bbfe21e64f71"></script>
-<script src="/assets/js/customize.js?def0c44b7e0717d861d47ff636ddec36"></script>
+<script src="{{ handler.asset('js/jquery-1.10.1.min.js') }}"></script>
+<script src="{{ handler.asset('js/jquery.form.min.js') }}"></script>
+<script src="{{ handler.asset('js/jquery.scrollUp.min.js') }}"></script>
+<script src="{{ handler.asset('js/bootstrap.min.js') }}"></script>
+<script src="{{ handler.asset('js/customize.min.js') }}"></script>
 {% block foot_js %}{% end %}
 </body>
 </html>

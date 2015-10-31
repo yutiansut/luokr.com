@@ -28,7 +28,7 @@
 {% end %}
 
 {% block foot_js %}
-<script src="{{ handler.get_runtime_conf('sites_asset') }}js/jquery.pjax.min.js"></script>
+<script src="{{ handler.asset('js/jquery.pjax.min.js') }}"></script>
 <script>
     $(function(){
         $('#shell-index-posts').pjax('a[data-pjax]', '#shell-index-posts');

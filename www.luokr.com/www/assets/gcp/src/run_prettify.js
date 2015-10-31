@@ -168,12 +168,7 @@ var IN_GLOBAL_SCOPE = false;
         if (name == 'callback')  { callbacks.push(value);            }
       });
 
-  // Use https to avoid mixed content warnings in client pages and to
-  // prevent a MITM from rewrite prettify mid-flight.
-  // This only works if this script is loaded via https : something
-  // over which we exercise no control.
-  var LOADER_BASE_URL =
-     'http://res.luokr.com/gcp/src';
+  var LOADER_BASE_URL = '/assets/gcp/src';
 
   for (var i = 0, n = langs.length; i < n; ++i) (function (lang) {
     var script = doc.createElement("script");

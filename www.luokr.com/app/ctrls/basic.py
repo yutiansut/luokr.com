@@ -35,7 +35,7 @@ from lib.utils import Utils
 
 class BasicCtrl(tornado.web.RequestHandler):
     def initialize(self):
-        self._storage = {'model': {}, 'datum': {}}
+        self._caches = {'model': {}, 'datum': {}}
 
     def set_default_headers(self):
         self.set_header('server', self.settings['servs'])
@@ -120,6 +120,21 @@ class BasicCtrl(tornado.web.RequestHandler):
                         self.utils().str_md5_hex(self.settings['cookie_secret']) + input.lower() + str(value['time']))
         return False
 
+    def asset(self, name, host = '/', base = 'www', path = 'assets', vers = True):
+        addr = os.path.join(path, name)
+
+        if self.settings['debug']:
+            orig = addr.replace('.min.', '.')
+            if orig != addr and os.path.exists(os.path.join(self.settings['root_path'], base, orig)):
+                addr = orig
+
+        if vers:
+            if isinstance(vers, bool):
+                vers = tornado.web.StaticFileHandler.get_version({'static_path': ''}, os.path.join(self.settings['root_path'], base, addr))
+            if vers:
+                return '%s?%s' % (os.path.join(host, addr), vers)
+        return os.path.join(host, addr)
+
     def cache(self):
         return Cache
 
@@ -185,25 +200,25 @@ class BasicCtrl(tornado.web.RequestHandler):
         # base = sys._getframe().f_code.co_name
         base = 'datum'
         clsn = '_'.join([v.title() for v in name.split('.')]) + base.title()
-        if clsn not in self._storage[base]:
+        if clsn not in self._caches[base]:
             modn = 'app.' + base + '.' + name
             if modn not in sys.modules:
                 # __import__(modn)
                 importlib.import_module(modn)
-            self._storage[base][clsn] = getattr(sys.modules[modn], clsn)({'path': self.settings['database_path']})
-        return self._storage[base][clsn]
+            self._caches[base][clsn] = getattr(sys.modules[modn], clsn)({'path': self.settings['database_path']})
+        return self._caches[base][clsn]
 
     def model(self, name):
         # base = sys._getframe().f_code.co_name
         base = 'model'
         clsn = '_'.join([v.title() for v in name.split('.')]) + base.title()
-        if clsn not in self._storage[base]:
+        if clsn not in self._caches[base]:
             modn = 'app.' + base + '.' + name
             if modn not in sys.modules:
                 # __import__(modn)
                 importlib.import_module(modn)
-            self._storage[base][clsn] = getattr(sys.modules[modn], clsn)()
-        return self._storage[base][clsn]
+            self._caches[base][clsn] = getattr(sys.modules[modn], clsn)()
+        return self._caches[base][clsn]
 
 def login(method):
     """Decorate methods with this to require that the user be logged in.

@@ -140,7 +140,7 @@
 {% end %}
 
 {% block foot_js %}
-<script src="{{ handler.get_runtime_conf('sites_asset') }}gcp/src/run_prettify.js?skin=solarized-dark" type="text/javascript"></script>
+<script src="{{ handler.asset('gcp/src/run_prettify.js?skin=solarized-dark', vers = False) }}" type="text/javascript"></script>
 <script>
     $(function() {
         $('.pager .ilike').click(function() {
