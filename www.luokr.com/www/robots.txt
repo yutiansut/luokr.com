@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /s?
+Disallow: /admin
+Disallow: /check
+Disallow: /error
+Disallow: /hello
+Disallow: /upload/*
+Disallow: /assets/*
