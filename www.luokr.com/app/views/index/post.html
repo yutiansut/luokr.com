@@ -70,7 +70,7 @@
                     <tbody>
                     {% if talks %}
                     {% for talk in talks %}
-                    <tr id="r{{ talk['talk_id'] }}">
+                    <tr data-talk-id="{{ talk['talk_id'] }}">
                         <td class="talk-user span2"><i class="icon-user"></i> {% if talk['user_id'] %}<a href="/@{{ talk['user_name'] }}" target="_blank">{{ talk['user_name'] }}</a>{% else %}{{ talk['user_name'] }}{% end %}<span class="talk-time">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
                         <td class="talk-cont">{% raw escape(talk['talk_text']).replace('\n','\n<br>') %}</td>
                     </tr>
@@ -209,7 +209,7 @@
                 for (i in list) {
                     var talk = list[i];
                     var html = '';
-                    html += '<tr id="r' + talk['talk_id'] + '">';
+                    html += '<tr data-talk-id="' + talk['talk_id'] + '">';
                     html += '<td class="talk-user span2"><i class="icon-user"></i> ';
                     if (talk['user_id']) {
                         html += '<a href="/@' + L.method.htext(talk['user_name']) + '" target="_blank">' + L.method.htext(talk['user_name']) + '</a>';
