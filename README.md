@@ -34,7 +34,7 @@ Requirement
 
 (Python >= 2.7)
 
-* tornado (>= 4.2.1)
+* tornado (>= 4.3)
 * pil or pillow
 
 
