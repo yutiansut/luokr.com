@@ -17,10 +17,10 @@
 
     #rows-talk td {padding-bottom: 20px;}
     .talk-time {display: block; font-size: .8em; color: grey;}
-    article a, .talk-cont {word-wrap: break-word; word-break: break-all;};
+    article a, .talk-cont {word-wrap: break-word; word-break: break-all;}
 
     @media print {
-        #list-talk, #form-talk {display: none}
+        #talks {display: none}
     }
 </style>
 {% end %}
@@ -61,78 +61,80 @@
             </div>
         </article>
 
-        <div id="list-talk">
-            <fieldset>
-                <legend>
-                    文章评论
-                </legend>
-                <table id="rows-talk" class="table table-hover table-striped table-bordered" style="{% if not talks %}display:none{% end %}">
-                    <tbody>
-                    {% if talks %}
-                    {% for talk in talks %}
-                    <tr data-talk-id="{{ talk['talk_id'] }}">
-                        <td class="talk-user span2"><i class="icon-user"></i> {% if talk['user_id'] %}<a href="/@{{ talk['user_name'] }}" target="_blank">{{ talk['user_name'] }}</a>{% else %}{{ talk['user_name'] }}{% end %}<span class="talk-time">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
-                        <td class="talk-cont">{% raw escape(talk['talk_text']).replace('\n','\n<br>') %}</td>
-                    </tr>
-                    {% end %}
-                    {% end %}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="2" style="text-align:center;padding:0">
-                                <a href="javascript:;" title="加载更多评论" class="load-more" style="display:block;width:100%;height:100%;">···</a>
-                            </td>
+        <div id="talks">
+            <div id="list-talk">
+                <fieldset>
+                    <legend>
+                        文章评论
+                    </legend>
+                    <table id="rows-talk" class="table table-hover table-striped table-bordered" style="{% if not talks %}display:none{% end %}">
+                        <tbody>
+                        {% if talks %}
+                        {% for talk in talks %}
+                        <tr data-talk-id="{{ talk['talk_id'] }}">
+                            <td class="talk-user span2"><i class="icon-user"></i> {% if talk['user_id'] %}<a href="/@{{ talk['user_name'] }}" target="_blank">{{ talk['user_name'] }}</a>{% else %}{{ talk['user_name'] }}{% end %}<span class="talk-time">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
+                            <td class="talk-cont">{% raw escape(talk['talk_text']).replace('\n','\n<br>') %}</td>
                         </tr>
-                    </tfoot>
-                </table>
-            </fieldset>
+                        {% end %}
+                        {% end %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" style="text-align:center;padding:0">
+                                    <a href="javascript:;" title="加载更多评论" class="load-more" style="display:block;width:100%;height:100%;">···</a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </fieldset>
+            </div>
+
+            <form id="form-talk" class="form-horizontal" method="post" action="/voice?poid={{ post['post_id'] }}">
+                {% raw xsrf_form_html() %}
+                <fieldset>
+
+                    {% if handler.current_user %}
+                    <div class="control-group">
+                        <div class="controls">
+                            <label class="checkbox">
+                                <input type="checkbox" name="auth" value="1" checked="checked"> 以登录用户身份评论
+                            </label>
+                        </div>
+                    </div>
+                    {% end %}
+                    <div class="control-group">
+                        <label class="control-label" for="form-talk-name">你的名称：</label>
+                        <div class="controls">
+                            <input id="form-talk-name" type="text" name="name" class="span3" minlength="3" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_name'] }}" data-value="{{ handler.current_user['user_name'] }}" readonly{% end %} required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-talk-mail">你的邮箱：</label>
+                        <div class="controls">
+                            <input id="form-talk-mail" type="email" name="mail" class="span3" minlength="6" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_mail'] }}" data-value="{{ handler.current_user['user_mail'] }}" readonly{% end %} required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-talk-text">评论内容：</label>
+                        <div class="controls">
+                            <textarea id="form-talk-text" name="text" rows="8" class="input-block-level" required></textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="captcha span3" style="margin-left:0"></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-success input-large">提交评论</button>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
         </div>
-
-        <form id="form-talk" class="form-horizontal" method="post" action="/voice?poid={{ post['post_id'] }}">
-            {% raw xsrf_form_html() %}
-            <fieldset>
-
-                {% if handler.current_user %}
-                <div class="control-group">
-                    <div class="controls">
-                        <label class="checkbox">
-                            <input type="checkbox" name="auth" value="1" checked="checked"> 以登录用户身份评论
-                        </label>
-                    </div>
-                </div>
-                {% end %}
-                <div class="control-group">
-                    <label class="control-label" for="form-talk-name">您的名称：</label>
-                    <div class="controls">
-                        <input id="form-talk-name" type="text" name="name" class="span3" minlength="3" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_name'] }}" data-value="{{ handler.current_user['user_name'] }}" readonly{% end %} required>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="form-talk-mail">您的邮箱：</label>
-                    <div class="controls">
-                        <input id="form-talk-mail" type="email" name="mail" class="span3" minlength="6" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_mail'] }}" data-value="{{ handler.current_user['user_mail'] }}" readonly{% end %} required>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="form-talk-text">评论内容：</label>
-                    <div class="controls">
-                        <textarea id="form-talk-text" name="text" rows="8" class="input-block-level" required></textarea>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <div class="captcha span3" style="margin-left:0"></div>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <div class="controls">
-                        <button type="submit" class="btn btn-success input-large">提交评论</button>
-                        <span class="help-inline"></span>
-                    </div>
-                </div>
-            </fieldset>
-        </form>
     </div>
 
     {% include "../_side.html" %}
