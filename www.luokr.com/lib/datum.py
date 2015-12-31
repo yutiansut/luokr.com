@@ -6,18 +6,16 @@ from collections import OrderedDict
 
 class Datum(object):
     def __init__(self, config):
-        for k, v in {'path': ''}.iteritems():
-            if k not in config:
-                config[k] = v
-        self.config = config
         # super(self.__class__, self).__init__(config)
+        self.config = {'path': '', 'form': '.sdb'}
+        self.config.update(config)
 
-        self.source = sqlite3.connect(self.locate())
+        self.source = sqlite3.connect(self.locate(self.config['path'], self.config['form']))
         self.source.row_factory = self.__class__.sqlite_dict # sqlite3.Row
         self.source.text_factory = str
 
-    def locate(self, form = '.sdb'):
-        return self.config['path'] + os.path.join(*re.sub(r'Datum$', '', self.__class__.__name__).lower().split('_')) + form
+    def locate(self, path = '', form = ''):
+        return path + os.path.join(*re.sub(r'Datum$', '', self.__class__.__name__).lower().split('_')) + form
 
     def cursor(self, *args, **kwargs):
         return self.source.cursor(*args, **kwargs)
