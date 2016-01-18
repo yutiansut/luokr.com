@@ -35,7 +35,7 @@
                 {% for post in posts %}
                 <tr>
                     <td>{{ post['post_id'] }}</td>
-                    <td>{% if post['post_stat'] %}{% if post['post_ptms']<handler.stime() %}<span style="color:green">已发布</span>{% else %}<span>待发布</span>{% end %}{% else %}<span style="color:red">草稿</span>{% end %}</td>
+                    <td>{% if post['post_stat'] %}{% if post['post_ptms']<handler.stime() %}<span style="color:green">已发布</span>{% else %}<span>待发布</span>{% end %}{% else %}<span style="color:red">未公开</span>{% end %}</td>
                     <td>{% if post['user_id'] in psers %}{{ psers[post['user_id']]['user_name'] }}{% end %}</td>
                     <td>{{ post['post_title'] }}</td>
                     <td>{{ post['post_rank'] }}</td>
