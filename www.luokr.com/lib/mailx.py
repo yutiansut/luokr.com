@@ -31,9 +31,15 @@ class Mailx:
             msgs.attach(item)
 
         try:
-            smtp = smtplib.SMTP(self.conf['smtp_host'], self.conf['smtp_port'])
-            smtp.ehlo()
-            smtp.starttls()
+            if 465 == int(self.conf['smtp_port']):
+                smtp = smtplib.SMTP_SSL(self.conf['smtp_host'], self.conf['smtp_port'])
+            elif 587 == int(self.conf['smtp_port']):
+                smtp = smtplib.SMTP(self.conf['smtp_host'], self.conf['smtp_port'])
+                smtp.ehlo()
+                smtp.starttls()
+            else:
+                smtp = smtplib.SMTP(self.conf['smtp_host'], self.conf['smtp_port'])
+
             smtp.ehlo()
 
             smtp.login(self.conf['smtp_user'], self.conf['smtp_pswd'])
@@ -41,7 +47,5 @@ class Mailx:
             smtp.quit()
 
             return True
-        except:
-            pass
-
-        return False
+        except: # Exception as e:
+            return False
