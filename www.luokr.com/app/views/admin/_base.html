@@ -7,18 +7,18 @@
 <meta name="keywords" content="{% block keyws %}{{ handler.get_runtime_conf('keyws') }}{% end %}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="{{ handler.asset('css/bootstrap.min.css') }}">
-<link rel="stylesheet" href="{{ handler.asset('css/googstyle.min.css') }}">
+<link rel="stylesheet" href="{{ handler.asset('src/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ handler.asset('src/googstyle.min.css') }}">
 
 {% block head_css_mid %}{% end %}
 
-<link rel="stylesheet" href="{{ handler.asset('css/framework.min.css') }}">
-<link rel="stylesheet" href="{{ handler.asset('css/customize.min.css') }}">
+<link rel="stylesheet" href="{{ handler.asset('src/framework.min.css') }}">
+<link rel="stylesheet" href="{{ handler.asset('src/customize.min.css') }}">
 
 {% block head_css %}{% end %}
 {% block head_js %}{% end %}
 
-<!--[if lt IE 9]><script src="{{ handler.asset('js/html5shiv.min.js') }}"></script><![endif]-->
+<!--[if lt IE 9]><script src="{{ handler.asset('src/html5shiv.min.js') }}"></script><![endif]-->
 </head>
 
 <body data-exts-scrollup="1" data-spy="scroll">
@@ -59,11 +59,11 @@
     </div>
 </footer>
 
-<script src="{{ handler.asset('js/jquery-1.10.1.min.js') }}"></script>
-<script src="{{ handler.asset('js/jquery.form.min.js') }}"></script>
-<script src="{{ handler.asset('js/jquery.scrollUp.min.js') }}"></script>
-<script src="{{ handler.asset('js/bootstrap.min.js') }}"></script>
-<script src="{{ handler.asset('js/customize.min.js') }}"></script>
+<script src="{{ handler.asset('src/jquery-1.10.1.min.js') }}"></script>
+<script src="{{ handler.asset('src/jquery.form.min.js') }}"></script>
+<script src="{{ handler.asset('src/jquery.scrollUp.min.js') }}"></script>
+<script src="{{ handler.asset('src/bootstrap.min.js') }}"></script>
+<script src="{{ handler.asset('src/customize.min.js') }}"></script>
 {% block foot_js %}{% end %}
 </body>
 </html>
