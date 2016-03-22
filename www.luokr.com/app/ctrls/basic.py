@@ -91,7 +91,10 @@ class BasicCtrl(tornado.web.RequestHandler):
         self.clear_cookie("_auid")
         self.clear_cookie("_auth")
 
-    def merge_query(self, args, dels = []):
+    def merge_query(self, args, dels = None):
+        if dels is None:
+            dels = []
+
         for k in self.request.arguments.keys():
             if k not in args and k[0] != '_':
                 args[k] = self.get_argument(k)
@@ -173,7 +176,10 @@ class BasicCtrl(tornado.web.RequestHandler):
             self.cache().upsert(sign, size, life)
         return data
 
-    def flash(self, isok, resp = {}, _ext = ''):
+    def flash(self, isok, resp = None, _ext = ''):
+        if resp is None:
+            resp = {}
+
         if isok:
             resp['err'] = 0
         else:

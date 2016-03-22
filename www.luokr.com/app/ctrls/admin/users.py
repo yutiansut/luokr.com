@@ -49,13 +49,17 @@ class Admin_UserCtrl(AdminCtrl):
             user_perm = self.input('user_perm')
             user_pswd = self.input('user_pswd', '')
             user_rpwd = self.input('user_rpwd', '')
-            user_perm = int(user_perm) & 0x7FFFFFFF
+            user_perm = int(user_perm) & int(self.current_user['user_perm'])
 
-            if user_pswd and (len(user_pswd) < 6 or (user_pswd != user_rpwd)):
+            if user_pswd != user_rpwd:
+                self.flash(0, {'msg': '确认密码不匹配'})
+                return
+
+            if not self.model('admin').chk_is_user_pswd(user_pswd):
                 self.flash(0, {'msg': '无效的用户密码'})
                 return
 
-            if len(user_mail) < 3 or not self.model('admin').chk_is_user_mail(user_mail):
+            if not self.model('admin').chk_is_user_mail(user_mail):
                 self.flash(0, {'msg': '无效的用户邮箱'})
                 return
 

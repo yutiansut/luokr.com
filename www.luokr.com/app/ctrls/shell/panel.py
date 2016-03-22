@@ -27,7 +27,7 @@ class Shell_PanelCtrl(ShellCtrl):
                 self.flash(0)
                 return
 
-            if len(user_mail) < 3 or not self.model('admin').chk_is_user_mail(user_mail):
+            if not self.model('admin').chk_is_user_mail(user_mail):
                 self.flash(0, {'msg': '无效的用户邮箱'})
                 return
 
@@ -39,12 +39,16 @@ class Shell_PanelCtrl(ShellCtrl):
             if 'logo' in self.request.files and len(self.request.files['logo']) > 0:
                 res = self.request.files['logo'][0]
 
-                if 'content_type' not in res or res['content_type'].find('/') < 1 or len(res['content_type']) > 128:
-                    self.flash(0, {'msg': '文件类型错误'})
+                if 'filename' not in res or res['filename'] == '':
+                    self.flash(0, {'msg': '无效的文件名称'})
                     return
 
-                if 'filename' not in res or res['filename'] == '':
-                    self.flash(0, {'msg': '文件名称错误'})
+                if 'body' not in res or not (0 < len(res['body']) < 1024 * 1024):
+                    self.flash(0, {'msg': '无效的文件长度'})
+                    return
+
+                if 'content_type' not in res or res['content_type'].find('/') < 1 or len(res['content_type']) > 128:
+                    self.flash(0, {'msg': '无效的文件类型'})
                     return
 
                 ets = mimetypes.guess_all_extensions(res['content_type'])
@@ -54,7 +58,7 @@ class Shell_PanelCtrl(ShellCtrl):
 
                 ets = [".jpg", ".jpeg", ".gif", ".png", ".bmp"]
                 if ext not in ets:
-                    self.flash(0, {'msg': '文件类型受限'})
+                    self.flash(0, {'msg': '文件类型不支持'})
                     return
 
                 md5 = hashlib.md5()
@@ -77,8 +81,8 @@ class Shell_PanelCtrl(ShellCtrl):
 
                 user_logo = url
 
-            if user_pswd:
-                if len(user_npwd) < 6 or user_npwd != user_rpwd or self.model('admin').generate_password(user_pswd, user['user_salt']) != user['user_pswd']:
+            if user_npwd:
+                if not self.model('admin').chk_is_user_pswd(user_npwd) or user_npwd != user_rpwd or self.model('admin').generate_password(user_pswd, user['user_salt']) != user['user_pswd']:
                     self.flash(0, {'msg': '密码输入错误'})
                     return
 
