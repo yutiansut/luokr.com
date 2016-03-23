@@ -49,7 +49,7 @@ class Admin_UserCtrl(AdminCtrl):
             user_perm = self.input('user_perm')
             user_pswd = self.input('user_pswd', '')
             user_rpwd = self.input('user_rpwd', '')
-            user_perm = int(user_perm) & int(self.current_user['user_perm'])
+            user_perm = int(user_perm) & int(self.current_user['user_perm']) & 0x7FFFFFFF
 
             if user_pswd != user_rpwd:
                 self.flash(0, {'msg': '确认密码不匹配'})

@@ -7,10 +7,9 @@ Now it just a simple blog about technology and life.
 
 Below is the main directory structure:
 
-    res.luokr.com/      # global resources
-    www.luokr.com/
+    luokr.com
     ---- app/
-    -------- etc.py     # configuration file, see `doc/etc.py.sample` for more details
+    -------- etc.py     # configuration file, see `../doc/etc.py.sample` for more details
     -------- svr.py     # to start the app, run `python svr.py`
     -------- url.py     # url mapping
     -------- ctrls/     # controllers, see Tornado's RequestHandler
@@ -41,20 +40,20 @@ Requirement
 Screenshots
 -----------
 * About
-![www.luokr.com.about](res.luokr.com/img/20150928/www.luokr.com.about.jpg)
+![luokr.com.about](www/assets/img/20150928/www.luokr.com.about.jpg)
 
 * Login
-![www.luokr.com.login](res.luokr.com/img/20150101/www.luokr.com.login.png)
+![luokr.com.login](www/assets/img/20150101/www.luokr.com.login.png)
 
 * Shell
-![www.luokr.com.shell](res.luokr.com/img/20150928/www.luokr.com.shell.jpg)
+![luokr.com.shell](www/assets/img/20150928/www.luokr.com.shell.jpg)
 
 * Posts
-![www.luokr.com.posts](res.luokr.com/img/20150101/www.luokr.com.posts.png)
+![luokr.com.posts](www/assets/img/20150101/www.luokr.com.posts.png)
 
 * Admin
-![www.luokr.com.admin](res.luokr.com/img/20141231/www.luokr.com.admin.png)
+![luokr.com.admin](www/assets/img/20141231/www.luokr.com.admin.png)
 
 * Admin (Edit Post)
-![www.luokr.com.admin.post.update](res.luokr.com/img/20150928/www.luokr.com.admin.post.update.jpg)
+![luokr.com.admin.post.update](www/assets/img/20150928/www.luokr.com.admin.post.update.jpg)
 
