@@ -64,7 +64,7 @@ class PostsCtrl(BasicCtrl):
         else:
             links_top = None
 
-        slabs_top = self.get_runtime_conf('slabs', json = True)
+        slabs_top = self.jsons(self.get_runtime_conf('slabs'))
 
         self.render('posts.html', track = track, pager = pager, posts = posts, psers = psers, ptids = ptids, ptags = ptags
                 , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, posts_rel = posts_rel
@@ -118,7 +118,7 @@ class PostCtrl(BasicCtrl):
         talks = []
         talks_new = []
 
-        slabs_top = self.get_runtime_conf('slabs', json = True)
+        slabs_top = self.jsons(self.get_runtime_conf('slabs'))
 
         links_top = None
 

@@ -17,7 +17,7 @@ class EmailCtrl(BasicCtrl):
                 'insert into mails (user_ip, user_name, user_mail, mail_text, mail_ctms, mail_utms) values (?, ?, ?, ?, ?, ?)',
                 (self.request.remote_ip, name, mail, text, time, time)).lastrowid:
             self.flash(1)
-            self.email('%s <%s>' %(name, mail), self.get_runtime_conf('admin_email', json = True),
+            self.email('%s <%s>' %(name, mail), self.jsons(self.get_runtime_conf('admin_email')),
                     'Received Feedback (%s)' % self.timer().strftime('%F %T %Z', self.timer().localtime(time)),
                     'Mail From %s <%s>:\r\n\r\n%s' %(name, mail, text))
         else:

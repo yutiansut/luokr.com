@@ -17,14 +17,12 @@ class ConfsDatum(Datum):
                     self._cache[row['conf_name']] = row['conf_vals']
 
     def obtain(self, name):
-        if name in self._cache:
-            return self._cache[name]
-
-        ret = self.single('select conf_vals from confs where conf_name = ?', (name, ))
-        if ret:
-            self._cache[name] = ret['conf_vals']
-        else:
-            self._cache[name] = None
+        if name not in self._cache:
+            ret = self.single('select conf_vals from confs where conf_name = ?', (name, ))
+            if ret:
+                self._cache[name] = ret['conf_vals']
+            else:
+                self._cache[name] = None
         return self._cache[name]
 
     def exists(self, name):

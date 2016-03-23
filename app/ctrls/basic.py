@@ -52,22 +52,8 @@ class BasicCtrl(tornado.web.RequestHandler):
             return
         return super(BasicCtrl, self).write_error(*[status_code], **kwargs)
 
-    def get_runtime_conf(self, name, json = False):
-        if json:
-            conf = self.datum('confs').obtain(name)
-            if conf is None or conf == '':
-                return None
-            return self.get_escaper().json_decode(conf)
+    def get_runtime_conf(self, name):
         return self.datum('confs').obtain(name)
-
-    def has_runtime_conf(self, name):
-        return self.datum('confs').exists(name)
-
-    def del_runtime_conf(self, name):
-        return self.datum('confs').delete(name)
-
-    def set_runtime_conf(self, name, vals):
-        return self.datum('confs').upsert(name, vals)
 
     def get_current_user(self):
         usid = self.get_cookie("_usid")
@@ -91,6 +77,9 @@ class BasicCtrl(tornado.web.RequestHandler):
         self.clear_cookie("_auid")
         self.clear_cookie("_auth")
 
+    def find_accept(self, name):
+        return 'Accept' in self.request.headers and self.request.headers['Accept'].find(name) >= 0
+
     def merge_query(self, args, dels = None):
         if dels is None:
             dels = []
@@ -106,7 +95,7 @@ class BasicCtrl(tornado.web.RequestHandler):
     def get_escaper(self):
         return tornado.escape
 
-    def fetch_xsrfs(self):
+    def param_xsrfs(self):
         return '_xsrf=' + self.get_escaper().url_escape(self.xsrf_token)
 
     def human_valid(self):
@@ -116,7 +105,7 @@ class BasicCtrl(tornado.web.RequestHandler):
             self.clear_cookie(field)
             input = self.input(field, None)
             if input:
-                value = self.get_escaper().json_decode(value)
+                value = self.jsons(value)
                 return 'time' in value and 'code' in value\
                         and 0 < self.stime() - value['time'] < 60\
                         and value['code'] == self.utils().str_md5_hex(\
@@ -137,6 +126,11 @@ class BasicCtrl(tornado.web.RequestHandler):
             if vers:
                 return '%s?%s' % (os.path.join(host, addr), vers)
         return os.path.join(host, addr)
+
+    def jsons(self, json):
+        if json is None or json == '':
+            return None
+        return self.get_escaper().json_decode(json)
 
     def cache(self):
         return Cache
@@ -165,7 +159,7 @@ class BasicCtrl(tornado.web.RequestHandler):
         return self.get_argument(*args, **kwargs)
 
     def email(self, *args, **kwargs):
-        conf = self.get_runtime_conf('mailx', json = True)
+        conf = self.jsons(self.get_runtime_conf('mailx'))
         if conf and 'smtp_able' in conf and conf['smtp_able']:
             threading.Thread(target=Mailx(conf).send, args = args, kwargs = kwargs).start()
 
@@ -197,7 +191,7 @@ class BasicCtrl(tornado.web.RequestHandler):
         if 'dat' not in resp:
             resp['dat'] = {}
 
-        if _ext == '.json' or (('Accept' in self.request.headers) and (self.request.headers['Accept'].find('json') >= 0)):
+        if _ext == '.json' or self.find_accept('json'):
             self.write(self.get_escaper().json_encode(resp))
         else:
             self.render('flash.html', resp = resp)
@@ -235,7 +229,7 @@ def login(method):
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
         if not self.current_user:
-            if 'Accept' in self.request.headers and self.request.headers['Accept'].find('json') >= 0:
+            if self.find_accept('json'):
                 self.flash(0, {'sta': 403, 'url': self.get_login_url()})
                 return
 

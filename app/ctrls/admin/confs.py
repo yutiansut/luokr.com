@@ -35,7 +35,7 @@ class Admin_ConfCtrl(AdminCtrl):
             conf_name = self.input('conf_name')
             conf_vals = self.input('conf_vals')
 
-            self.set_runtime_conf(conf_name, conf_vals)
+            self.datum('confs').upsert(conf_name, conf_vals)
 
             self.ualog(self.current_user, "更新配置：" + conf_name, conf_vals)
             self.flash(1, {'msg': '更新配置成功'})
@@ -57,11 +57,11 @@ class Admin_ConfCreateCtrl(AdminCtrl):
                 self.flash(0, {'msg': '配置键长度不能超过32个字符'})
                 return
 
-            if self.has_runtime_conf(conf_name):
+            if self.datum('confs').exists(conf_name):
                 self.flash(0, {'msg': '配置键已存在'})
                 return
 
-            self.set_runtime_conf(conf_name, conf_vals)
+            self.datum('confs').upsert(conf_name, conf_vals)
 
             self.ualog(self.current_user, "新增配置：" + conf_name, conf_vals)
             self.flash(1, {'msg': '新增配置成功'})
@@ -75,7 +75,7 @@ class Admin_ConfDeleteCtrl(AdminCtrl):
             conf_name = self.input('conf_name')
             conf_vals = self.get_runtime_conf(conf_name)
 
-            self.del_runtime_conf(conf_name)
+            self.datum('confs').delete(conf_name)
 
             self.ualog(self.current_user, "删除配置：" + conf_name, conf_vals)
             self.flash(1, {'msg': '删除配置成功'})
