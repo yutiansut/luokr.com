@@ -52,14 +52,16 @@
                 {% if post['post_author'].strip() != '' and (post['user_id'] not in psers or psers[post['user_id']]['user_name'] != post['post_author']) %}{% if post['post_source'].strip() != '' %}<br>{% end %}<small>作者：{{ post['post_author'] }}</small>{% end %}
                 </p>
                 <p class="text-right">{% if post['user_id'] in psers %}<a href="/@{{ psers[post['user_id']]['user_name'] }}" target="_blank"><small>{{ psers[post['user_id']]['user_name'] }}</small></a>{% end %}<small> 发布于 {{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small></p>
-
-                <ul class="pager">
-                    <li class="previous{% if not post_prev %} disabled{% end %}"><a href="{% if post_prev %}/p/{{ post_prev }}{% else %}javascript:;{% end %}">&larr; 上一篇</a></li>
-                    <li><a href="javascript:;" title="点赞（+1）" class="ilike" data-post-id="{{ post['post_id'] }}" data-plus-ts="✓ 1">+ 1</a></li>
-                    <li class="next{% if not post_next %} disabled{% end %}"><a href="{% if post_next %}/p/{{ post_next }}{% else %}javascript:;{% end %}">下一篇 &rarr;</a></li>
-                </ul>
             </div>
         </article>
+
+        <div>
+            <ul class="pager">
+                <li class="previous{% if not post_prev %} disabled{% end %}"><a href="{% if post_prev %}/p/{{ post_prev }}{% else %}javascript:;{% end %}">&larr; 上一篇</a></li>
+                <li><a href="javascript:;" title="点赞（+1）" class="ilike" data-post-id="{{ post['post_id'] }}" data-plus-ts="✓ 1">+ 1</a></li>
+                <li class="next{% if not post_next %} disabled{% end %}"><a href="{% if post_next %}/p/{{ post_next }}{% else %}javascript:;{% end %}">下一篇 &rarr;</a></li>
+            </ul>
+        </div>
 
         <div id="talks">
             <div id="list-talk">

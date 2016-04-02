@@ -1,3 +1,7 @@
-<li{% if menu == 'posts' %} class="active"{% end %}><a href="/">活动日志</a></li>
-<li{% if menu == 'about' %} class="active"{% end %}><a href="/about">关于我们</a></li>
-<li{% if menu == 'links' %} class="active"{% end %}><a href="/links">友情链接</a></li>
+{% if handler.get_runtime_conf('menus') %}
+{% for item in handler.jsons(handler.get_runtime_conf('menus')) %}
+{% if 'menu' in item and 'text' in item and item['text'] and 'href' in item and item['href'] %}
+<li{% if menu == item['menu'] %} class="active"{% end %}><a href="{{ item['href'] }}">{{ item['text'] }}</a></li>
+{% end %}
+{% end %}
+{% end %}
