@@ -23,9 +23,9 @@ INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('stats', '<s
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('about', '', 1391148485);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('qrimg', '', 1391149550);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('mailx', '{"smtp_able": 1, "smtp_host": "smtp.gmail.com", "smtp_port": 587, "smtp_from": "name<name@gmail.com>", "smtp_user": "", "smtp_pswd": ""}', 1391149551);
+INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('mails', '["a@luokr.com"]', 1391152188);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('notes', '[{"type": "info", "text": ""}]', 1391152178);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('admin_notes', '[{"text": ""}]', 1391152179);
-INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('admin_email', '["a@luokr.com"]', 1391152188);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('sites_index', 'http://luokr.com/', 1391152177);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('index_links_min_rank', '100', 1391152190);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('index_posts_top_rank', '100', 1391152191);
