@@ -17,7 +17,7 @@ INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('built', '<p
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('power', '<p>&copy;2013 <a href="http://luokr.com/">luokr.com</a>.</p>', 1391147893);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('menus', '[{"menu":"posts","text": "活动日志", "href": "/"},{"menu":"about","text": "关于我们", "href": "/about"},{"menu":"links","text": "友情链接", "href": "/links"}]', 1391147894);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('links', '[{"text": "", "href": ""}]', 1391147894);
-INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('slide', '[{"image": "/assets/img/1.png", "title": "Hello World", "descp": "Code is Poetry, Life is Sweet."}]', 1391145023);
+INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('flips', '[{"type": "image", "file": "/assets/img/1.png", "head": "Hello World", "body": "Code is Poetry, Life is Sweet."}]', 1391145023);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('slabs', '[{"head": "", "body": ""}]', 1391145024);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('stats', '<script></script>', 1391148393);
 INSERT INTO [confs] ([conf_name], [conf_vals], [conf_ctms]) VALUES ('about', '', 1391148485);
