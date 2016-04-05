@@ -1,6 +1,6 @@
 
 -- Table: alogs
-CREATE TABLE alogs ( 
+CREATE TABLE IF NOT EXISTS alogs ( 
     alog_id   INTEGER        PRIMARY KEY AUTOINCREMENT,
     user_id   INTEGER        DEFAULT ( 0 ),
     user_ip   VARCHAR( 39 ),
@@ -9,11 +9,3 @@ CREATE TABLE alogs (
     alog_data TEXT,
     alog_ctms INT( 10 )      NOT NULL 
 );
-
-
--- Index: idx_userId_alogId
-CREATE INDEX idx_userId_alogId ON alogs ( 
-    user_id DESC,
-    alog_id DESC 
-);
-
