@@ -26,7 +26,7 @@
     <nav class="navbar navbar-static-top">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
+                <a class="brand" href="/">{% raw handler.get_runtime_conf('brand') %}</a>
                 {% if handler.current_user %}
                 <ul class="nav nav-tool-bar pull-right">
                     <li><a href="/@{{url_escape(handler.current_user['user_name'])}}"><i class="icon-user"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>
@@ -47,15 +47,14 @@
 
 <main class="vessel">
     <div class="container">
-        {% block tips %}{% module Template("admin/_tips.html", tips = handler.jsons(handler.get_runtime_conf('admin_notes'))) %}{% end %}
         {% block main %}{% end %}
     </div>
 </main>
 
 <footer class="footer">
     <div class="container">
-        {% block power %}{% raw handler.get_runtime_conf('power') %}{% end %}
-        {% block built %}{% raw handler.get_runtime_conf('built') %}{% end %}
+        {% block power %}<p>{% raw handler.get_runtime_conf('power') %}</p>{% end %}
+        {% block built %}<p>{% raw handler.get_runtime_conf('built') %}</p>{% end %}
     </div>
 </footer>
 

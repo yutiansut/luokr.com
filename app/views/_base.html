@@ -34,7 +34,7 @@
                 <span class="icon-bar"></span>
             </button>
             <div class="container">
-                <a class="brand" href="{{ handler.get_runtime_conf('sites_index') }}">{% raw handler.get_runtime_conf('brand') %}</a>
+                <a class="brand" href="/">{% raw handler.get_runtime_conf('brand') %}</a>
                 {% if handler.current_user %}
                 <ul class="nav nav-tool-bar pull-right">
                     <li><a href="/@{{url_escape(handler.current_user['user_name'])}}"><i class="icon-user"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>
@@ -63,8 +63,8 @@
 <footer class="footer">
     <div class="container">
         {% if handler.get_runtime_conf('qrimg') %}<img class="qrcode pull-right" src="{{ handler.get_runtime_conf('qrimg') }}">{% end %}
-        {% block power %}{% raw handler.get_runtime_conf('power') %}{% end %}
-        {% block built %}{% raw handler.get_runtime_conf('built') %}{% end %}
+        {% block power %}<p>{% raw handler.get_runtime_conf('power') %}</p>{% end %}
+        {% block built %}<p>{% raw handler.get_runtime_conf('built') %}</p>{% end %}
         {% block links %}
         {% if handler.get_runtime_conf('links') %}
         <ul class="footer-links">
