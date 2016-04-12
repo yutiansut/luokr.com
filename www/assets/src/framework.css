@@ -1,6 +1,6 @@
 body {
-    font-family: "Helvetica Neue",Helvetica,Arial,"Lantinghei SC","Hiragino Sans GB",STHeiti,"Noto Sans S Chinese","Microsoft Yahei","Microsoft Sans Serif","WenQuanYi Micro Hei",sans-serif;
-    font-weight: 300;
+    font-family: "Helvetica Neue","Hiragino Sans GB",STHeiti,"Microsoft Yahei",\5FAE\8F6F\96C5\9ED1,"WenQuanYi Micro Hei",Tahoma,sans-serif;
+    -webkit-font-smoothing: antialiased !important;
 
     /**
      * 1. Making the <body> element behave like a flexbox container.
