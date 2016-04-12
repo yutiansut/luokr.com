@@ -16,10 +16,11 @@
 }
 .article-wrap {
 }
+.article-body {
+    line-height: 1.6;
+}
 .article-body p {
-    font-size: 14px;
-    line-height: 1.8em;
-    margin-bottom: 20px;
+    margin-bottom: 1em;
 }
 
 .dial-mode-wait .dial-body {
