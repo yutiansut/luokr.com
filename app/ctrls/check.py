@@ -1,4 +1,4 @@
-#coding=utf-8
+# -*- coding: UTF-8 -*-
 
 from lib.captcha.image import gen_randoms, gen_captcha
 from basic import BasicCtrl

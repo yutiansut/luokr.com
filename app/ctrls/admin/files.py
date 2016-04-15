@@ -1,7 +1,7 @@
-#coding=utf-8
+# -*- coding: UTF-8 -*-
 
 import os, re, sys, hashlib, mimetypes
-from admin import admin, AdminCtrl
+from . import admin, AdminCtrl
 
 class Admin_FilesCtrl(AdminCtrl):
     @admin

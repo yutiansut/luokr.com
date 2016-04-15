@@ -1,4 +1,4 @@
-#coding=utf-8
+# -*- coding: UTF-8 -*-
 
 from ctrls.hello import HelloCtrl
 from ctrls.error import ErrorCtrl

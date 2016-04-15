@@ -1,7 +1,7 @@
-#coding=utf-8
+# -*- coding: UTF-8 -*-
 
 import os, hashlib, mimetypes
-from shell import shell, ShellCtrl
+from . import shell, ShellCtrl
 
 class Shell_PanelCtrl(ShellCtrl):
     @shell

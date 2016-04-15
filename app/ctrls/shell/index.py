@@ -1,6 +1,6 @@
-#coding=utf-8
+# -*- coding: UTF-8 -*-
 
-from shell import shell, ShellCtrl
+from . import shell, ShellCtrl
 
 class Shell_IndexCtrl(ShellCtrl):
     def get(self, name):

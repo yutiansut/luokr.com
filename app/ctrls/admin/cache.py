@@ -1,7 +1,7 @@
-#coding=utf-8
+# -*- coding: UTF-8 -*-
 
-from admin import admin, AdminCtrl
 import re
+from . import admin, AdminCtrl
 
 class Admin_CacheCtrl(AdminCtrl):
     @admin
