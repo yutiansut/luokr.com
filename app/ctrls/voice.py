@@ -29,9 +29,9 @@ class VoiceCtrl(BasicCtrl):
         time = self.stime()
 
         try:
-            self.datum('talks').invoke(
+            tkid = self.datum('talks').invoke(
                     'insert into talks (post_id, user_ip, user_id, user_name, user_mail, talk_text, talk_rank, talk_ctms, talk_utms) values (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                    (post['post_id'], self.request.remote_ip, usid, name, mail, text, rank, time, time))
+                    (post['post_id'], self.request.remote_ip, usid, name, mail, text, rank, time, time)).lastrowid
 
             self.datum('posts').invoke('update posts set post_refc = post_refc + 1 where post_id = ?', (post['post_id'],))
 
@@ -39,9 +39,9 @@ class VoiceCtrl(BasicCtrl):
             self.datum('posts').commit()
 
             if float(rank) > 0:
-                self.flash(1, {'msg': '评论发表成功'})
+                self.flash(1, {'msg': '评论发表成功', 'dat': {'did': tkid}})
             else:
-                self.flash(1, {'msg': '当前评论内容暂不公开'})
+                self.flash(1, {'msg': '评论发表成功，当前评论内容暂不公开'})
         except:
             self.datum('talks').revert()
             self.datum('posts').revert()

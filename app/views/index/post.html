@@ -194,7 +194,9 @@
                     } else {
                         p.removeClass('error').addClass('success')
                         t.html('<strong>发送成功！</strong>' + resp.msg).fadeIn();
-                        setTimeout(function() {location.reload();}, 3000);
+                        if (resp.dat.did) {
+                            setTimeout(function() {location.reload();}, 3000);
+                        }
                     }
                 }
             });
