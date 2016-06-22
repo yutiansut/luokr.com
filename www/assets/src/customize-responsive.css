@@ -3,7 +3,7 @@ body {
 }
 
 strong, dt, b, h1, h2, h3, h4, h5, h6, .close, .label, .badge, .table th, .nav-header {
-    font-weight: 300;
+    font-weight: 600;
 }
 
 @media (max-width: 480px) {
