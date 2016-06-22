@@ -155,7 +155,7 @@ kbd {
     color: #9DA0A4;
     content: attr(data-title);
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 300;
     left: -1px;
     padding: 3px 7px;
     position: absolute;
@@ -179,7 +179,7 @@ kbd {
     border-radius: 4px 4px 0 0;
     color: #9DA0A4;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 300;
     left: 0;
     padding: 3px 7px;
     position: absolute;
