@@ -3,7 +3,7 @@
 {% block title %}{{ post['post_title'] }} - {{ handler.get_runtime_conf('title') }}{% end %}
 {% block descp %}{{ post['post_descp'] and post['post_descp'] or post['post_title'] }}{% end %}
 
-{% block keyws %}{% if post['post_id'] in ptids %}{% for term in ptids[post['post_id']] %}{{ ptags[term['term_id']]['term_name']}},{% end %}{% end %}{{ handler.get_runtime_conf('keyws') }}{% end %}
+{% block keyws %}{% if post['post_id'] in ptids %}{% for term in ptids[post['post_id']] %}{{ ptags[term['term_id']]['term_name']}} {% end %}{% end %}{{ handler.get_runtime_conf('keyws') }}{% end %}
 
 {% block navs %}
 {% module Template("_navs.html", menu='posts') %}
