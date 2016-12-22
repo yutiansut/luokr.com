@@ -107,7 +107,7 @@ class PostCtrl(BasicCtrl):
         posts_top = self.datum('posts').result('select post_id,post_title,post_descp from posts where post_stat>0 and post_ptms<? and post_rank>=? order by post_rank desc, post_id desc limit 9', (stime, self.get_runtime_conf('index_posts_top_rank')))
         posts_hot = self.datum('posts').result('select post_id,post_title,post_descp from posts where post_stat>0 and post_ptms<? order by post_refc desc, post_id desc limit 9', (stime,))
         posts_new = self.datum('posts').result('select post_id,post_title,post_descp from posts where post_stat>0 and post_ptms<? order by post_ptms desc, post_id desc limit 9', (stime,))
-        posts_rel = []
+        posts_rel = None
         if post['post_id'] in ptids:
             poids = self.datum('posts').result('select distinct post_id from post_terms where post_id<>? and term_id in (' + ','.join(str(i['term_id']) for i in ptids[post['post_id']]) + ') order by term_id desc limit 9', (post['post_id'],))
             if poids:
@@ -115,11 +115,9 @@ class PostCtrl(BasicCtrl):
 
         keyws_tag = self.datum('terms').result('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
 
-        talks = []
-        talks_new = []
-
-        slabs_top = self.jsons(self.get_runtime_conf('slabs'))
-
+        talks = None
+        talks_new = None
+        slabs_top = None
         links_top = None
 
         self.render('index/post.html', post = post, psers = psers, ptids = ptids, ptags = ptags, talks = talks
