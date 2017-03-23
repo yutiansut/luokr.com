@@ -398,10 +398,6 @@ $(function() {
         });
     }
 
-    if ($('body').data('exts-autohidingnavbar')) {
-        $(".navbar-fixed-top").autoHidingNavbar({showOnBottom: false});
-    }
-
     $('.require-confirm').on('click', function() {
         return L.method.confirm();
     });
