@@ -195,7 +195,7 @@ a.actor, .actor-block a {
     display: inline-block;
 }
 
-a.ilike {
+a.award {
     border: 1px solid #eee !important;
     color: #ca6445;
     -webkit-border-radius: 2px !important;

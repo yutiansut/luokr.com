@@ -57,7 +57,7 @@
         <div>
             <ul class="pager">
                 <li class="previous{% if not post_prev %} disabled{% end %}"><a href="{% if post_prev %}/p/{{ post_prev }}{% else %}javascript:;{% end %}">&larr; 上一篇</a></li>
-                <li><a href="javascript:;" title="点赞（+1）" class="ilike" data-post-id="{{ post['post_id'] }}" data-plus-ts="✓ 1">+ 1</a></li>
+                <li><a href="javascript:;" title="点赞（+1）" class="award" data-post-id="{{ post['post_id'] }}" data-plus-ts="✓ 1">+ 1</a></li>
                 <li class="next{% if not post_next %} disabled{% end %}"><a href="{% if post_next %}/p/{{ post_next }}{% else %}javascript:;{% end %}">下一篇 &rarr;</a></li>
             </ul>
         </div>
@@ -146,7 +146,7 @@
 <script src="{{ handler.asset('gcp/src/run_prettify.js?skin=solarized-dark', vers = False) }}" type="text/javascript"></script>
 <script>
     $(function() {
-        $('.pager .ilike').click(function() {
+        $('.pager .award').click(function() {
             var i = $(this);
             if (i.attr('disabled') != 'disabled') {
                 i.attr('disabled', 'disabled').parent().addClass('disabled');
