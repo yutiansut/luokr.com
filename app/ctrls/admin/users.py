@@ -24,21 +24,17 @@ class Admin_UserCtrl(AdminCtrl):
             self.flash(0, {'sta': 404})
             return
 
-        # if user['user_id'] == self.current_user['user_id']:
-            # self.flash(0, {'sta': 403})
-            # return
-
         self.render('admin/user.html', user = user)
 
     @admin
     def post(self):
+        if not self.model('admin').chk_user_is_root(self.current_user):
+            self.flash(0, {'sta': 403})
+            return
+
         user = self.datum('users').get_user_by_id(self.input('user_id'))
         if not user:
             self.flash(0, {'sta': 404})
-            return
-
-        if user['user_id'] == self.current_user['user_id']:
-            self.flash(0, {'sta': 403})
             return
 
         try:
@@ -51,14 +47,6 @@ class Admin_UserCtrl(AdminCtrl):
             user_rpwd = self.input('user_rpwd', '')
             user_perm = int(user_perm) & int(self.current_user['user_perm']) & 0x7FFFFFFF
 
-            if user_pswd != user_rpwd:
-                self.flash(0, {'msg': '确认密码不匹配'})
-                return
-
-            if not self.model('admin').chk_is_user_pswd(user_pswd):
-                self.flash(0, {'msg': '无效的用户密码'})
-                return
-
             if not self.model('admin').chk_is_user_mail(user_mail):
                 self.flash(0, {'msg': '无效的用户邮箱'})
                 return
@@ -67,7 +55,15 @@ class Admin_UserCtrl(AdminCtrl):
                 self.flash(0, {'msg': '用户邮箱已存在'})
                 return
             
-            if user_pswd:
+            if user_pswd != '':
+                if user_pswd != user_rpwd:
+                    self.flash(0, {'msg': '确认密码不匹配'})
+                    return
+
+                if not self.model('admin').chk_is_user_pswd(user_pswd):
+                    self.flash(0, {'msg': '无效的用户密码'})
+                    return
+
                 user_auid = self.model('admin').generate_randauid()
                 user_salt = self.model('admin').generate_randsalt()
                 user_pswd = self.model('admin').generate_password(user_pswd, user_salt)
@@ -104,15 +100,19 @@ class Admin_UserCreateCtrl(AdminCtrl):
             user_utms = user_ctms
             user_atms = user_ctms
 
-            if len(user_name) < 3 or not self.model('admin').chk_is_user_name(user_name):
+            if not self.model('admin').chk_user_is_root(self.current_user):
+                self.flash(0, {'sta': 403})
+                return
+
+            if not self.model('admin').chk_is_user_name(user_name):
                 self.flash(0, {'msg': '无效的用户帐号'})
                 return
             
-            if len(user_pswd) < 6 or (user_pswd != user_rpwd):
+            if user_pswd != user_rpwd or not self.model('admin').chk_is_user_pswd(user_pswd):
                 self.flash(0, {'msg': '无效的用户密码'})
                 return
 
-            if len(user_mail) < 3 or not self.model('admin').chk_is_user_mail(user_mail):
+            if not self.model('admin').chk_is_user_mail(user_mail):
                 self.flash(0, {'msg': '无效的用户邮箱'})
                 return
 

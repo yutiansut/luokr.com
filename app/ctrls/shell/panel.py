@@ -82,8 +82,12 @@ class Shell_PanelCtrl(ShellCtrl):
                 user_logo = url
 
             if user_npwd:
-                if not self.model('admin').chk_is_user_pswd(user_npwd) or user_npwd != user_rpwd or self.model('admin').generate_password(user_pswd, user['user_salt']) != user['user_pswd']:
-                    self.flash(0, {'msg': '密码输入错误'})
+                if user_npwd != user_rpwd or not self.model('admin').chk_is_user_pswd(user_npwd):
+                    self.flash(0, {'msg': '用户新密码无效'})
+                    return
+
+                if self.model('admin').generate_password(user_pswd, user['user_salt']) != user['user_pswd']:
+                    self.flash(0, {'msg': '用户原密码错误'})
                     return
 
                 user_auid = self.model('admin').generate_randauid()
