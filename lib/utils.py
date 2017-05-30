@@ -34,9 +34,20 @@ class Utils:
                 r'(?:http|ftp)s?://'           # http:// or https://
                 r'[a-z0-9-]+(?:\.[a-z0-9-]+)*' # domain or ip...
                 r'(?::\d+)?'                   # optional port
-                r'(?:/[^"\'<>\s]*)?'           # optional segs
+                r'(?:/[^@"\'<>\s]*)?'           # optional segs
                 r')', re.IGNORECASE)
-        return exp.sub(r'<a href="\1"' + opt + r'>\1</a>', val)
+        val = exp.sub(r'<a href="\1"' + opt + r'>\1</a>', val)
+
+        exp = re.compile(
+                r'('
+                r'([-a-z0-9_.]+)'                 # user name
+                r'@'                              # @
+                r'([a-z0-9-]+(?:\.[a-z0-9-]+)*)'  # domain
+                r')', re.IGNORECASE)
+
+        val = exp.sub(r'<a href="javascript:;"' + opt + r' onclick="location.href=' + r"'mailto:\2'" + r"+String.fromCharCode(64)+'" + r"\3'" + r'">\2<script>document.write(String.fromCharCode(64))</script>\3</a>', val)
+
+        return val
 
     @staticmethod
     def str_md5_hex(val):
