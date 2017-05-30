@@ -52,7 +52,7 @@ class PostsCtrl(BasicCtrl):
             ptids = self.utils().array_group(ptids, 'post_id')
             psers = self.utils().array_keyto(self.datum('users').result('select * from users where user_id in (' + ','.join(str(i['user_id']) for i in posts) + ')'), 'user_id')
 
-        keyws_tag = self.datum('terms').result('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
+        terms_top = self.datum('terms').result('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
         posts_top = self.datum('posts').result('select post_id,post_title,post_descp from posts where post_stat>0 and post_ptms<? and post_rank>=? order by post_rank desc, post_id desc limit 9', (stime, self.get_runtime_conf('index_posts_top_rank')))
         posts_hot = self.datum('posts').result('select post_id,post_title,post_descp from posts where post_stat>0 and post_ptms<? order by post_refc desc, post_id desc limit 9', (stime,))
         posts_new = self.datum('posts').result('select post_id,post_title,post_descp from posts where post_stat>0 and post_ptms<? order by post_ptms desc, post_id desc limit 9', (stime,))
@@ -68,7 +68,7 @@ class PostsCtrl(BasicCtrl):
 
         self.render('posts.html', track = track, pager = pager, posts = posts, psers = psers, ptids = ptids, ptags = ptags
                 , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, posts_rel = posts_rel
-                , slabs_top = slabs_top, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)
+                , slabs_top = slabs_top, terms_top = terms_top, talks_new = talks_new, links_top = links_top)
 
 
 class PostCtrl(BasicCtrl):
@@ -113,7 +113,7 @@ class PostCtrl(BasicCtrl):
             if poids:
                 posts_rel = self.datum('posts').result('select post_id,post_title,post_descp from posts where post_stat>0 and post_ptms<? and post_id in (' + ','.join(str(i['post_id']) for i in poids) + ') order by post_ptms desc, post_id desc limit 9', (stime,))
 
-        keyws_tag = self.datum('terms').result('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
+        terms_top = self.datum('terms').result('select * from terms where term_refc>0 order by term_refc desc, term_id desc limit 32')
 
         talks = None
         talks_new = None
@@ -123,4 +123,4 @@ class PostCtrl(BasicCtrl):
         self.render('index/post.html', post = post, psers = psers, ptids = ptids, ptags = ptags, talks = talks
                 , post_prev = post_prev, post_next = post_next
                 , posts_top = posts_top, posts_hot = posts_hot, posts_new = posts_new, posts_rel = posts_rel
-                , slabs_top = slabs_top, keyws_tag = keyws_tag, talks_new = talks_new, links_top = links_top)
+                , slabs_top = slabs_top, terms_top = terms_top, talks_new = talks_new, links_top = links_top)

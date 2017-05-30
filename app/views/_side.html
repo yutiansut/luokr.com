@@ -6,13 +6,13 @@
         </div>
     </form>
 
+    {% if terms_top %}
     <ul class="inline">
-        {% if keyws_tag %}
-        {% for val in keyws_tag %}
+        {% for val in terms_top %}
         <li><a href="/t/{{ url_escape(val['term_name']) }}">{{ val['term_name'] }}</a></li>
         {% end %}
-        {% end %}
     </ul>
+    {% end %}
 
     {% if slabs_top %}
     {% for val in slabs_top %}
