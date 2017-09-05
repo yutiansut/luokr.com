@@ -43,7 +43,7 @@ class Datum(object):
     def invoke(self, *args, **kwargs):
         return self.source.execute(*args, **kwargs)
 
-    def affect(self, *args, **kwargs):
+    def submit(self, *args, **kwargs):
         con = self.source
         cur = con.execute(*args, **kwargs)
         con.commit()

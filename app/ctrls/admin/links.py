@@ -38,7 +38,7 @@ class Admin_LinkCtrl(AdminCtrl):
             link_rank = self.input('link_rank')
             link_utms = self.stime()
 
-            if self.datum('links').affect(
+            if self.datum('links').submit(
                     'update links set link_name = ?, link_href = ?, link_desp = ?, link_rank = ?, link_utms = ? where link_id = ?',
                     (link_name, link_href, link_desp, link_rank, link_utms, link_id ,)).rowcount:
                 self.ualog(self.current_user, '更新链接：' + str(link_id))
@@ -63,7 +63,7 @@ class Admin_LinkCreateCtrl(AdminCtrl):
             link_ctms = self.stime()
             link_utms = link_ctms
 
-            lastrowid = self.datum('links').affect(
+            lastrowid = self.datum('links').submit(
                     'insert into links (link_name, link_href, link_desp, link_rank, link_ctms, link_utms) values (?, ?, ?, ?, ?, ?)',
                     (link_name, link_href, link_desp, link_rank, link_ctms, link_utms ,)).lastrowid
             if lastrowid:
@@ -81,7 +81,7 @@ class Admin_LinkDeleteCtrl(AdminCtrl):
             link_id   = self.input('link_id')
             link_utms = self.input('link_utms')
 
-            if self.datum('links').affect(
+            if self.datum('links').submit(
                     'delete from links where link_id = ? and link_utms = ?', (link_id, link_utms ,)).rowcount:
                 self.ualog(self.current_user, '删除链接：' + str(link_id))
                 self.flash(1)

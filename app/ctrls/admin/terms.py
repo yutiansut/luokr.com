@@ -34,7 +34,7 @@ class Admin_TermCtrl(AdminCtrl):
             term_id   = self.input('term_id')
             term_name = self.input('term_name')
 
-            if self.datum('terms').affect('update terms set term_name = ? where term_id = ?',
+            if self.datum('terms').submit('update terms set term_name = ? where term_id = ?',
                     (term_name, term_id ,)).rowcount:
                 self.flash(1)
                 return
@@ -53,7 +53,7 @@ class Admin_TermCreateCtrl(AdminCtrl):
             term_name = self.input('term_name')
             term_ctms = self.stime()
 
-            if self.datum('terms').affect('insert into terms (term_name, term_ctms) values (?, ?)', (term_name, term_ctms ,)).lastrowid:
+            if self.datum('terms').submit('insert into terms (term_name, term_ctms) values (?, ?)', (term_name, term_ctms ,)).lastrowid:
                 self.flash(1)
                 return
         except:

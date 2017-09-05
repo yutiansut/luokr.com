@@ -67,10 +67,10 @@ class Admin_UserCtrl(AdminCtrl):
                 user_auid = self.model('admin').generate_randauid()
                 user_salt = self.model('admin').generate_randsalt()
                 user_pswd = self.model('admin').generate_password(user_pswd, user_salt)
-                self.datum('users').affect('update users set user_auid = ?, user_mail = ?, user_sign = ?, user_logo = ?, user_meta, user_pswd = ?, user_salt = ?, user_perm = ?, user_atms = ?, user_utms = ? where user_id = ?',\
+                self.datum('users').submit('update users set user_auid = ?, user_mail = ?, user_sign = ?, user_logo = ?, user_meta, user_pswd = ?, user_salt = ?, user_perm = ?, user_atms = ?, user_utms = ? where user_id = ?',\
                         (user_auid, user_mail, user_sign, user_logo, user_meta, user_pswd, user_salt, user_perm, self.stime(), self.stime(), user['user_id'], ))
             else:
-                self.datum('users').affect('update users set user_mail = ?, user_sign = ?, user_logo = ?, user_meta = ?, user_perm = ?, user_utms = ? where user_id = ?',\
+                self.datum('users').submit('update users set user_mail = ?, user_sign = ?, user_logo = ?, user_meta = ?, user_perm = ?, user_utms = ? where user_id = ?',\
                         (user_mail, user_sign, user_logo, user_meta, user_perm, self.stime(), user['user_id'], ))
 
             self.ualog(self.current_user, "更新用户：" + str(user['user_id']), user['user_name'])
@@ -129,7 +129,7 @@ class Admin_UserCreateCtrl(AdminCtrl):
             user_pswd = self.model('admin').generate_password(user_rpwd, user_salt)
             user_perm = int(user_perm) & 0x7FFFFFFF
 
-            lastrowid = self.datum('users').affect('insert into users (\
+            lastrowid = self.datum('users').submit('insert into users (\
                     user_auid, user_name, user_salt, user_pswd, user_perm, \
                     user_mail, user_sign, user_logo, user_meta, user_ctms, user_utms, user_atms) \
                     values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', \

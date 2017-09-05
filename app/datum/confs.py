@@ -30,9 +30,9 @@ class ConfsDatum(Datum):
         return bool(ret)
 
     def upsert(self, name, vals):
-        self.affect('replace into confs (conf_name, conf_vals, conf_ctms) values (?, ?, ?)', (name, vals, int(time.time()),))
+        self.submit('replace into confs (conf_name, conf_vals, conf_ctms) values (?, ?, ?)', (name, vals, int(time.time()),))
         self._cache[name] = vals
 
     def delete(self, name):
-        self.affect('delete from confs where conf_name = ?', (name, ))
+        self.submit('delete from confs where conf_name = ?', (name, ))
         self._cache[name] = None

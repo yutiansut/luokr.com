@@ -13,7 +13,7 @@ class EmailCtrl(BasicCtrl):
         text = self.input('text')
         time = self.stime()
 
-        if self.datum('mails').affect(
+        if self.datum('mails').submit(
                 'insert into mails (user_ip, user_name, user_mail, mail_text, mail_ctms, mail_utms) values (?, ?, ?, ?, ?, ?)',
                 (self.request.remote_ip, name, mail, text, time, time)).lastrowid:
             self.flash(1)

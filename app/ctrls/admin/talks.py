@@ -37,7 +37,7 @@ class Admin_TalkCtrl(AdminCtrl):
             talk_text = self.input('talk_text')
             talk_utms = self.stime()
 
-            if self.datum('talks').affect(
+            if self.datum('talks').submit(
                     'update talks set user_name = ?, user_mail = ?, talk_rank = ?+talk_plus-talk_mins, talk_text = ?, talk_utms = ? where talk_id = ?',
                     (user_name, user_mail, talk_rank, talk_text, talk_utms, talk_id ,)).rowcount:
                 self.ualog(self.current_user, '更新评论：' + str(talk_id))
@@ -54,7 +54,7 @@ class Admin_TalkDeleteCtrl(AdminCtrl):
             talk_id   = self.input('talk_id')
             talk_ctms = self.input('talk_ctms')
 
-            if self.datum('talks').affect(
+            if self.datum('talks').submit(
                     'delete from talks where talk_id = ? and talk_ctms = ?', (talk_id, talk_ctms ,)).rowcount:
                 self.ualog(self.current_user, '删除评论：' + str(talk_id))
                 self.flash(1)

@@ -68,7 +68,7 @@ class Admin_FileUploadCtrl(AdminCtrl):
         fin.write(res['body'])
         fin.close()
 
-        self.datum('files').affect(
+        self.datum('files').submit(
                 'insert into files (file_hash, file_base, file_path, file_type, file_memo, file_ctms) values (?, ?, ?, ?, ?, ?)',
                 (key, dir, url, res['content_type'], res['filename'], self.stime()))
 
@@ -102,7 +102,7 @@ class Admin_FileDeleteCtrl(AdminCtrl):
                     os.rmdir(dir)
                     dir = os.path.dirname(dir)
 
-            if self.datum('files').affect('delete from files where file_id = ? and file_ctms = ?', (fid, ctm)).rowcount:
+            if self.datum('files').submit('delete from files where file_id = ? and file_ctms = ?', (fid, ctm)).rowcount:
                 self.ualog(self.current_user, '删除文件：' + str(fid))
                 self.flash(1)
                 return

@@ -26,7 +26,7 @@ class Admin_PostHiddenCtrl(AdminCtrl):
         try:
             post_id = self.input('post_id')
 
-            self.datum('posts').affect('update posts set post_stat = 0 where post_id = ?', (post_id, ))
+            self.datum('posts').submit('update posts set post_stat = 0 where post_id = ?', (post_id, ))
             self.flash(1)
         except:
             self.flash(0)

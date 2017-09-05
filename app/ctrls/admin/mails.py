@@ -23,7 +23,7 @@ class Admin_MailAccessCtrl(AdminCtrl):
         try:
             mail_id = self.input('mail_id')
 
-            if self.datum('mails').affect(
+            if self.datum('mails').submit(
                     'update mails set mail_stat=1, mail_utms=? where mail_id = ?', (self.stime(), mail_id,)).rowcount:
                 self.flash(1)
                 return
@@ -38,7 +38,7 @@ class Admin_MailDeleteCtrl(AdminCtrl):
             mail_id   = self.input('mail_id')
             mail_utms = self.input('mail_utms')
 
-            if self.datum('mails').affect(
+            if self.datum('mails').submit(
                     'delete from mails where mail_id = ? and mail_utms = ?', (mail_id, mail_utms ,)).rowcount:
                 self.ualog(self.current_user, '删除留言：' + str(mail_id))
                 self.flash(1)

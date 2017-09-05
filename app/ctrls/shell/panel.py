@@ -76,7 +76,7 @@ class Shell_PanelCtrl(ShellCtrl):
                 fin.write(res['body'])
                 fin.close()
 
-                self.datum('files').affect('insert into files (file_hash, file_base, file_path, file_type, file_memo, file_ctms) values (?, ?, ?, ?, ?, ?)',
+                self.datum('files').submit('insert into files (file_hash, file_base, file_path, file_type, file_memo, file_ctms) values (?, ?, ?, ?, ?, ?)',
                         (key, dir, url, res['content_type'], res['filename'], self.stime()))
 
                 user_logo = url
@@ -92,11 +92,11 @@ class Shell_PanelCtrl(ShellCtrl):
 
                 user_auid = self.model('admin').generate_randauid()
                 user_salt = self.model('admin').generate_randsalt()
-                self.datum('users').affect(
+                self.datum('users').submit(
                         'update users set user_auid = ?, user_mail = ?, user_logo = ?, user_sign = ?, user_meta = ?, user_pswd = ?, user_salt = ?, user_atms = ?, user_utms = ? where user_id = ?',
                         (user_auid, user_mail, user_logo, user_sign, user_meta, self.model('admin').generate_password(user_npwd, user_salt), user_salt, self.stime(), self.stime(), user['user_id'], ))
             else:
-                self.datum('users').affect(
+                self.datum('users').submit(
                         'update users set user_mail = ?, user_logo = ?, user_sign = ?, user_meta = ?, user_utms = ? where user_id = ?',
                         (user_mail, user_logo, user_sign, user_meta, self.stime(), user['user_id'], ))
 
