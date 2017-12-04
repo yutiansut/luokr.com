@@ -31,6 +31,23 @@ class Admin_MailAccessCtrl(AdminCtrl):
             pass
         self.flash(0)
 
+class Admin_MailResendCtrl(AdminCtrl):
+    @admin
+    def post(self):
+        try:
+            mail = self.datum('mails').single('select * from mails where mail_id = ?', (self.input('mail_id'),))
+            if not mail:
+                self.flash(0)
+                return
+
+            self.flash(1)
+            self.email('%s <%s>' %(mail['user_name'], mail['user_mail']), self.jsons(self.get_runtime_conf('mails')),
+                    'Received Feedback (%s)' % self.timer().strftime('%F %T %Z', self.timer().localtime(mail['mail_ctms'])),
+                    'Mail From %s <%s>:\r\n\r\n%s' %(mail['user_name'], mail['user_mail'], mail['mail_text']))
+        except:
+            pass
+        self.flash(0)
+
 class Admin_MailDeleteCtrl(AdminCtrl):
     @admin
     def post(self):
