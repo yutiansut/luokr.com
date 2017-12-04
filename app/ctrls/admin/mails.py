@@ -44,6 +44,7 @@ class Admin_MailResendCtrl(AdminCtrl):
             self.email('%s <%s>' %(mail['user_name'], mail['user_mail']), self.jsons(self.get_runtime_conf('mails')),
                     'Received Feedback (%s)' % self.timer().strftime('%F %T %Z', self.timer().localtime(mail['mail_ctms'])),
                     'Mail From %s <%s>:\r\n\r\n%s' %(mail['user_name'], mail['user_mail'], mail['mail_text']))
+            return
         except:
             pass
         self.flash(0)
