@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from basic import login, BasicCtrl
+from app.ctrls.basic import login, BasicCtrl
 
 class LeaveCtrl(BasicCtrl):
     @login

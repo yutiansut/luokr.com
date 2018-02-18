@@ -1,11 +1,7 @@
 import os.path
 import random
 from PIL import Image, ImageFont, ImageDraw, ImageFilter
-
-try:
-    import cStringIO as StringIO
-except ImportError:
-    import StringIO
+from io import StringIO
 
 # font = ImageFont.load_default()
 font = ImageFont.truetype(os.path.join(os.path.dirname(__file__), "captcha.ttf"), 32)
@@ -29,7 +25,7 @@ def gen_captcha(text, form = 'jpeg'):
         ])
     im = im.filter(ImageFilter.EDGE_ENHANCE_MORE)
 
-    bufs = StringIO.StringIO()
+    bufs = StringIO()
     im.save(bufs, form)
     data = bufs.getvalue()
     bufs.close()

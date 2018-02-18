@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from basic import BasicCtrl
+from app.ctrls.basic import BasicCtrl
 
 class ErrorCtrl(BasicCtrl):
     def get(self, *args):

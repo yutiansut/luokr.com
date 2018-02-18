@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from basic import BasicCtrl
+from app.ctrls.basic import BasicCtrl
 
 class VoiceCtrl(BasicCtrl):
     def post(self):

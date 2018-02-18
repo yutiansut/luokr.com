@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from basic import BasicCtrl
+from app.ctrls.basic import BasicCtrl
 
 class PostsCtrl(BasicCtrl):
     def get(self, _tnm = None):

@@ -1,8 +1,8 @@
 # -*- coding: UTF-8 -*-
 
-import os.path, sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+import os.path
+import sys
+
 
 def main():
     base = os.path.dirname(os.path.dirname(sys.path[0]))
@@ -15,6 +15,6 @@ def main():
     else:
         print("Find etc.py: %s" % dest)
 
+
 if __name__ == "__main__":
     main()
-

@@ -3,7 +3,7 @@ import smtplib
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.Header import Header
+from email.header import Header
 
 class Mailx:
     def __init__(self, conf):

@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from basic import BasicCtrl
+from app.ctrls.basic import BasicCtrl
 
 class EmailCtrl(BasicCtrl):
     def post(self):
