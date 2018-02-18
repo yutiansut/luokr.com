@@ -1,36 +1,36 @@
 # -*- coding: UTF-8 -*-
 
-from ctrls.hello import HelloCtrl
-from ctrls.error import ErrorCtrl
+from app.ctrls.hello import HelloCtrl
+from app.ctrls.error import ErrorCtrl
 
-from ctrls.about import AboutCtrl
-from ctrls.apply import ApplyCtrl
-from ctrls.email import EmailCtrl
-from ctrls.links import LinksCtrl
-from ctrls.score import ScoreCtrl
-from ctrls.talks import TalksCtrl
-from ctrls.voice import VoiceCtrl
-from ctrls.posts import PostsCtrl, PostCtrl
+from app.ctrls.about import AboutCtrl
+from app.ctrls.apply import ApplyCtrl
+from app.ctrls.email import EmailCtrl
+from app.ctrls.links import LinksCtrl
+from app.ctrls.score import ScoreCtrl
+from app.ctrls.talks import TalksCtrl
+from app.ctrls.voice import VoiceCtrl
+from app.ctrls.posts import PostsCtrl, PostCtrl
 
-from ctrls.check import CheckCtrl
+from app.ctrls.check import CheckCtrl
 
-from ctrls.login import LoginCtrl
-from ctrls.leave import LeaveCtrl
+from app.ctrls.login import LoginCtrl
+from app.ctrls.leave import LeaveCtrl
 
-from ctrls.shell.index import Shell_IndexCtrl
-from ctrls.shell.panel import Shell_PanelCtrl
+from app.ctrls.shell.index import Shell_IndexCtrl
+from app.ctrls.shell.panel import Shell_PanelCtrl
 
-from ctrls.admin.index import Admin_IndexCtrl
-from ctrls.admin.cache import Admin_CacheCtrl, Admin_CacheDeleteCtrl
-from ctrls.admin.files import Admin_FilesCtrl, Admin_FileCtrl, Admin_FileUploadCtrl, Admin_FileDeleteCtrl
-from ctrls.admin.confs import Admin_ConfsCtrl, Admin_ConfCtrl, Admin_ConfCreateCtrl, Admin_ConfDeleteCtrl
-from ctrls.admin.posts import Admin_PostsCtrl, Admin_PostCtrl, Admin_PostCreateCtrl, Admin_PostHiddenCtrl
-from ctrls.admin.links import Admin_LinksCtrl, Admin_LinkCtrl, Admin_LinkCreateCtrl, Admin_LinkDeleteCtrl
-from ctrls.admin.talks import Admin_TalksCtrl, Admin_TalkCtrl, Admin_TalkDeleteCtrl
-from ctrls.admin.mails import Admin_MailsCtrl, Admin_MailAccessCtrl, Admin_MailDeleteCtrl, Admin_MailResendCtrl
-from ctrls.admin.terms import Admin_TermsCtrl, Admin_TermCtrl, Admin_TermCreateCtrl
-from ctrls.admin.users import Admin_UsersCtrl, Admin_UserCtrl, Admin_UserCreateCtrl
-from ctrls.admin.alogs import Admin_AlogsCtrl
+from app.ctrls.admin.index import Admin_IndexCtrl
+from app.ctrls.admin.cache import Admin_CacheCtrl, Admin_CacheDeleteCtrl
+from app.ctrls.admin.files import Admin_FilesCtrl, Admin_FileCtrl, Admin_FileUploadCtrl, Admin_FileDeleteCtrl
+from app.ctrls.admin.confs import Admin_ConfsCtrl, Admin_ConfCtrl, Admin_ConfCreateCtrl, Admin_ConfDeleteCtrl
+from app.ctrls.admin.posts import Admin_PostsCtrl, Admin_PostCtrl, Admin_PostCreateCtrl, Admin_PostHiddenCtrl
+from app.ctrls.admin.links import Admin_LinksCtrl, Admin_LinkCtrl, Admin_LinkCreateCtrl, Admin_LinkDeleteCtrl
+from app.ctrls.admin.talks import Admin_TalksCtrl, Admin_TalkCtrl, Admin_TalkDeleteCtrl
+from app.ctrls.admin.mails import Admin_MailsCtrl, Admin_MailAccessCtrl, Admin_MailDeleteCtrl, Admin_MailResendCtrl
+from app.ctrls.admin.terms import Admin_TermsCtrl, Admin_TermCtrl, Admin_TermCreateCtrl
+from app.ctrls.admin.users import Admin_UsersCtrl, Admin_UserCtrl, Admin_UserCreateCtrl
+from app.ctrls.admin.alogs import Admin_AlogsCtrl
 
 url = [
     (r'/', PostsCtrl),

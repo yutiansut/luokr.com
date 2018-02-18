@@ -1,11 +1,9 @@
 # -*- coding: UTF-8 -*-
 
 import sys
-reload(sys)
 
 import os.path 
 
-sys.setdefaultencoding('utf-8')
 sys.path[0] = os.path.dirname(sys.path[0])
 sys.path.insert(1, os.path.join(sys.path[0], 'lib'))
 
